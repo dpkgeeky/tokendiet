@@ -1,6 +1,6 @@
 ---
 name: tokendiet
-description: "Token optimization suite for Claude Code. Three tools: knowledgegraph (build compressed codebase graph for 70%+ token reduction), promptcompressor (caveman-speak compression for 60-70% reduction), promptoptimizer (haiku-formatted structural optimization advice for 70%+ reduction). Use when user wants to reduce tokens, optimize prompts, map a codebase, or load minimal context."
+description: "Token optimization suite for Claude Code — knowledgegraph, promptcompressor, promptoptimizer.\nTRIGGER when: user mentions token reduction, token savings, token budget, token cost, or context window limits; user asks to compress/shorten/optimize a prompt; user asks to map, explore, or understand codebase structure; user says 'use knowledge graph' or 'build graph'; user wants minimal context for a task; user references tokendiet-out/ directory or graph.json; user asks about codebase entities, relationships, or communities.\nSKIP: general coding tasks with no mention of tokens or prompts; file edits, bug fixes, or feature work unless user explicitly asks for token optimization; test writing or debugging."
 argument-hint: "[knowledgegraph|promptcompressor|promptoptimizer] [args...]"
 allowed-tools:
   - Bash
