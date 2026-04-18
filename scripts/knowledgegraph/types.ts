@@ -103,5 +103,5 @@ export const IGNORE_DIRS = new Set([
   "target",
   ".cache",
   ".turbo",
-  "tokendiet-out",
+  "knowledgegraph",
 ]);

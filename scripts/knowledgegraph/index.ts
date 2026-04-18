@@ -46,7 +46,7 @@ async function main(): Promise<void> {
   const cliArgs = parseArgs();
   const rootDir = process.cwd();
   const projectName = basename(rootDir);
-  const outputDir = resolve(rootDir, "tokendiet-out");
+  const outputDir = resolve(rootDir, "knowledgegraph");
 
   if (cliArgs.subcommand === "build") {
     console.log(`Detecting files in ${rootDir}...`);

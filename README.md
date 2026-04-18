@@ -234,7 +234,7 @@ Python fn: avg of number list, ret 0 if empty
 
 ## Obsidian Integration
 
-The KnowledgeGraph tool outputs a full Obsidian vault at `tokendiet-out/obsidian-vault/`. Open it in [Obsidian](https://obsidian.md/) to use the **native graph view**.
+The KnowledgeGraph tool outputs a full Obsidian vault at `knowledgegraph/obsidian-vault/`. Open it in [Obsidian](https://obsidian.md/) to use the **native graph view**.
 
 **What's in the vault:**
 
@@ -249,7 +249,7 @@ The KnowledgeGraph tool outputs a full Obsidian vault at `tokendiet-out/obsidian
 **To use:**
 
 1. Run `/tokendiet knowledgegraph`
-2. Open Obsidian -> "Open folder as vault" -> select `tokendiet-out/obsidian-vault/`
+2. Open Obsidian -> "Open folder as vault" -> select `knowledgegraph/obsidian-vault/`
 3. Click the graph view icon (or `Ctrl/Cmd + G`)
 4. Nodes are colored by community -- zoom, filter, and explore
 
@@ -283,10 +283,10 @@ Step 4: For prompt engineering, get structural advice
 
 ## Outputs
 
-After running `/tokendiet knowledgegraph`, find everything in `tokendiet-out/`:
+After running `/tokendiet knowledgegraph`, find everything in `knowledgegraph/`:
 
 ```
-tokendiet-out/
+knowledgegraph/
 ├── obsidian-vault/          # Open in Obsidian for native graph view
 │   ├── .obsidian/
 │   │   ├── graph.json       # Community-colored graph config
@@ -299,10 +299,10 @@ tokendiet-out/
 └── report.md                # Analysis report with token savings
 ```
 
-Add `tokendiet-out/` to your `.gitignore` -- it's generated output:
+Add `knowledgegraph/` to your `.gitignore` -- it's generated output:
 
 ```bash
-echo "tokendiet-out/" >> .gitignore
+echo "knowledgegraph/" >> .gitignore
 ```
 
 ---
