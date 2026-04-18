@@ -1,0 +1,22 @@
+{
+  "name": "tokendiet",
+  "version": "0.1.0",
+  "description": "Claude Code plugin for 70%+ token reduction",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "knowledgegraph": "tsx skills/knowledgegraph/scripts/index.ts"
+  },
+  "dependencies": {
+    "graphology": "^0.25.4",
+    "graphology-communities-louvain": "^2.0.1",
+    "graphology-shortest-path": "^2.1.0",
+    "graphology-types": "^0.24.7",
+    "web-tree-sitter": "^0.24.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0",
+    "@types/node": "^22.0.0"
+  }
+}

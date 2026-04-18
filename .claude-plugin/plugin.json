@@ -1,0 +1,10 @@
+{
+  "name": "tokendiet",
+  "version": "0.1.0",
+  "description": "Claude Code plugin for 70%+ token consumption reduction via prompt compression, optimization, and knowledge graph context pruning",
+  "author": "dpkgeeky",
+  "repository": "https://github.com/dpkgeeky/tokendiet",
+  "license": "MIT",
+  "keywords": ["token", "optimization", "compression", "knowledge-graph", "prompt"],
+  "skills": ["skills/promptcompressor", "skills/promptoptimizer", "skills/knowledgegraph"]
+}
