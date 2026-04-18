@@ -1,6 +1,6 @@
 ---
 name: tokendiet
-description: "Token optimization suite for Claude Code — knowledgegraph, promptcompressor, promptoptimizer.\nTRIGGER when: user mentions token reduction, token savings, token budget, token cost, or context window limits; user asks to compress/shorten/optimize a prompt; user asks to map, explore, or understand codebase structure; user says 'use knowledge graph' or 'build graph'; user wants minimal context for a task; user references tokendiet-out/ directory or graph.json; user asks about codebase entities, relationships, or communities.\nSKIP: general coding tasks with no mention of tokens or prompts; file edits, bug fixes, or feature work unless user explicitly asks for token optimization; test writing or debugging."
+description: "Token optimization suite for Claude Code — knowledgegraph, promptcompressor, promptoptimizer.\nTRIGGER when: user mentions token reduction, token savings, token budget, token cost, or context window limits; user asks to compress/shorten/optimize a prompt; user asks to map, explore, or understand codebase structure; user says 'use knowledge graph' or 'build graph'; user wants minimal context for a task; user references tokendiet-out/ directory or graph.json; user asks about codebase entities, relationships, or communities; user asks to traverse or search across the full codebase ('find all X', 'how does X work', 'what calls X', 'show me the architecture', 'list all endpoints/routes/models/services'); user asks broad structural questions ('how is the project organized', 'what depends on X', 'trace the flow from X to Y'); user asks to refactor across multiple files or understand cross-cutting concerns.\nSKIP: simple single-file edits, bug fixes, or feature work in known files; test writing or debugging in a specific file; questions where the user already provided the relevant file path."
 argument-hint: "[knowledgegraph|promptcompressor|promptoptimizer] [args...]"
 allowed-tools:
   - Bash
@@ -27,6 +27,41 @@ Commands:
 
 Aliases: kg, compress, optimize
 ```
+
+---
+
+# Proactive Prompt Optimization
+
+Regardless of which command is being run, after completing the main task, evaluate the user's original prompt. If it exceeds ~50 words (~65 tokens), append a brief non-intrusive tip at the end of your response:
+
+```
+---
+**TokenDiet tip** — your prompt could be ~X% shorter:
+> <compressed version using promptcompressor rules>
+```
+
+Rules:
+- Only suggest once per conversation turn, never repeat on follow-ups
+- Never let the tip delay or replace the main response — append it after
+- If the user's prompt is already concise (<50 words), skip the tip entirely
+- Use the abbreviation table and filler-stripping rules from the promptcompressor section below
+
+---
+
+# Graph Staleness Detection
+
+Before using an existing graph for `query`, `path`, or `context` subcommands, check whether the graph is stale:
+
+```bash
+cd $PROJECT_DIR && stat -f "%m" tokendiet-out/graph.json 2>/dev/null && git log --oneline --since="$(date -r $(stat -f '%m' tokendiet-out/graph.json) '+%Y-%m-%dT%H:%M:%S')" --diff-filter=ADMR -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py' '*.go' '*.rs' '*.java' '*.kt' '*.cs' '*.rb' '*.php' '*.c' '*.cpp' '*.h' '*.hpp' '*.swift' '*.scala' | head -20
+```
+
+If the git log shows meaningful changes since the graph was built, auto-rebuild before answering:
+- **Rebuild when**: new/deleted/renamed source files, >5 source files changed, new classes/functions/routes/models added
+- **Skip rebuild when**: only docs/README/config/comments/whitespace changed, single-line fixes in 1-2 files, no source file changes at all
+- If `tokendiet-out/graph.json` does not exist, always build first
+
+This keeps the graph current without wasting tokens on unnecessary rebuilds.
 
 ---
 
