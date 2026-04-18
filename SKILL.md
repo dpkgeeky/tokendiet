@@ -1,6 +1,6 @@
 ---
 name: tokendiet
-description: "Token optimization suite for Claude Code — knowledgegraph, promptcompressor, promptoptimizer.\nTRIGGER when: user mentions token reduction, token savings, token budget, token cost, or context window limits; user asks to compress/shorten/optimize a prompt; user asks to map, explore, or understand codebase structure; user says 'use knowledge graph' or 'build graph'; user wants minimal context for a task; user references tokendiet-out/ directory or graph.json; user asks about codebase entities, relationships, or communities; user asks to traverse or search across the full codebase ('find all X', 'how does X work', 'what calls X', 'show me the architecture', 'list all endpoints/routes/models/services'); user asks broad structural questions ('how is the project organized', 'what depends on X', 'trace the flow from X to Y'); user asks to refactor across multiple files or understand cross-cutting concerns.\nSKIP: simple single-file edits, bug fixes, or feature work in known files; test writing or debugging in a specific file; questions where the user already provided the relevant file path."
+description: "Token optimization suite for Claude Code — knowledgegraph, promptcompressor, promptoptimizer.\nTRIGGER when: user asks to optimize/improve/restructure a prompt for fewer tokens; user asks to map, explore, or understand codebase structure; user says 'use knowledge graph' or 'build graph'; user wants minimal context for a task; user references knowledgegraph/ directory or graph.json; user asks about codebase entities, relationships, or communities; user asks to traverse or search across the full codebase ('find all X', 'how does X work', 'what calls X', 'show me the architecture', 'list all endpoints/routes/models/services'); user asks broad structural questions ('how is the project organized', 'what depends on X', 'trace the flow from X to Y'); user asks to refactor across multiple files or understand cross-cutting concerns.\nSKIP: simple single-file edits, bug fixes, or feature work in known files; test writing or debugging in a specific file; questions where the user already provided the relevant file path; user asks to compress/shorten text (use /tokendiet compress explicitly)."
 argument-hint: "[knowledgegraph|promptcompressor|promptoptimizer] [args...]"
 allowed-tools:
   - Bash
@@ -53,13 +53,13 @@ Rules:
 Before using an existing graph for `query`, `path`, or `context` subcommands, check whether the graph is stale:
 
 ```bash
-cd $PROJECT_DIR && stat -f "%m" tokendiet-out/graph.json 2>/dev/null && git log --oneline --since="$(date -r $(stat -f '%m' tokendiet-out/graph.json) '+%Y-%m-%dT%H:%M:%S')" --diff-filter=ADMR -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py' '*.go' '*.rs' '*.java' '*.kt' '*.cs' '*.rb' '*.php' '*.c' '*.cpp' '*.h' '*.hpp' '*.swift' '*.scala' | head -20
+cd $PROJECT_DIR && stat -f "%m" knowledgegraph/graph.json 2>/dev/null && git log --oneline --since="$(date -r $(stat -f '%m' knowledgegraph/graph.json) '+%Y-%m-%dT%H:%M:%S')" --diff-filter=ADMR -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py' '*.go' '*.rs' '*.java' '*.kt' '*.cs' '*.rb' '*.php' '*.c' '*.cpp' '*.h' '*.hpp' '*.swift' '*.scala' | head -20
 ```
 
 If the git log shows meaningful changes since the graph was built, auto-rebuild before answering:
 - **Rebuild when**: new/deleted/renamed source files, >5 source files changed, new classes/functions/routes/models added
 - **Skip rebuild when**: only docs/README/config/comments/whitespace changed, single-line fixes in 1-2 files, no source file changes at all
-- If `tokendiet-out/graph.json` does not exist, always build first
+- If `knowledgegraph/graph.json` does not exist, always build first
 
 This keeps the graph current without wasting tokens on unnecessary rebuilds.
 
@@ -86,17 +86,17 @@ cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts b
 After the build completes, read the generated report:
 
 ```bash
-cat tokendiet-out/report.md
+cat knowledgegraph/report.md
 ```
 
 Then tell the user:
 1. The token savings achieved (from the report)
 2. How many nodes, edges, and communities were found
 3. Where the outputs are:
-   - `tokendiet-out/obsidian-vault/` -- Open in Obsidian for interactive graph view with community-colored nodes
-   - `tokendiet-out/graph.html` -- Open in browser for vis.js visualization
-   - `tokendiet-out/graph.json` -- Claude-consumable compressed context
-   - `tokendiet-out/report.md` -- Full analysis report
+   - `knowledgegraph/obsidian-vault/` -- Open in Obsidian for interactive graph view with community-colored nodes
+   - `knowledgegraph/graph.html` -- Open in browser for vis.js visualization
+   - `knowledgegraph/graph.json` -- Claude-consumable compressed context
+   - `knowledgegraph/report.md` -- Full analysis report
 
 ## Query Subcommand
 
@@ -139,7 +139,7 @@ The vault is structured for Obsidian's native graph view:
 - Tags enable filtering: `#tokendiet/code`, `#tokendiet/community-N`
 - Dataview queries in community notes for dynamic filtering
 
-Open `tokendiet-out/obsidian-vault/` as an Obsidian vault to explore.
+Open `knowledgegraph/obsidian-vault/` as an Obsidian vault to explore.
 
 ---
 

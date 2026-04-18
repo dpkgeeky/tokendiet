@@ -1,4 +1,4 @@
 node_modules/
 dist/
-tokendiet-out/
+/knowledgegraph/
 *.tsbuildinfo
