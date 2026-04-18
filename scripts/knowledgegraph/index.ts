@@ -86,7 +86,7 @@ async function main(): Promise<void> {
 
   const graph = loadGraph(outputDir);
   if (!graph) {
-    console.error("No graph found. Run build first: tsx skills/knowledgegraph/scripts/index.ts build");
+    console.error("No graph found. Run build first: /tokendiet knowledgegraph build");
     process.exit(1);
   }
 

@@ -1,115 +1,70 @@
-# TokenDiet - Claude Code Plugin for 70%+ Token Reduction
+# TokenDiet - Claude Code Skill for 70%+ Token Reduction
 
 ## Core Mission
 
-Every skill in this plugin exists to reduce Claude Code token consumption by 70%+.
+Every tool in this skill exists to reduce Claude Code token consumption by 70%+.
 
-## Plugin Structure
+## Skill Structure
 
 ```
 tokendiet/
-├── .claude-plugin/
-│   └── plugin.json              # Plugin manifest
-├── skills/
-│   ├── promptcompressor/
-│   │   └── SKILL.md             # Caveman compressor (pure MD)
-│   ├── promptoptimizer/
-│   │   └── SKILL.md             # Haiku optimizer (pure MD)
+├── SKILL.md                     # Unified skill with argument routing
+├── scripts/
 │   └── knowledgegraph/
-│       ├── SKILL.md             # KG-based context pruning orchestrator
-│       └── scripts/
-│           ├── detect.ts        # File detection & filtering
-│           ├── extract.ts       # Entity/relationship extraction (AST)
-│           ├── build.ts         # Graph construction (graphology)
-│           ├── cluster.ts       # Community detection (Louvain)
-│           ├── report.ts        # Markdown report generation
-│           └── export.ts        # Obsidian vault + HTML + JSON export
-├── package.json                 # TypeScript deps
-└── tsconfig.json
+│       ├── index.ts             # CLI entry point (build/query/path/context)
+│       ├── detect.ts            # File detection & filtering
+│       ├── extract.ts           # Entity/relationship extraction (AST)
+│       ├── build.ts             # Graph construction (graphology)
+│       ├── cluster.ts           # Community detection (Louvain)
+│       ├── report.ts            # Markdown report generation
+│       ├── export.ts            # Obsidian vault + HTML + JSON export
+│       └── types.ts             # TypeScript interfaces & constants
+├── package.json
+├── tsconfig.json
+├── README.md
+└── CLAUDE.md
 ```
 
-## Skill 1: PromptCompressor (`/tokendiet:promptcompressor`)
+## How It Works
+
+Single SKILL.md routes based on the first argument:
+- `/tokendiet knowledgegraph` (or `kg`) -> TypeScript pipeline via `${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts`
+- `/tokendiet promptcompressor` (or `compress`) -> pure markdown compression rules
+- `/tokendiet promptoptimizer` (or `optimize`) -> pure markdown optimization analysis
+
+## Tool 1: PromptCompressor
 
 - **Goal**: Immediate 60-70% token reduction on any prompt text
-- **Technique**: Caveman speak compression rules:
-  - Strip articles (a, an, the), pronouns, filler words
-  - Abbreviate common words (function->fn, return->ret, etc.)
-  - Remove politeness ("please", "could you", "I would like")
-  - Collapse whitespace, remove redundant punctuation
-  - Preserve technical terms, variable names, code verbatim
-- **Output**: Compressed text + token count before/after + % reduction
-- **Implementation**: Pure SKILL.md, no scripts needed
+- **Technique**: Caveman speak compression rules (strip filler, abbreviate, remove politeness)
+- **Implementation**: Pure markdown in SKILL.md, no scripts needed
 
-## Skill 2: PromptOptimizer (`/tokendiet:promptoptimizer`)
+## Tool 2: PromptOptimizer
 
 - **Goal**: Structural optimization for 70%+ reduction via smarter prompting
-- **Technique**: Analyzes prompt and provides:
-  1. Token waste analysis - identifies redundancy, over-specification, repeated context
-  2. Haiku suggestions - each optimization tip as a 5-7-5 haiku (concise by design)
-  3. Optimized rewrite - restructured prompt that achieves same intent with fewer tokens
-  4. Token budget - before/after count + % saved
-- **Implementation**: Pure SKILL.md, no scripts needed
+- **Technique**: Identifies waste patterns, delivers advice as 5-7-5 haikus, produces optimized rewrite
+- **Implementation**: Pure markdown in SKILL.md, no scripts needed
 
-## Skill 3: KnowledgeGraph (`/tokendiet:knowledgegraph`)
+## Tool 3: KnowledgeGraph
 
-- **Goal**: 70%+ token reduction by replacing verbose codebase context with a compressed knowledge graph that Claude can reference instead of reading full files
-- **How it saves tokens**:
-  - Instead of Claude reading 50 files (massive token cost), it reads 1 graph summary
-  - Clusters identify which code is related - only relevant clusters get loaded
-  - Query/path subcommands fetch surgical context instead of broad file reads
-  - Obsidian vault = human-navigable cache; JSON = Claude-consumable compressed context
-- **Adapted from**: https://github.com/safishamsi/graphify (rewritten from Python to TypeScript)
+- **Goal**: 70%+ token reduction by replacing verbose codebase context with a compressed knowledge graph
 - **Pipeline**: `detect -> extract -> build -> cluster -> report -> export`
+- **Implementation**: TypeScript scripts using `web-tree-sitter` (AST), `graphology` (graph), `graphology-communities-louvain` (clustering)
+- **Path resolution**: Uses `${CLAUDE_SKILL_DIR}` to locate scripts regardless of install location
+- **Subcommands**: build, query, path, context
 
-### TypeScript Modules
+## Installation
 
-| Module | Purpose | Replaces (Python) |
-|---|---|---|
-| `detect.ts` | Scan workspace, filter files by extension | `detect.py` |
-| `extract.ts` | AST parsing via `web-tree-sitter`; extract classes, functions, imports, call graphs as nodes/edges with confidence (EXTRACTED/INFERRED/AMBIGUOUS) | `extract.py` |
-| `build.ts` | Construct graph using `graphology` | `build.py` (NetworkX) |
-| `cluster.ts` | Community detection via `graphology-communities-louvain` | `cluster.py` (Leiden/graspologic) |
-| `report.ts` | Compressed markdown report: topology summary, god nodes, communities, gaps | `report.py` |
-| `export.ts` | Obsidian vault + HTML (vis.js) + JSON | `export.py` |
-
-### Export Formats
-
-1. **Obsidian Vault** (primary output for humans):
-   - One markdown file per node with YAML frontmatter (`source_file`, `type`, `community`, `location`)
-   - Wikilinks (`[[NodeName]]`) between connected nodes for Obsidian native graph view
-   - Community overview notes (`_COMMUNITY_N.md`) with cohesion metrics, member lists, bridge nodes
-   - Tags: `#tokendiet/code`, `#tokendiet/EXTRACTED`, `#tokendiet/community-N`
-   - `.obsidian/graph.json` auto-generated to color nodes by community
-   - Dataview queries embedded in community notes
-   - Output: `tokendiet-out/obsidian-vault/`
-2. **Compressed JSON** (Claude-consumable graph context - node-link format with community mappings)
-3. **HTML** (interactive vis.js visualization)
-
-### Subcommands
-
-- `/tokendiet:knowledgegraph` - Build full graph, output token savings estimate
-- `/tokendiet:knowledgegraph query <term>` - Fetch only relevant subgraph (surgical context)
-- `/tokendiet:knowledgegraph path <A> <B>` - Minimal path between entities (smallest context needed)
-- `/tokendiet:knowledgegraph context <task>` - Given a task description, return only the relevant cluster(s) as compressed context
+Symlink into `.claude/skills/tokendiet/` (project) or `~/.claude/skills/tokendiet/` (user). Run `npm install` inside the skill directory for knowledgegraph dependencies.
 
 ## Dependencies (package.json)
 
 - `graphology` + `graphology-communities-louvain` + `graphology-shortest-path` - graph + clustering
-- `web-tree-sitter` - AST parsing (replaces Python tree-sitter)
+- `web-tree-sitter` - AST parsing
 - `tsx` - run TS scripts directly
 - `typescript` (dev)
 
-## Implementation Steps
-
-1. Plugin manifest (`.claude-plugin/plugin.json`) + `package.json` + `tsconfig.json`
-2. PromptCompressor SKILL.md
-3. PromptOptimizer SKILL.md
-4. KnowledgeGraph TS modules: detect -> extract -> build -> cluster -> report -> export (Obsidian vault primary)
-5. KnowledgeGraph SKILL.md orchestrator
-6. Test all skills, verify 70%+ token reduction
-
 ## Tech Constraints
 
-- NO Python code anywhere - all skills are either pure MD or TypeScript
-- Skills 1 & 2 are pure SKILL.md files (no scripts)
-- Skill 3 uses TypeScript scripts orchestrated by SKILL.md
+- No Python code -- all tools are either pure markdown or TypeScript
+- PromptCompressor and PromptOptimizer are embedded in SKILL.md (no external scripts)
+- KnowledgeGraph uses TypeScript scripts orchestrated by SKILL.md via `${CLAUDE_SKILL_DIR}`
