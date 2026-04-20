@@ -2,7 +2,7 @@
 
 Claude Code skill for **70%+ token consumption reduction**. Three tools that compress prompts, optimize prompt structure, and build knowledge graphs to replace expensive full-file context loading.
 
-> Tested on its own codebase: **88% token reduction** (11,743 raw tokens -> 1,363 graph tokens).
+> Benchmarked: **KnowledgeGraph 80%**, **PromptCompressor 72%**, **PromptOptimizer 80%** token reduction. Run `zsh test/benchmark.sh` to verify.
 
 ---
 
@@ -107,14 +107,14 @@ Output:
 
 ```
 Detecting files in /path/to/project...
-Found 15 files
-Extracted 87 nodes, 451 edges
-Found 9 communities
+Found 20 files
+Extracted 165 nodes, 560 edges
+Found 11 communities
 
 Token Savings:
-  Raw codebase tokens:        ~11,743
-  Compressed graph tokens:    ~1,363
-  Reduction:                  88%
+  Raw codebase tokens:        ~10,705
+  Compressed graph tokens:    ~2,731
+  Reduction:                  74%
 ```
 
 #### Query the Graph
@@ -153,7 +153,7 @@ Returns only the clusters and nodes relevant to your task description -- instead
 
 ### 2. PromptCompressor
 
-Caveman-speak compression that strips filler, abbreviates common words, and removes politeness -- achieving **60-70% token reduction** on any text.
+Caveman-speak compression that strips filler, abbreviates common words, and removes politeness -- achieving **70%+ token reduction** on any text.
 
 **Invoke:**
 
@@ -274,10 +274,10 @@ Step 4: For prompt engineering, get structural advice
 ```
 
 **Why this works:**
-- **KnowledgeGraph** replaces reading N files with 1 compressed graph (~70-90% savings)
+- **KnowledgeGraph** replaces reading N files with 1 compressed graph (~74-85% savings)
 - **Context subcommand** loads only relevant clusters instead of full codebase
-- **PromptCompressor** reduces the remaining prompt text by 60-70%
-- **PromptOptimizer** helps you write better prompts that need fewer tokens from the start
+- **PromptCompressor** reduces the remaining prompt text by ~72%
+- **PromptOptimizer** helps you write better prompts that need fewer tokens (~80% reduction)
 
 ---
 
@@ -309,7 +309,7 @@ echo "knowledgegraph/" >> .gitignore
 
 ## Supported Languages
 
-The KnowledgeGraph extractor supports AST-level extraction for:
+The KnowledgeGraph extractor supports regex-based extraction for:
 
 | Language | Entities Extracted |
 |----------|-------------------|
@@ -322,6 +322,33 @@ The KnowledgeGraph extractor supports AST-level extraction for:
 Additionally, these file types are detected and included as file-level nodes:
 
 Ruby, PHP, C, C++, Swift, Scala, Vue, Svelte, Lua, Bash, Markdown, JSON, YAML, TOML
+
+---
+
+## Benchmark
+
+Run the full benchmark suite to validate all three tools:
+
+```bash
+zsh test/benchmark.sh
+```
+
+Tests against two built-in repos (`test/repo-a` Task Manager API, `test/repo-b` UI Component Library) across 6 phases:
+
+1. **Analyze** — count source files, bytes, estimated tokens
+2. **Build KnowledgeGraph** — run full pipeline, measure reduction
+3. **Query Accuracy** — test query, path, and context subcommands
+4. **Accuracy Validation** — compare graph entities against real code counts, verify edge coverage
+5. **PromptCompressor** — measure compression on 3 sample prompts
+6. **PromptOptimizer** — measure optimization on 2 over-specified prompts
+
+Latest results (2026-04-19):
+
+| Tool | Reduction |
+|------|-----------|
+| KnowledgeGraph | 80% (repo-a: 74%, repo-b: 85%) |
+| PromptCompressor | 72% |
+| PromptOptimizer | 80% |
 
 ---
 

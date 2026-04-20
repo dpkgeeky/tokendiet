@@ -31,13 +31,52 @@ function loadGraph(outputDir: string): Graph | null {
   if (!existsSync(jsonPath)) return null;
 
   const data = JSON.parse(readFileSync(jsonPath, "utf-8"));
-  const graph = new Graph({ multi: true, type: "directed" });
+  const graph = new Graph({ multi: false, type: "directed" });
 
-  for (const node of data.nodes) {
-    graph.addNode(node.id, node);
-  }
-  for (const edge of data.edges) {
-    graph.addEdge(edge.source, edge.target, edge);
+  if (data.strings) {
+    const strs: string[] = data.strings;
+    const idxToId = new Map<number, string>();
+    for (const node of data.nodes) {
+      const [idx, label, typeIdx, sfIdx, location, community] = node;
+      const type = strs[typeIdx];
+      const sourceFile = strs[sfIdx];
+      const id = `${sourceFile}:${type}:${label}`;
+      idxToId.set(idx, id);
+      graph.addNode(id, { label, type, sourceFile, location, community });
+    }
+    for (const edge of data.edges) {
+      const [si, ti, relIdx, confIdx] = edge;
+      const source = idxToId.get(si);
+      const target = idxToId.get(ti);
+      if (source && target && !graph.hasDirectedEdge(source, target)) {
+        try { graph.addEdge(source, target, { relationship: strs[relIdx], confidence: strs[confIdx] }); } catch { /* skip */ }
+      }
+    }
+  } else if (data.format) {
+    const idxToId = new Map<number, string>();
+    for (const node of data.nodes) {
+      const [idx, label, type, sourceFile, location, community] = node;
+      const id = `${sourceFile}:${type}:${label}`;
+      idxToId.set(idx, id);
+      graph.addNode(id, { label, type, sourceFile, location, community });
+    }
+    for (const edge of data.edges) {
+      const [si, ti, relationship, confidence] = edge;
+      const source = idxToId.get(si);
+      const target = idxToId.get(ti);
+      if (source && target && !graph.hasDirectedEdge(source, target)) {
+        try { graph.addEdge(source, target, { relationship, confidence }); } catch { /* skip */ }
+      }
+    }
+  } else {
+    for (const node of data.nodes) {
+      graph.addNode(node.id, node);
+    }
+    for (const edge of data.edges) {
+      if (!graph.hasDirectedEdge(edge.source, edge.target)) {
+        try { graph.addEdge(edge.source, edge.target, edge); } catch { /* skip */ }
+      }
+    }
   }
   return graph;
 }

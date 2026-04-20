@@ -19,30 +19,54 @@ export function exportAll(
 }
 
 function toJSON(graph: Graph, communities: CommunityMap, options: ExportOptions): void {
-  const nodes: Array<Record<string, unknown>> = [];
+  const strings: string[] = [];
+  const stringIndex = new Map<string, number>();
+  function intern(s: string): number {
+    let idx = stringIndex.get(s);
+    if (idx === undefined) {
+      idx = strings.length;
+      strings.push(s);
+      stringIndex.set(s, idx);
+    }
+    return idx;
+  }
+
+  const idToIdx = new Map<string, number>();
+  const nodes: Array<[number, string, number, number, number | undefined, number | undefined]> = [];
+  let idx = 0;
+
   graph.forEachNode((id, attrs) => {
-    nodes.push({ id, ...attrs });
+    idToIdx.set(id, idx);
+    nodes.push([idx, attrs.label, intern(attrs.type), intern(attrs.sourceFile), attrs.location, attrs.community]);
+    idx++;
   });
 
-  const edges: Array<Record<string, unknown>> = [];
+  const edges: Array<[number, number, number, number]> = [];
   graph.forEachEdge((_e, attrs, source, target) => {
-    edges.push({ source, target, ...attrs });
+    const si = idToIdx.get(source);
+    const ti = idToIdx.get(target);
+    if (si !== undefined && ti !== undefined) {
+      edges.push([si, ti, intern(attrs.relationship), intern(attrs.confidence)]);
+    }
   });
+
+  const compactCommunities: Record<string, number[]> = {};
+  for (const [cid, members] of Object.entries(communities)) {
+    compactCommunities[cid] = members.map((m: string) => idToIdx.get(m)).filter((i): i is number => i !== undefined);
+  }
 
   const data = {
     project: options.projectName,
     generated: new Date().toISOString(),
-    stats: {
-      nodes: graph.order,
-      edges: graph.size,
-      communities: Object.keys(communities).length,
-    },
-    communities,
+    strings,
+    format: ["idx", "label", "type*", "sourceFile*", "location", "community"],
+    edgeFormat: ["source", "target", "relationship*", "confidence*"],
     nodes,
     edges,
+    communities: compactCommunities,
   };
 
-  writeFileSync(join(options.outputDir, "graph.json"), JSON.stringify(data, null, 2));
+  writeFileSync(join(options.outputDir, "graph.json"), JSON.stringify(data));
 }
 
 function toObsidian(graph: Graph, communities: CommunityMap, options: ExportOptions): void {

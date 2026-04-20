@@ -2,7 +2,7 @@ import Graph from "graphology";
 import { ExtractionResult, GraphNode, GraphEdge } from "./types.js";
 
 export function build(extraction: ExtractionResult): Graph {
-  const graph = new Graph({ multi: true, type: "directed" });
+  const graph = new Graph({ multi: false, type: "directed" });
 
   const nodeIds = new Set<string>();
 
@@ -23,14 +23,26 @@ export function build(extraction: ExtractionResult): Graph {
     if (!graph.hasNode(edge.source) || !graph.hasNode(edge.target)) continue;
     if (edge.source === edge.target) continue;
 
-    try {
-      graph.addEdge(edge.source, edge.target, {
-        relationship: edge.relationship,
-        confidence: edge.confidence,
-        weight: edge.weight ?? confidenceWeight(edge.confidence),
-      });
-    } catch {
-      // skip duplicate edges in non-multi mode
+    const weight = edge.weight ?? confidenceWeight(edge.confidence);
+
+    if (graph.hasDirectedEdge(edge.source, edge.target)) {
+      const edgeKey = graph.edge(edge.source, edge.target)!;
+      const existing = graph.getEdgeAttributes(edgeKey);
+      if (weight > (existing.weight ?? 0)) {
+        graph.setEdgeAttribute(edgeKey, "relationship", edge.relationship);
+        graph.setEdgeAttribute(edgeKey, "confidence", edge.confidence);
+        graph.setEdgeAttribute(edgeKey, "weight", weight);
+      }
+    } else {
+      try {
+        graph.addEdge(edge.source, edge.target, {
+          relationship: edge.relationship,
+          confidence: edge.confidence,
+          weight,
+        });
+      } catch {
+        // skip
+      }
     }
   }
 

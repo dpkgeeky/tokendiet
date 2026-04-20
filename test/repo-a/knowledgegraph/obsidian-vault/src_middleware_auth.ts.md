@@ -1,0 +1,21 @@
+---
+source_file: "src/middleware/auth.ts"
+type: file
+community: 3
+---
+
+#tokendiet/file #tokendiet/community-3
+
+- imports [[express]]
+- imports [[.._models_user]]
+- imports [[._errorHandler]]
+- imports [[.._utils_logger]]
+- contains [[logger_6]]
+- contains [[AuthenticatedRequest]]
+- contains [[extractToken]]
+- contains [[authenticate]]
+- contains [[requireRole]]
+- contains [[decodeToken]]
+- contains [[generateToken]]
+
+> Source: `src/middleware/auth.ts`

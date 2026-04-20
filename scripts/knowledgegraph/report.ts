@@ -118,10 +118,37 @@ function pct(n: number, total: number): string {
 }
 
 function estimateGraphTokens(graph: Graph, communities: CommunityMap): number {
-  let tokens = 0;
-  tokens += graph.order * 8;
-  tokens += graph.size * 6;
-  tokens += Object.keys(communities).length * 15;
-  tokens += 100;
-  return tokens;
+  const strings: string[] = [];
+  const stringIndex = new Map<string, number>();
+  function intern(s: string): number {
+    let idx = stringIndex.get(s);
+    if (idx === undefined) { idx = strings.length; strings.push(s); stringIndex.set(s, idx); }
+    return idx;
+  }
+
+  const idToIdx = new Map<string, number>();
+  const nodes: Array<unknown[]> = [];
+  let idx = 0;
+  graph.forEachNode((id, attrs) => {
+    idToIdx.set(id, idx);
+    nodes.push([idx, attrs.label, intern(attrs.type), intern(attrs.sourceFile), attrs.location, attrs.community]);
+    idx++;
+  });
+
+  const edges: Array<unknown[]> = [];
+  graph.forEachEdge((_e, attrs, source, target) => {
+    const si = idToIdx.get(source);
+    const ti = idToIdx.get(target);
+    if (si !== undefined && ti !== undefined) {
+      edges.push([si, ti, intern(attrs.relationship), intern(attrs.confidence)]);
+    }
+  });
+
+  const compactComm: Record<string, number[]> = {};
+  for (const [cid, members] of Object.entries(communities)) {
+    compactComm[cid] = members.map((m: string) => idToIdx.get(m)).filter((i): i is number => i !== undefined);
+  }
+
+  const serialized = JSON.stringify({ strings, nodes, edges, communities: compactComm });
+  return Math.ceil(serialized.length / 4);
 }
