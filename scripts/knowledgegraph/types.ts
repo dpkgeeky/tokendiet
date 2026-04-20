@@ -1,7 +1,7 @@
 export interface GraphNode {
   id: string;
   label: string;
-  type: "file" | "class" | "function" | "method" | "import" | "module" | "variable" | "interface" | "type";
+  type: "file" | "class" | "function" | "method" | "import" | "module" | "variable" | "interface" | "type" | "test";
   sourceFile: string;
   location?: number;
   community?: number;
@@ -10,7 +10,7 @@ export interface GraphNode {
 export interface GraphEdge {
   source: string;
   target: string;
-  relationship: "contains" | "calls" | "imports" | "method" | "extends" | "implements" | "uses" | "references";
+  relationship: "contains" | "calls" | "imports" | "method" | "extends" | "implements" | "uses" | "references" | "tests";
   confidence: "EXTRACTED" | "INFERRED" | "AMBIGUOUS";
   weight?: number;
 }
@@ -46,7 +46,8 @@ export interface ExportOptions {
   projectName: string;
 }
 
-export type Subcommand = "build" | "query" | "path" | "context";
+export type DetailLevel = "minimal" | "standard" | "full";
+export type Subcommand = "build" | "update" | "query" | "path" | "context" | "impact";
 
 export interface CLIArgs {
   subcommand: Subcommand;
@@ -54,7 +55,17 @@ export interface CLIArgs {
   from?: string;
   to?: string;
   task?: string;
+  detail?: DetailLevel;
+  depth?: number;
+  force?: boolean;
 }
+
+export interface NamedCommunity {
+  name: string;
+  members: string[];
+}
+
+export type NamedCommunityMap = Record<number, NamedCommunity>;
 
 export const SUPPORTED_EXTENSIONS: Record<string, string> = {
   ".ts": "typescript",

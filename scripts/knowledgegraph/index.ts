@@ -1,26 +1,51 @@
 import { resolve, basename } from "path";
-import { writeFileSync, readFileSync, existsSync } from "fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
 import { detect } from "./detect.js";
 import { extract } from "./extract.js";
 import { build } from "./build.js";
-import { cluster } from "./cluster.js";
+import { cluster, nameCommunities } from "./cluster.js";
 import { report } from "./report.js";
 import { exportAll } from "./export.js";
-import type { CLIArgs, Subcommand } from "./types.js";
+import { loadCache, saveCache, buildCache, diffFiles, hashFile } from "./cache.js";
+import type { CLIArgs, Subcommand, DetailLevel } from "./types.js";
 import Graph from "graphology";
 import { bidirectional } from "graphology-shortest-path";
+import { join } from "path";
 
 function parseArgs(): CLIArgs {
   const args = process.argv.slice(2);
   const subcommand = (args[0] || "build") as Subcommand;
 
+  let detail: DetailLevel = "standard";
+  let force = false;
+  let depth = 2;
+  const filtered: string[] = [];
+
+  for (const arg of args.slice(1)) {
+    if (arg.startsWith("--detail=")) {
+      detail = arg.split("=")[1] as DetailLevel;
+    } else if (arg === "--force") {
+      force = true;
+    } else if (arg.startsWith("--depth=")) {
+      depth = parseInt(arg.split("=")[1]) || 2;
+    } else {
+      filtered.push(arg);
+    }
+  }
+
   switch (subcommand) {
     case "query":
-      return { subcommand, target: args.slice(1).join(" ") };
+      return { subcommand, target: filtered.join(" "), detail };
     case "path":
-      return { subcommand, from: args[1], to: args[2] };
+      return { subcommand, from: filtered[0], to: filtered[1], detail };
     case "context":
-      return { subcommand, task: args.slice(1).join(" ") };
+      return { subcommand, task: filtered.join(" "), detail };
+    case "impact":
+      return { subcommand, target: filtered.join(" "), depth, detail };
+    case "update":
+      return { subcommand, force };
+    case "build":
+      return { subcommand, force };
     default:
       return { subcommand: "build" };
   }
@@ -87,7 +112,10 @@ async function main(): Promise<void> {
   const projectName = basename(rootDir);
   const outputDir = resolve(rootDir, "knowledgegraph");
 
-  if (cliArgs.subcommand === "build") {
+  if (cliArgs.subcommand === "build" || cliArgs.subcommand === "update") {
+    const isIncremental = cliArgs.subcommand === "update" && !cliArgs.force;
+    mkdirSync(outputDir, { recursive: true });
+
     console.log(`Detecting files in ${rootDir}...`);
     const files = detect(rootDir);
     console.log(`Found ${files.length} files`);
@@ -97,8 +125,35 @@ async function main(): Promise<void> {
       return;
     }
 
-    console.log(`Extracting entities and relationships...`);
-    const extraction = extract(files, rootDir);
+    const cache = isIncremental ? loadCache(outputDir) : null;
+
+    const fileContents = new Map<string, string>();
+    for (const file of files) {
+      try {
+        fileContents.set(file, readFileSync(join(rootDir, file), "utf-8"));
+      } catch { /* skip */ }
+    }
+
+    let extraction;
+    if (cache) {
+      const diff = diffFiles(files, fileContents, cache);
+      if (diff.changedFiles.length === 0 && diff.deletedFiles.length === 0) {
+        console.log("No changes detected. Graph is up to date.");
+        return;
+      }
+      console.log(`Incremental: ${diff.changedFiles.length} changed, ${diff.unchangedFiles.length} cached, ${diff.deletedFiles.length} deleted`);
+      console.log(`Extracting from changed files...`);
+      const freshExtraction = extract(diff.changedFiles, rootDir);
+      extraction = {
+        nodes: [...diff.cachedNodes, ...freshExtraction.nodes],
+        edges: [...diff.cachedEdges, ...freshExtraction.edges],
+        tokenCount: freshExtraction.tokenCount + diff.unchangedFiles.reduce((sum, f) => sum + Math.ceil((fileContents.get(f)?.length || 0) / 4), 0),
+        files,
+      };
+    } else {
+      console.log(`Extracting entities and relationships...`);
+      extraction = extract(files, rootDir);
+    }
     console.log(`Extracted ${extraction.nodes.length} nodes, ${extraction.edges.length} edges`);
 
     console.log(`Building graph...`);
@@ -106,13 +161,17 @@ async function main(): Promise<void> {
 
     console.log(`Clustering...`);
     const communities = cluster(graph);
+    const namedCommunities = nameCommunities(communities, graph);
     console.log(`Found ${Object.keys(communities).length} communities`);
 
     console.log(`Generating report...`);
-    const reportData = report(graph, communities);
+    const reportData = report(graph, communities, namedCommunities);
 
     console.log(`Exporting...`);
     exportAll(graph, communities, reportData, { outputDir, projectName });
+
+    const newCache = buildCache(files, fileContents, extraction.nodes, extraction.edges);
+    saveCache(outputDir, newCache);
 
     console.log(`\nDone! Output in ${outputDir}/`);
     console.log(`- graph.json (Claude-consumable compressed context)`);
@@ -132,6 +191,7 @@ async function main(): Promise<void> {
   if (cliArgs.subcommand === "query") {
     const term = (cliArgs.target || "").toLowerCase();
     if (!term) { console.error("Usage: query <search term>"); process.exit(1); }
+    const detail = cliArgs.detail || "standard";
 
     const matches: Array<{ id: string; label: string; type: string; sourceFile: string; degree: number }> = [];
     graph.forEachNode((id, attrs) => {
@@ -143,12 +203,20 @@ async function main(): Promise<void> {
     matches.sort((a, b) => b.degree - a.degree);
     console.log(`Found ${matches.length} matches for "${term}":\n`);
     for (const m of matches.slice(0, 20)) {
-      console.log(`  ${m.label} (${m.type}) in ${m.sourceFile} [${m.degree} connections]`);
-      graph.forEachEdge(m.id, (_e, attrs, source, target) => {
-        const other = source === m.id ? target : source;
-        const otherAttrs = graph.getNodeAttributes(other);
-        console.log(`    -> ${attrs.relationship} ${otherAttrs.label || other}`);
-      });
+      if (detail === "minimal") {
+        console.log(`  ${m.label} (${m.type}) in ${m.sourceFile}`);
+      } else {
+        console.log(`  ${m.label} (${m.type}) in ${m.sourceFile} [${m.degree} connections]`);
+        graph.forEachEdge(m.id, (_e, attrs, source, target) => {
+          const other = source === m.id ? target : source;
+          const otherAttrs = graph.getNodeAttributes(other);
+          if (detail === "full") {
+            console.log(`    -> ${attrs.relationship} ${otherAttrs.label || other} (${otherAttrs.type}) in ${otherAttrs.sourceFile}:${otherAttrs.location || "?"}`);
+          } else {
+            console.log(`    -> ${attrs.relationship} ${otherAttrs.label || other}`);
+          }
+        });
+      }
     }
     return;
   }
@@ -195,9 +263,62 @@ async function main(): Promise<void> {
     return;
   }
 
+  if (cliArgs.subcommand === "impact") {
+    const term = (cliArgs.target || "").toLowerCase();
+    if (!term) { console.error("Usage: impact <file-or-entity> [--depth=N]"); process.exit(1); }
+    const maxDepth = cliArgs.depth || 2;
+    const detail = cliArgs.detail || "standard";
+
+    const startNodes: string[] = [];
+    graph.forEachNode((id, attrs) => {
+      if (attrs.label?.toLowerCase().includes(term) || attrs.sourceFile?.toLowerCase().includes(term) || id.toLowerCase().includes(term)) {
+        startNodes.push(id);
+      }
+    });
+
+    if (startNodes.length === 0) { console.error(`No nodes found matching: ${term}`); process.exit(1); }
+
+    const visited = new Map<string, number>();
+    const queue: Array<[string, number]> = startNodes.map((n) => [n, 0]);
+    for (const n of startNodes) visited.set(n, 0);
+
+    while (queue.length > 0) {
+      const [current, depth] = queue.shift()!;
+      if (depth >= maxDepth) continue;
+
+      graph.forEachEdge(current, (_e, _attrs, source, target) => {
+        const neighbor = source === current ? target : source;
+        if (!visited.has(neighbor)) {
+          visited.set(neighbor, depth + 1);
+          queue.push([neighbor, depth + 1]);
+        }
+      });
+    }
+
+    const impacted = [...visited.entries()]
+      .filter(([id]) => !startNodes.includes(id))
+      .sort((a, b) => a[1] - b[1]);
+
+    console.log(`Impact analysis for "${term}" (depth ${maxDepth}):\n`);
+    console.log(`  Starting nodes: ${startNodes.length}`);
+    console.log(`  Impacted entities: ${impacted.length}\n`);
+
+    for (const [id, dist] of impacted.slice(0, 30)) {
+      const attrs = graph.getNodeAttributes(id);
+      if (detail === "minimal") {
+        console.log(`  [hop ${dist}] ${attrs.label} (${attrs.type})`);
+      } else {
+        console.log(`  [hop ${dist}] ${attrs.label} (${attrs.type}) in ${attrs.sourceFile}:${attrs.location || "?"}`);
+      }
+    }
+    if (impacted.length > 30) console.log(`  ...and ${impacted.length - 30} more`);
+    return;
+  }
+
   if (cliArgs.subcommand === "context") {
     const task = (cliArgs.task || "").toLowerCase();
     if (!task) { console.error("Usage: context <task description>"); process.exit(1); }
+    const detail = cliArgs.detail || "standard";
 
     const taskTokens = task.split(/\s+/);
     const nodeScores = new Map<string, number>();
@@ -230,7 +351,11 @@ async function main(): Promise<void> {
     for (const id of relevantNodes.slice(0, 15)) {
       const attrs = graph.getNodeAttributes(id);
       const score = nodeScores.get(id) || 0;
-      console.log(`  [${score}] ${attrs.label} (${attrs.type}) in ${attrs.sourceFile}:${attrs.location || "?"}`);
+      if (detail === "minimal") {
+        console.log(`  [${score}] ${attrs.label} (${attrs.type})`);
+      } else {
+        console.log(`  [${score}] ${attrs.label} (${attrs.type}) in ${attrs.sourceFile}:${attrs.location || "?"}`);
+      }
     }
     return;
   }

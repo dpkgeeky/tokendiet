@@ -1,13 +1,13 @@
 ---
 source_file: "src/hooks/useTheme.ts"
 type: function
-community: 1
+community: 3
 location: 48
 ---
 
-#tokendiet/function #tokendiet/community-1
+#tokendiet/function #tokendiet/community-3
 
 - contains [[src_hooks_useTheme.ts]]
-- calls [[useTheme]]
+- calls [[useTheme_2]]
 
 > Source: `src/hooks/useTheme.ts:48`

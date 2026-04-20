@@ -1,6 +1,6 @@
 import Graph from "graphology";
 import louvain from "graphology-communities-louvain";
-import { CommunityMap } from "./types.js";
+import { CommunityMap, NamedCommunityMap } from "./types.js";
 
 export function cluster(graph: Graph): CommunityMap {
   if (graph.order === 0) return {};
@@ -134,4 +134,53 @@ function groupByCommunity(assignments: Record<string, number>): CommunityMap {
     map[community].push(node);
   }
   return map;
+}
+
+export function nameCommunities(communities: CommunityMap, graph: Graph): NamedCommunityMap {
+  const named: NamedCommunityMap = {};
+
+  for (const [cid, members] of Object.entries(communities)) {
+    const id = Number(cid);
+    const name = deriveCommunityName(members, graph);
+    named[id] = { name, members };
+  }
+
+  return named;
+}
+
+function deriveCommunityName(members: string[], graph: Graph): string {
+  const sourceFiles: string[] = [];
+  const classLabels: string[] = [];
+
+  for (const m of members) {
+    if (!graph.hasNode(m)) continue;
+    const attrs = graph.getNodeAttributes(m);
+    if (attrs.sourceFile) sourceFiles.push(attrs.sourceFile);
+    if (attrs.type === "class") classLabels.push(attrs.label);
+  }
+
+  if (classLabels.length > 0 && classLabels.length >= members.length * 0.3) {
+    return classLabels[0];
+  }
+
+  if (sourceFiles.length === 0) return "misc";
+
+  const dirs = sourceFiles.map((f) => {
+    const parts = f.split("/");
+    return parts.length > 1 ? parts.slice(0, -1).join("/") : parts[0];
+  });
+
+  const dirCounts = new Map<string, number>();
+  for (const d of dirs) {
+    dirCounts.set(d, (dirCounts.get(d) || 0) + 1);
+  }
+
+  let bestDir = "";
+  let bestCount = 0;
+  for (const [d, count] of dirCounts) {
+    if (count > bestCount) { bestDir = d; bestCount = count; }
+  }
+
+  const parts = bestDir.split("/");
+  return parts[parts.length - 1] || bestDir || "root";
 }

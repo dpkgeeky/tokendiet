@@ -1,20 +1,12 @@
 ---
-source_file: "src/services/taskService.ts"
-type: class
-community: 10
-location: 31
+source_file: "src/__tests__/taskService.test.ts"
+type: test
+community: 2
+location: 3
 ---
 
-#tokendiet/class #tokendiet/community-10
+#tokendiet/test #tokendiet/community-2
 
-- contains [[src_services_taskService.ts]]
-- calls [[logger_8]]
-- calls [[createRouter]]
-- method [[createTask]]
-- method [[updateTask]]
-- method [[findByProject]]
-- method [[findByAssignee]]
-- method [[findByStatus]]
-- extends [[BaseService]]
+- contains [[src___tests___taskService.test.ts]]
 
-> Source: `src/services/taskService.ts:31`
+> Source: `src/__tests__/taskService.test.ts:3`

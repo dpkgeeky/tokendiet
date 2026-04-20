@@ -1,14 +1,21 @@
 ---
 type: community
 community_id: 0
-member_count: 31
+member_count: 37
 ---
 
 # Community 0
 
 #tokendiet/community-0
 
-## Members (31)
+## Members (37)
+- [[src_app.ts]]
+- [[cors]]
+- [[helmet]]
+- [[._routes]]
+- [[._middleware_errorHandler]]
+- [[._config_app]]
+- [[._utils_logger]]
 - [[logger]]
 - [[createApp]]
 - [[src_config_app.ts]]
@@ -18,8 +25,6 @@ member_count: 31
 - [[configureLogger]]
 - [[DEFAULT_PAGE_SIZE]]
 - [[MAX_PAGE_SIZE]]
-- [[src_config_database.ts]]
-- [[DatabaseConfig]]
 - [[DatabaseConnection]]
 - [[getInstance]]
 - [[connect]]
@@ -27,16 +32,17 @@ member_count: 31
 - [[isConnected]]
 - [[getConfig]]
 - [[createDatabaseConfig]]
+- [[src_index.ts]]
+- [[._app]]
+- [[._config_database]]
 - [[logger_5]]
 - [[bootstrap]]
-- [[errorHandler]]
 - [[src_utils_logger.ts]]
 - [[Logger]]
 - [[setGlobalLevel]]
 - [[getGlobalLevel]]
 - [[debug]]
 - [[info]]
-- [[warn]]
 - [[error]]
 - [[fatal]]
 - [[createLogger]]
@@ -49,12 +55,11 @@ member_count: 31
 - [[Logger]] (9 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_7]]
-- [[_COMMUNITY_4]]
+- [[_COMMUNITY_5]]
 - [[_COMMUNITY_1]]
 - [[_COMMUNITY_3]]
-- [[_COMMUNITY_8]]
-- [[_COMMUNITY_5]]
+- [[_COMMUNITY_11]]
+- [[_COMMUNITY_6]]
 
 ## Dataview Query
 ```dataview

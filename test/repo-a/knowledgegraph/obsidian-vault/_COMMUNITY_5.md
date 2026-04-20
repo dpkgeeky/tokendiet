@@ -1,43 +1,46 @@
 ---
 type: community
 community_id: 5
-member_count: 13
+member_count: 15
 ---
 
 # Community 5
 
 #tokendiet/community-5
 
-## Members (13)
-- [[logger_4]]
-- [[BaseService]]
-- [[findById]]
-- [[findAll]]
-- [[deleteById]]
-- [[count]]
-- [[UserService]]
-- [[createUser]]
-- [[authenticate_2]]
-- [[updateUser]]
-- [[deactivateUser]]
-- [[findByEmail]]
-- [[getPublicProfile]]
+## Members (15)
+- [[ProjectController]]
+- [[UserController]]
+- [[ValidationError]]
+- [[src_middleware_validation.ts]]
+- [[ValidatorFn]]
+- [[required]]
+- [[minLength]]
+- [[maxLength]]
+- [[emailValidator]]
+- [[validateBody]]
+- [[validateTaskStatus]]
+- [[validateTaskPriority]]
+- [[parsePagination]]
+- [[logger_8]]
+- [[createRouter]]
 
 ## Bridge Nodes
-- [[logger_4]] (10 connections)
-- [[UserService]] (10 connections)
-- [[BaseService]] (8 connections)
-- [[findAll]] (3 connections)
-- [[createUser]] (2 connections)
+- [[createRouter]] (16 connections)
+- [[logger_8]] (15 connections)
+- [[src_middleware_validation.ts]] (14 connections)
+- [[ValidationError]] (5 connections)
+- [[ProjectController]] (4 connections)
 
 ## Connected Communities
 - [[_COMMUNITY_1]]
-- [[_COMMUNITY_0]]
 - [[_COMMUNITY_3]]
 - [[_COMMUNITY_4]]
+- [[_COMMUNITY_12]]
+- [[_COMMUNITY_11]]
 - [[_COMMUNITY_6]]
-- [[_COMMUNITY_8]]
-- [[_COMMUNITY_10]]
+- [[_COMMUNITY_0]]
+- [[_COMMUNITY_2]]
 
 ## Dataview Query
 ```dataview

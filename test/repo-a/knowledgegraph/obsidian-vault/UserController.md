@@ -1,11 +1,11 @@
 ---
 source_file: "src/controllers/userController.ts"
 type: class
-community: 1
+community: 5
 location: 12
 ---
 
-#tokendiet/class #tokendiet/community-1
+#tokendiet/class #tokendiet/community-5
 
 - contains [[src_controllers_userController.ts]]
 - calls [[logger_8]]

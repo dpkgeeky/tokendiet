@@ -1,31 +1,30 @@
 ---
 type: community
 community_id: 1
-member_count: 30
+member_count: 29
 ---
 
 # Community 1
 
 #tokendiet/community-1
 
-## Members (30)
+## Members (29)
+- [[.._services_taskService]]
+- [[.._services_userService]]
 - [[.._utils_logger]]
+- [[src_config_database.ts]]
+- [[DatabaseConfig]]
 - [[src_controllers_projectController.ts]]
 - [[express]]
-- [[.._services_projectService]]
 - [[._taskController]]
 - [[.._middleware_errorHandler]]
-- [[.._middleware_auth]]
 - [[.._middleware_validation]]
 - [[.._utils_helpers]]
 - [[src_controllers_taskController.ts]]
-- [[.._services_taskService]]
 - [[logger_3]]
 - [[BaseController]]
 - [[TaskController]]
 - [[src_controllers_userController.ts]]
-- [[.._services_userService]]
-- [[UserController]]
 - [[.._models_user]]
 - [[.._models_task]]
 - [[.._config_app]]
@@ -48,12 +47,15 @@ member_count: 30
 - [[.._utils_logger]] (9 connections)
 
 ## Connected Communities
+- [[_COMMUNITY_2]]
+- [[_COMMUNITY_9]]
 - [[_COMMUNITY_0]]
 - [[_COMMUNITY_3]]
 - [[_COMMUNITY_8]]
-- [[_COMMUNITY_4]]
-- [[_COMMUNITY_5]]
 - [[_COMMUNITY_10]]
+- [[_COMMUNITY_11]]
+- [[_COMMUNITY_5]]
+- [[_COMMUNITY_6]]
 
 ## Dataview Query
 ```dataview

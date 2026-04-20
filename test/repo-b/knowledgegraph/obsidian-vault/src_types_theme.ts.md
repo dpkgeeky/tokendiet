@@ -1,10 +1,10 @@
 ---
 source_file: "src/types/theme.ts"
 type: file
-community: 10
+community: 13
 ---
 
-#tokendiet/file #tokendiet/community-10
+#tokendiet/file #tokendiet/community-13
 
 - contains [[ColorPalette]]
 - contains [[Spacing]]

@@ -1,10 +1,10 @@
 ---
 source_file: "src/models/task.ts"
 type: file
-community: 9
+community: 12
 ---
 
-#tokendiet/file #tokendiet/community-9
+#tokendiet/file #tokendiet/community-12
 
 - contains [[Task]]
 - contains [[CreateTaskDTO]]

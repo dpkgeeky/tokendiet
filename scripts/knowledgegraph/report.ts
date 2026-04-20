@@ -1,7 +1,7 @@
 import Graph from "graphology";
-import { CommunityMap, GraphReport } from "./types.js";
+import { CommunityMap, GraphReport, NamedCommunityMap } from "./types.js";
 
-export function report(graph: Graph, communities: CommunityMap): GraphReport {
+export function report(graph: Graph, communities: CommunityMap, namedCommunities?: NamedCommunityMap): GraphReport {
   const nodeCount = graph.order;
   const edgeCount = graph.size;
   const communityCount = Object.keys(communities).length;
@@ -82,9 +82,33 @@ export function report(graph: Graph, communities: CommunityMap): GraphReport {
     const memberLabels = members
       .map((m: string) => graph.hasNode(m) ? graph.getNodeAttributes(m).label : m)
       .slice(0, 15);
-    lines.push(`### Community ${cid} (${members.length} nodes)`);
+    const communityName = namedCommunities?.[Number(cid)]?.name || cid;
+    lines.push(`### Community ${cid}: ${communityName} (${members.length} nodes)`);
     lines.push(memberLabels.map((l: string) => `- ${l}`).join("\n"));
     if (members.length > 15) lines.push(`- _...and ${members.length - 15} more_`);
+    lines.push(``);
+  }
+
+  const deadCode = detectDeadCode(graph);
+  if (deadCode.length > 0) {
+    lines.push(`## Potentially Unused Code`);
+    lines.push(`_Entities with no inbound references (may be entry points or dead code)_\n`);
+    for (const dc of deadCode.slice(0, 20)) {
+      lines.push(`- ${dc.label} (${dc.type}) in ${dc.sourceFile}`);
+    }
+    if (deadCode.length > 20) lines.push(`- _...and ${deadCode.length - 20} more_`);
+    lines.push(``);
+  }
+
+  const couplings = detectCrossCommunity(graph, communities);
+  if (couplings.length > 0) {
+    lines.push(`## Cross-Community Coupling`);
+    lines.push(`_Community pairs with high inter-dependency_\n`);
+    for (const c of couplings) {
+      const nameA = namedCommunities?.[c.a]?.name || String(c.a);
+      const nameB = namedCommunities?.[c.b]?.name || String(c.b);
+      lines.push(`- ${nameA} ↔ ${nameB}: ${c.edges} edges`);
+    }
     lines.push(``);
   }
 
@@ -151,4 +175,50 @@ function estimateGraphTokens(graph: Graph, communities: CommunityMap): number {
 
   const serialized = JSON.stringify({ strings, nodes, edges, communities: compactComm });
   return Math.ceil(serialized.length / 4);
+}
+
+function detectDeadCode(graph: Graph): Array<{ label: string; type: string; sourceFile: string }> {
+  const deadCode: Array<{ label: string; type: string; sourceFile: string }> = [];
+
+  graph.forEachNode((id, attrs) => {
+    if (attrs.type === "file" || attrs.type === "import") return;
+
+    let hasInboundRef = false;
+    graph.forEachInEdge(id, (_e, edgeAttrs, source) => {
+      if (edgeAttrs.relationship !== "contains") {
+        hasInboundRef = true;
+      }
+    });
+
+    if (!hasInboundRef && attrs.type !== "test") {
+      deadCode.push({ label: attrs.label, type: attrs.type, sourceFile: attrs.sourceFile });
+    }
+  });
+
+  return deadCode.sort((a, b) => a.sourceFile.localeCompare(b.sourceFile));
+}
+
+function detectCrossCommunity(graph: Graph, communities: CommunityMap): Array<{ a: number; b: number; edges: number }> {
+  const pairCounts = new Map<string, { a: number; b: number; count: number }>();
+
+  graph.forEachEdge((_e, _attrs, source, target) => {
+    if (!graph.hasNode(source) || !graph.hasNode(target)) return;
+    const commA = graph.getNodeAttributes(source).community;
+    const commB = graph.getNodeAttributes(target).community;
+    if (commA === undefined || commB === undefined || commA === commB) return;
+    if (commA === -1 || commB === -1) return;
+
+    const key = commA < commB ? `${commA}:${commB}` : `${commB}:${commA}`;
+    const existing = pairCounts.get(key);
+    if (existing) {
+      existing.count++;
+    } else {
+      pairCounts.set(key, { a: Math.min(commA, commB), b: Math.max(commA, commB), count: 1 });
+    }
+  });
+
+  return [...pairCounts.values()]
+    .filter((p) => p.count > 5)
+    .map((p) => ({ a: p.a, b: p.b, edges: p.count }))
+    .sort((a, b) => b.edges - a.edges);
 }

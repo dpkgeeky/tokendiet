@@ -13,8 +13,8 @@ community: 3
 - contains [[logger_6]]
 - contains [[AuthenticatedRequest]]
 - contains [[extractToken]]
-- contains [[authenticate]]
-- contains [[requireRole]]
+- contains [[authenticate_3]]
+- contains [[requireRole_2]]
 - contains [[decodeToken]]
 - contains [[generateToken]]
 

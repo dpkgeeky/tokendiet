@@ -1,11 +1,11 @@
 ---
 source_file: "src/context/ThemeProvider.tsx"
 type: function
-community: 9
+community: 12
 location: 10
 ---
 
-#tokendiet/function #tokendiet/community-9
+#tokendiet/function #tokendiet/community-12
 
 - contains [[src_context_ThemeProvider.tsx]]
 

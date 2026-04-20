@@ -53,11 +53,101 @@ export function extract(files: string[], rootDir: string): ExtractionResult {
     } else {
       extractGeneric(content, file, fileId, nodes, edges);
     }
+
+    if (isTestFile(file)) {
+      extractTestEntities(content, file, fileId, nodes, edges);
+    }
   }
 
   inferCrossFileEdges(nodes, edges);
+  inferTestEdges(nodes, edges);
 
   return { nodes, edges, tokenCount: totalTokens, files };
+}
+
+const TEST_FILE_PATTERNS = [
+  /\.test\.[jt]sx?$/,
+  /\.spec\.[jt]sx?$/,
+  /__tests__\//,
+  /test_.*\.py$/,
+  /.*_test\.go$/,
+  /tests?\//,
+];
+
+function isTestFile(file: string): boolean {
+  return TEST_FILE_PATTERNS.some((p) => p.test(file));
+}
+
+function extractTestEntities(
+  content: string,
+  file: string,
+  fileId: string,
+  nodes: GraphNode[],
+  edges: GraphEdge[]
+): void {
+  const lines = content.split("\n");
+  const describeRe = /^\s*(?:describe|suite)\s*\(\s*['"](.*?)['"]/;
+  const itRe = /^\s*(?:it|test|specify)\s*\(\s*['"](.*?)['"]/;
+  const pyTestRe = /^(?:def|async def)\s+(test_\w+)/;
+  const goTestRe = /^func\s+(Test\w+)/;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    let m: RegExpMatchArray | null;
+
+    if ((m = line.match(describeRe))) {
+      const testId = sanitizeId(`${file}:test:${m[1]}`);
+      nodes.push({ id: testId, label: m[1], type: "test", sourceFile: file, location: i + 1 });
+      edges.push({ source: fileId, target: testId, relationship: "contains", confidence: "EXTRACTED" });
+    }
+
+    if ((m = line.match(itRe))) {
+      const testId = sanitizeId(`${file}:test:${m[1]}`);
+      nodes.push({ id: testId, label: m[1], type: "test", sourceFile: file, location: i + 1 });
+      edges.push({ source: fileId, target: testId, relationship: "contains", confidence: "EXTRACTED" });
+    }
+
+    if ((m = line.match(pyTestRe))) {
+      const testId = sanitizeId(`${file}:test:${m[1]}`);
+      nodes.push({ id: testId, label: m[1], type: "test", sourceFile: file, location: i + 1 });
+      edges.push({ source: fileId, target: testId, relationship: "contains", confidence: "EXTRACTED" });
+    }
+
+    if ((m = line.match(goTestRe))) {
+      const testId = sanitizeId(`${file}:test:${m[1]}`);
+      nodes.push({ id: testId, label: m[1], type: "test", sourceFile: file, location: i + 1 });
+      edges.push({ source: fileId, target: testId, relationship: "contains", confidence: "EXTRACTED" });
+    }
+  }
+}
+
+function inferTestEdges(nodes: GraphNode[], edges: GraphEdge[]): void {
+  const testFiles = nodes.filter((n) => n.type === "file" && isTestFile(n.sourceFile));
+  const nonTestByLabel = new Map<string, string>();
+
+  for (const n of nodes) {
+    if (n.type !== "file" && n.type !== "test" && n.type !== "import" && !isTestFile(n.sourceFile)) {
+      nonTestByLabel.set(n.label.toLowerCase(), n.id);
+    }
+  }
+
+  for (const testFile of testFiles) {
+    const importEdges = edges.filter((e) => e.source === testFile.id && e.relationship === "imports");
+    for (const imp of importEdges) {
+      const importNode = nodes.find((n) => n.id === imp.target);
+      if (!importNode) continue;
+      const importLabel = importNode.label;
+      const parts = importLabel.split("/");
+      const lastPart = parts[parts.length - 1].replace(/\.[jt]sx?$/, "");
+
+      for (const [label, id] of nonTestByLabel) {
+        if (label === lastPart.toLowerCase() || label.includes(lastPart.toLowerCase())) {
+          edges.push({ source: testFile.id, target: id, relationship: "tests", confidence: "INFERRED" });
+          break;
+        }
+      }
+    }
+  }
 }
 
 function sanitizeId(s: string): string {

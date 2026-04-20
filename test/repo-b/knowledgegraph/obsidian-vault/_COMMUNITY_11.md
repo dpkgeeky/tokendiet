@@ -1,31 +1,31 @@
 ---
 type: community
 community_id: 11
-member_count: 5
+member_count: 6
 ---
 
 # Community 11
 
 #tokendiet/community-11
 
-## Members (5)
-- [[src_components_Modal_Modal.tsx]]
-- [[.._.._hooks_useClickOutside]]
-- [[.._.._utils_portal]]
-- [[ModalProps]]
-- [[Modal]]
+## Members (6)
+- [[src_components_Modal_ConfirmDialog.tsx]]
+- [[._Modal]]
+- [[.._Button_Button]]
+- [[.._Button_ButtonGroup]]
+- [[ConfirmDialogProps]]
+- [[ConfirmDialog]]
 
 ## Bridge Nodes
-- [[src_components_Modal_Modal.tsx]] (7 connections)
-- [[Modal]] (3 connections)
-- [[.._.._hooks_useClickOutside]] (1 connections)
-- [[.._.._utils_portal]] (1 connections)
-- [[ModalProps]] (1 connections)
+- [[src_components_Modal_ConfirmDialog.tsx]] (7 connections)
+- [[ConfirmDialog]] (2 connections)
+- [[._Modal]] (1 connections)
+- [[.._Button_Button]] (1 connections)
+- [[.._Button_ButtonGroup]] (1 connections)
 
 ## Connected Communities
 - [[_COMMUNITY_0]]
-- [[_COMMUNITY_1]]
-- [[_COMMUNITY_5]]
+- [[_COMMUNITY_3]]
 
 ## Dataview Query
 ```dataview

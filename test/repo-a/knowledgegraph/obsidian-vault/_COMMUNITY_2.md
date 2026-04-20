@@ -9,35 +9,36 @@ member_count: 18
 #tokendiet/community-2
 
 ## Members (18)
-- [[src_models_project.ts]]
-- [[._task]]
-- [[._user]]
-- [[Project]]
-- [[CreateProjectDTO]]
-- [[UpdateProjectDTO]]
-- [[ProjectSummary]]
-- [[computeProjectSummary]]
-- [[isProjectMember]]
-- [[getActiveProjects]]
-- [[src_models_user.ts]]
-- [[User]]
-- [[CreateUserDTO]]
-- [[UpdateUserDTO]]
-- [[UserPublicProfile]]
-- [[toPublicProfile]]
-- [[hasPermission]]
-- [[isValidEmail]]
+- [[src___tests___taskService.test.ts]]
+- [[TaskService]]
+- [[createTask]]
+- [[should_create_a_task_with_valid_input]]
+- [[should_reject_task_with_empty_title]]
+- [[should_set_default_status_to_pending]]
+- [[updateTask]]
+- [[should_update_task_status]]
+- [[should_throw_on_non-existent_task]]
+- [[findByStatus]]
+- [[should_filter_tasks_by_status]]
+- [[should_return_empty_array_for_no_matches]]
+- [[TaskService_2]]
+- [[createTask_2]]
+- [[updateTask_2]]
+- [[findByProject]]
+- [[findByAssignee]]
+- [[findByStatus_2]]
 
 ## Bridge Nodes
-- [[src_models_project.ts]] (9 connections)
-- [[src_models_user.ts]] (7 connections)
-- [[computeProjectSummary]] (2 connections)
-- [[toPublicProfile]] (2 connections)
-- [[hasPermission]] (2 connections)
+- [[src___tests___taskService.test.ts]] (13 connections)
+- [[TaskService_2]] (10 connections)
+- [[TaskService]] (1 connections)
+- [[createTask]] (1 connections)
+- [[should_create_a_task_with_valid_input]] (1 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_3]]
-- [[_COMMUNITY_4]]
+- [[_COMMUNITY_1]]
+- [[_COMMUNITY_5]]
+- [[_COMMUNITY_6]]
 
 ## Dataview Query
 ```dataview

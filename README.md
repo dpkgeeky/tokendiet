@@ -1,8 +1,8 @@
 # TokenDiet
 
-Claude Code skill for **70%+ token consumption reduction**. Three tools that compress prompts, optimize prompt structure, and build knowledge graphs to replace expensive full-file context loading.
+Claude Code skill for **70%+ token consumption reduction**. Two tools that optimize prompt structure and build knowledge graphs to replace expensive full-file context loading.
 
-> Benchmarked: **KnowledgeGraph 80%**, **PromptCompressor 72%**, **PromptOptimizer 80%** token reduction. Run `zsh test/benchmark.sh` to verify.
+> Benchmarked: **KnowledgeGraph 80%**, **PromptOptimizer 80%** token reduction. Run `zsh test/benchmark.sh` to verify.
 
 ---
 
@@ -15,8 +15,7 @@ Claude Code skill for **70%+ token consumption reduction**. Three tools that com
 - [Setup](#setup)
 - [Commands](#commands)
   - [KnowledgeGraph](#1-knowledgegraph)
-  - [PromptCompressor](#2-promptcompressor)
-  - [PromptOptimizer](#3-promptoptimizer)
+    - [PromptOptimizer](#2-promptoptimizer)
 - [Obsidian Integration](#obsidian-integration)
 - [Token Optimization Workflow](#token-optimization-workflow)
 - [Outputs](#outputs)
@@ -137,6 +136,16 @@ Understand how two pieces of code connect without reading intermediate files:
 
 Returns the shortest path between entities with hop count.
 
+#### Incremental Update
+
+After the initial build, use `update` to only re-extract changed files (uses SHA256 hash caching):
+
+```
+/tokendiet knowledgegraph update
+```
+
+Much faster than a full rebuild on large repos. Reports "No changes detected" if everything is current.
+
 #### Get Task Context
 
 Before starting any coding task, get only the relevant context:
@@ -145,47 +154,41 @@ Before starting any coding task, get only the relevant context:
 /tokendiet knowledgegraph context add authentication to the API routes
 ```
 
+Use `--detail=minimal` for a quick overview (~100 tokens), `--detail=full` for deep work:
+
+```
+/tokendiet knowledgegraph context add auth --detail=minimal
+```
+
 Returns only the clusters and nodes relevant to your task description -- instead of Claude reading the entire codebase.
+
+#### Impact Analysis
+
+Check the blast radius before modifying shared code:
+
+```
+/tokendiet knowledgegraph impact UserService --depth=2
+```
+
+BFS traversal showing all entities affected by changes, sorted by hop distance.
+
+#### Detail Levels
+
+All query commands support `--detail=minimal|standard|full`:
+
+- `minimal` — entity name, type, and file only (~100 tokens)
+- `standard` — adds 1-hop edges (default)
+- `full` — all edges, locations, and community info
+
+```
+/tokendiet knowledgegraph query auth --detail=minimal
+```
 
 **Alias:** `/tokendiet kg` works the same as `/tokendiet knowledgegraph`.
 
 ---
 
-### 2. PromptCompressor
-
-Caveman-speak compression that strips filler, abbreviates common words, and removes politeness -- achieving **70%+ token reduction** on any text.
-
-**Invoke:**
-
-```
-/tokendiet promptcompressor Please write a function that calculates the total price of items in a shopping cart, including the tax rate that should be passed as a parameter
-```
-
-**Output:**
-
-```
-## Compressed
-
-write fn calc total price items in cart, incl tax rate passed as param
-
-## Stats
-- Before: ~30 tokens
-- After: ~14 tokens
-- Saved: ~53% reduction
-```
-
-**What it does:**
-- Strips articles (a, an, the), pronouns, filler words
-- Removes politeness ("please", "could you", "I would like")
-- Abbreviates common terms (function->fn, return->ret, database->db, etc.)
-- Collapses structure ("and"->+, "or"->/,  "leads to"->->)
-- Preserves code, file paths, technical terms, and numbers verbatim
-
-**Alias:** `/tokendiet compress` works the same.
-
----
-
-### 3. PromptOptimizer
+### 2. PromptOptimizer
 
 Analyzes prompt structure and delivers optimization advice as **5-7-5 haikus** -- each suggestion is poetic and concise. Produces a full optimized rewrite targeting **70%+ reduction**.
 
@@ -263,20 +266,24 @@ The recommended workflow for maximum token savings:
 Step 1: Build the graph once
   /tokendiet knowledgegraph
 
-Step 2: Before each coding task, load minimal context
-  /tokendiet knowledgegraph context <describe your task>
+Step 2: Keep graph current with incremental updates
+  /tokendiet knowledgegraph update
 
-Step 3: Compress any long prompts before sending
-  /tokendiet compress <your long prompt>
+Step 3: Before each coding task, load minimal context
+  /tokendiet knowledgegraph context <describe your task> --detail=minimal
 
-Step 4: For prompt engineering, get structural advice
+Step 4: Check blast radius before modifying shared code
+  /tokendiet knowledgegraph impact <entity>
+
+Step 5: For prompt engineering, get structural advice
   /tokendiet optimize <your prompt>
 ```
 
 **Why this works:**
 - **KnowledgeGraph** replaces reading N files with 1 compressed graph (~74-85% savings)
-- **Context subcommand** loads only relevant clusters instead of full codebase
-- **PromptCompressor** reduces the remaining prompt text by ~72%
+- **Incremental update** avoids full rebuild cost on repeat use
+- **Context + minimal detail** loads only relevant clusters in ~100 tokens
+- **Impact analysis** prevents Claude from reading unrelated files
 - **PromptOptimizer** helps you write better prompts that need fewer tokens (~80% reduction)
 
 ---
@@ -307,6 +314,30 @@ echo "knowledgegraph/" >> .gitignore
 
 ---
 
+## Configuration
+
+### `.tokendietignore`
+
+Create a `.tokendietignore` file in your project root to exclude files from the graph (same syntax as `.gitignore`):
+
+```
+# Exclude generated code
+generated/
+*.pb.ts
+dist/
+
+# Exclude vendor
+vendor/
+node_modules/
+
+# Exclude specific files
+package-lock.json
+```
+
+This reduces graph noise and improves token reduction by excluding irrelevant files.
+
+---
+
 ## Supported Languages
 
 The KnowledgeGraph extractor supports regex-based extraction for:
@@ -333,21 +364,19 @@ Run the full benchmark suite to validate all three tools:
 zsh test/benchmark.sh
 ```
 
-Tests against two built-in repos (`test/repo-a` Task Manager API, `test/repo-b` UI Component Library) across 6 phases:
+Tests against two built-in repos (`test/repo-a` Task Manager API, `test/repo-b` UI Component Library) across 5 phases:
 
 1. **Analyze** — count source files, bytes, estimated tokens
 2. **Build KnowledgeGraph** — run full pipeline, measure reduction
 3. **Query Accuracy** — test query, path, and context subcommands
 4. **Accuracy Validation** — compare graph entities against real code counts, verify edge coverage
-5. **PromptCompressor** — measure compression on 3 sample prompts
-6. **PromptOptimizer** — measure optimization on 2 over-specified prompts
+5. **PromptOptimizer** — measure optimization on 2 over-specified prompts
 
 Latest results (2026-04-19):
 
 | Tool | Reduction |
 |------|-----------|
 | KnowledgeGraph | 80% (repo-a: 74%, repo-b: 85%) |
-| PromptCompressor | 72% |
 | PromptOptimizer | 80% |
 
 ---

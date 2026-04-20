@@ -1,11 +1,11 @@
 ---
 source_file: "src/types/theme.ts"
 type: interface
-community: 10
+community: 13
 location: 1
 ---
 
-#tokendiet/interface #tokendiet/community-10
+#tokendiet/interface #tokendiet/community-13
 
 - contains [[src_types_theme.ts]]
 

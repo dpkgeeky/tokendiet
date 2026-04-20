@@ -1,13 +1,13 @@
 ---
 source_file: "src/services/projectService.ts"
 type: method
-community: 8
+community: 11
 location: 42
 ---
 
-#tokendiet/method #tokendiet/community-8
+#tokendiet/method #tokendiet/community-11
 
-- method [[ProjectService]]
+- method [[ProjectService_2]]
 - calls [[logger_2]]
 
 > Source: `src/services/projectService.ts:42`

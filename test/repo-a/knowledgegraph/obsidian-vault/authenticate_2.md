@@ -1,12 +1,12 @@
 ---
-source_file: "src/services/userService.ts"
-type: method
-community: 5
-location: 40
+source_file: "src/__tests__/userService.test.ts"
+type: test
+community: 9
+location: 10
 ---
 
-#tokendiet/method #tokendiet/community-5
+#tokendiet/test #tokendiet/community-9
 
-- method [[UserService]]
+- contains [[src___tests___userService.test.ts]]
 
-> Source: `src/services/userService.ts:40`
+> Source: `src/__tests__/userService.test.ts:10`

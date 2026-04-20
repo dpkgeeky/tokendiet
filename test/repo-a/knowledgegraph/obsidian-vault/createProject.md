@@ -1,13 +1,12 @@
 ---
-source_file: "src/services/projectService.ts"
-type: method
+source_file: "src/__tests__/projectService.test.ts"
+type: test
 community: 8
-location: 18
+location: 10
 ---
 
-#tokendiet/method #tokendiet/community-8
+#tokendiet/test #tokendiet/community-8
 
-- method [[ProjectService]]
-- calls [[logger_2]]
+- contains [[src___tests___projectService.test.ts]]
 
-> Source: `src/services/projectService.ts:18`
+> Source: `src/__tests__/projectService.test.ts:10`

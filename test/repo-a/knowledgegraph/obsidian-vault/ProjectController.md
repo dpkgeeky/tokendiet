@@ -1,11 +1,11 @@
 ---
 source_file: "src/controllers/projectController.ts"
 type: class
-community: 4
+community: 5
 location: 12
 ---
 
-#tokendiet/class #tokendiet/community-4
+#tokendiet/class #tokendiet/community-5
 
 - contains [[src_controllers_projectController.ts]]
 - calls [[logger_8]]

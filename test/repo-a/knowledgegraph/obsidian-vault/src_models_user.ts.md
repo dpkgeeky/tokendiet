@@ -1,10 +1,10 @@
 ---
 source_file: "src/models/user.ts"
 type: file
-community: 2
+community: 4
 ---
 
-#tokendiet/file #tokendiet/community-2
+#tokendiet/file #tokendiet/community-4
 
 - contains [[User]]
 - contains [[CreateUserDTO]]

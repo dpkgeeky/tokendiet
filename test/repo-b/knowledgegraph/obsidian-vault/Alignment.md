@@ -1,11 +1,11 @@
 ---
 source_file: "src/types/common.ts"
 type: interface
-community: 3
+community: 4
 location: 60
 ---
 
-#tokendiet/interface #tokendiet/community-3
+#tokendiet/interface #tokendiet/community-4
 
 - contains [[src_types_common.ts]]
 

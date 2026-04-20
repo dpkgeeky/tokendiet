@@ -1,11 +1,11 @@
 ---
 source_file: "src/utils/helpers.ts"
 type: import
-community: 6
+community: 7
 location: 1
 ---
 
-#tokendiet/import #tokendiet/community-6
+#tokendiet/import #tokendiet/community-7
 
 - imports [[src_utils_helpers.ts]]
 

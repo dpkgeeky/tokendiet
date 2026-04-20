@@ -1,11 +1,11 @@
 ---
 source_file: "src/utils/portal.ts"
 type: function
-community: 5
+community: 9
 location: 51
 ---
 
-#tokendiet/function #tokendiet/community-5
+#tokendiet/function #tokendiet/community-9
 
 - contains [[src_utils_portal.ts]]
 - calls [[usePortalRenderer]]

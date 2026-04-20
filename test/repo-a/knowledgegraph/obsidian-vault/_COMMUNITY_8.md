@@ -1,36 +1,36 @@
 ---
 type: community
 community_id: 8
-member_count: 7
+member_count: 11
 ---
 
 # Community 8
 
 #tokendiet/community-8
 
-## Members (7)
-- [[logger_2]]
+## Members (11)
+- [[src___tests___projectService.test.ts]]
+- [[.._services_projectService]]
 - [[ProjectService]]
 - [[createProject]]
-- [[updateProject]]
+- [[should_create_a_project_with_owner]]
+- [[should_auto-add_owner_as_member]]
 - [[addMember]]
-- [[getProjectSummary]]
-- [[findByMember]]
+- [[should_add_member_to_project]]
+- [[should_not_duplicate_members]]
+- [[getProjectStats]]
+- [[should_return_task_counts_by_status]]
 
 ## Bridge Nodes
-- [[logger_2]] (12 connections)
-- [[ProjectService]] (9 connections)
-- [[createProject]] (2 connections)
-- [[updateProject]] (2 connections)
-- [[addMember]] (2 connections)
+- [[src___tests___projectService.test.ts]] (11 connections)
+- [[.._services_projectService]] (3 connections)
+- [[ProjectService]] (1 connections)
+- [[createProject]] (1 connections)
+- [[should_create_a_project_with_owner]] (1 connections)
 
 ## Connected Communities
+- [[_COMMUNITY_11]]
 - [[_COMMUNITY_1]]
-- [[_COMMUNITY_0]]
-- [[_COMMUNITY_3]]
-- [[_COMMUNITY_4]]
-- [[_COMMUNITY_5]]
-- [[_COMMUNITY_6]]
 
 ## Dataview Query
 ```dataview

@@ -11,6 +11,6 @@ community: 1
 - imports [[._userService]]
 - imports [[.._utils_helpers]]
 - imports [[.._middleware_errorHandler]]
-- contains [[ProjectService]]
+- contains [[ProjectService_2]]
 
 > Source: `src/services/projectService.ts`

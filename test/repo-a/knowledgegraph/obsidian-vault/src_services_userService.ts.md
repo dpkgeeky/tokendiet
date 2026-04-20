@@ -12,6 +12,6 @@ community: 1
 - imports [[.._middleware_errorHandler]]
 - imports [[.._middleware_auth]]
 - imports [[.._config_app]]
-- contains [[UserService]]
+- contains [[UserService_2]]
 
 > Source: `src/services/userService.ts`

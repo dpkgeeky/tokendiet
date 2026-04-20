@@ -10,6 +10,6 @@ location: 25
 - method [[Logger]]
 - calls [[logger]]
 - calls [[createApp]]
-- calls [[authenticate]]
+- calls [[authenticate_3]]
 
 > Source: `src/utils/logger.ts:25`

@@ -1,17 +1,12 @@
 ---
-source_file: "src/middleware/auth.ts"
-type: function
-community: 3
-location: 21
+source_file: "src/__tests__/auth.test.ts"
+type: test
+community: 10
+location: 4
 ---
 
-#tokendiet/function #tokendiet/community-3
+#tokendiet/test #tokendiet/community-10
 
-- contains [[src_middleware_auth.ts]]
-- calls [[logger_4]] _(ambiguous)_
-- calls [[extractToken]]
-- calls [[UnauthorizedError]]
-- calls [[decodeToken]]
-- calls [[debug]]
+- contains [[src___tests___auth.test.ts]]
 
-> Source: `src/middleware/auth.ts:21`
+> Source: `src/__tests__/auth.test.ts:4`

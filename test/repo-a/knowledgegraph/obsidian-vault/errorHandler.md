@@ -1,11 +1,11 @@
 ---
 source_file: "src/middleware/errorHandler.ts"
 type: function
-community: 0
+community: 3
 location: 48
 ---
 
-#tokendiet/function #tokendiet/community-0
+#tokendiet/function #tokendiet/community-3
 
 - contains [[src_middleware_errorHandler.ts]]
 - calls [[warn]]

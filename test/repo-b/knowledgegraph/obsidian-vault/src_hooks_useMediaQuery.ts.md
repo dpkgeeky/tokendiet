@@ -1,10 +1,10 @@
 ---
 source_file: "src/hooks/useMediaQuery.ts"
 type: file
-community: 1
+community: 3
 ---
 
-#tokendiet/file #tokendiet/community-1
+#tokendiet/file #tokendiet/community-3
 
 - imports [[react]]
 - imports [[._useTheme]]

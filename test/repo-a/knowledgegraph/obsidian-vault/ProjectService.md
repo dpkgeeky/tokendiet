@@ -1,20 +1,12 @@
 ---
-source_file: "src/services/projectService.ts"
-type: class
+source_file: "src/__tests__/projectService.test.ts"
+type: test
 community: 8
-location: 8
+location: 3
 ---
 
-#tokendiet/class #tokendiet/community-8
+#tokendiet/test #tokendiet/community-8
 
-- contains [[src_services_projectService.ts]]
-- calls [[logger_8]]
-- calls [[createRouter]]
-- method [[createProject]]
-- method [[updateProject]]
-- method [[addMember]]
-- method [[getProjectSummary]]
-- method [[findByMember]]
-- extends [[BaseService]]
+- contains [[src___tests___projectService.test.ts]]
 
-> Source: `src/services/projectService.ts:8`
+> Source: `src/__tests__/projectService.test.ts:3`

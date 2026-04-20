@@ -1,10 +1,10 @@
 ---
 source_file: "src/utils/validators.ts"
 type: file
-community: 6
+community: 10
 ---
 
-#tokendiet/file #tokendiet/community-6
+#tokendiet/file #tokendiet/community-10
 
 - contains [[validateRequired]]
 - contains [[validateMinLength]]

@@ -9,22 +9,25 @@ member_count: 9
 #tokendiet/community-6
 
 ## Members (9)
-- [[src_utils_validators.ts]]
-- [[validateRequired]]
-- [[validateMinLength]]
-- [[validateMaxLength]]
-- [[validatePattern]]
-- [[validateEmail]]
-- [[validateUrl]]
-- [[runValidation]]
-- [[composeValidators]]
+- [[src___tests___Modal.test.tsx]]
+- [[.._components_Modal_Modal]]
+- [[Modal]]
+- [[should_not_render_when_closed]]
+- [[should_render_when_open]]
+- [[should_call_onClose_when_backdrop_clicked]]
+- [[should_not_close_on_content_click]]
+- [[should_support_custom_title]]
+- [[should_close_on_escape_key]]
 
 ## Bridge Nodes
-- [[src_utils_validators.ts]] (8 connections)
-- [[runValidation]] (5 connections)
-- [[validatePattern]] (3 connections)
-- [[validateRequired]] (2 connections)
-- [[validateMinLength]] (2 connections)
+- [[src___tests___Modal.test.tsx]] (9 connections)
+- [[.._components_Modal_Modal]] (1 connections)
+- [[Modal]] (1 connections)
+- [[should_not_render_when_closed]] (1 connections)
+- [[should_render_when_open]] (1 connections)
+
+## Connected Communities
+- [[_COMMUNITY_0]]
 
 ## Dataview Query
 ```dataview

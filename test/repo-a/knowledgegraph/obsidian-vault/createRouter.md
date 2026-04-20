@@ -1,19 +1,19 @@
 ---
 source_file: "src/routes/index.ts"
 type: function
-community: 4
+community: 5
 location: 15
 ---
 
-#tokendiet/function #tokendiet/community-4
+#tokendiet/function #tokendiet/community-5
 
 - contains [[src_routes_index.ts]]
 - calls [[logger]]
 - calls [[createApp]]
 - calls [[logger_8]]
-- calls [[TaskService]]
-- calls [[UserService]]
-- calls [[ProjectService]]
+- calls [[TaskService_2]]
+- calls [[UserService_2]]
+- calls [[ProjectService_2]]
 - calls [[TaskController]]
 - calls [[UserController]]
 - calls [[ProjectController]]
@@ -22,6 +22,6 @@ location: 15
 - calls [[required]]
 - calls [[emailValidator]]
 - calls [[minLength]]
-- calls [[requireRole]]
+- calls [[requireRole_2]]
 
 > Source: `src/routes/index.ts:15`

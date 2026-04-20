@@ -11,6 +11,6 @@ community: 1
 - imports [[.._utils_logger]]
 - imports [[.._middleware_errorHandler]]
 - contains [[BaseService]]
-- contains [[TaskService]]
+- contains [[TaskService_2]]
 
 > Source: `src/services/taskService.ts`
