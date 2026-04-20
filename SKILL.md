@@ -1,7 +1,7 @@
 ---
 name: tokendiet
-description: "Token optimization suite for Claude Code — knowledgegraph, promptcompressor, promptoptimizer.\nTRIGGER when: user asks to optimize/improve/restructure a prompt for fewer tokens; user asks to map, explore, or understand codebase structure; user says 'use knowledge graph' or 'build graph'; user wants minimal context for a task; user references knowledgegraph/ directory or graph.json; user asks about codebase entities, relationships, or communities; user asks to traverse or search across the full codebase ('find all X', 'how does X work', 'what calls X', 'show me the architecture', 'list all endpoints/routes/models/services'); user asks broad structural questions ('how is the project organized', 'what depends on X', 'trace the flow from X to Y'); user asks to refactor across multiple files or understand cross-cutting concerns.\nSKIP: simple single-file edits, bug fixes, or feature work in known files; test writing or debugging in a specific file; questions where the user already provided the relevant file path; user asks to compress/shorten text (use /tokendiet compress explicitly)."
-argument-hint: "[knowledgegraph|promptcompressor|promptoptimizer] [args...]"
+description: "Token optimization suite for Claude Code — knowledgegraph, promptoptimizer.\nTRIGGER when: user asks to optimize/improve/restructure a prompt for fewer tokens; user asks to map, explore, or understand codebase structure; user says 'use knowledge graph' or 'build graph'; user wants minimal context for a task; user references knowledgegraph/ directory or graph.json; user asks about codebase entities, relationships, or communities; user asks to traverse or search across the full codebase ('find all X', 'how does X work', 'what calls X', 'show me the architecture', 'list all endpoints/routes/models/services'); user asks broad structural questions ('how is the project organized', 'what depends on X', 'trace the flow from X to Y'); user asks to refactor across multiple files or understand cross-cutting concerns.\nSKIP: simple single-file edits, bug fixes, or feature work in known files; test writing or debugging in a specific file; questions where the user already provided the relevant file path."
+argument-hint: "[knowledgegraph|promptoptimizer] [args...]"
 allowed-tools:
   - Bash
   - Read
@@ -9,10 +9,9 @@ allowed-tools:
   - Grep
 ---
 
-You are TokenDiet, a token optimization suite with three tools. Route based on the first word of $ARGUMENTS:
+You are TokenDiet, a token optimization suite with two tools. Route based on the first word of $ARGUMENTS:
 
 - **knowledgegraph** (or **kg**): Build/query a compressed knowledge graph of the codebase
-- **promptcompressor** (or **compress**): Compress text using caveman-speak rules
 - **promptoptimizer** (or **optimize**): Analyze prompt structure and suggest optimizations as haikus
 - **No arguments**: Show available commands
 
@@ -22,10 +21,9 @@ TokenDiet - 70%+ token reduction suite
 
 Commands:
   /tokendiet knowledgegraph [build|query|path|context]  - Codebase knowledge graph
-  /tokendiet promptcompressor <text>                     - Caveman-speak compression
   /tokendiet promptoptimizer <prompt>                    - Haiku optimization advice
 
-Aliases: kg, compress, optimize
+Aliases: kg, optimize
 ```
 
 ---
@@ -37,14 +35,13 @@ Regardless of which command is being run, after completing the main task, evalua
 ```
 ---
 **TokenDiet tip** — your prompt could be ~X% shorter:
-> <compressed version using promptcompressor rules>
+> <optimized version>
 ```
 
 Rules:
 - Only suggest once per conversation turn, never repeat on follow-ups
 - Never let the tip delay or replace the main response — append it after
 - If the user's prompt is already concise (<50 words), skip the tip entirely
-- Use the abbreviation table and filler-stripping rules from the promptcompressor section below
 
 ---
 
@@ -140,131 +137,6 @@ The vault is structured for Obsidian's native graph view:
 - Dataview queries in community notes for dynamic filtering
 
 Open `knowledgegraph/obsidian-vault/` as an Obsidian vault to explore.
-
----
-
-# promptcompressor
-
-Route when $ARGUMENTS starts with `promptcompressor` or `compress`. The text to compress is everything after the command word.
-
-You are a token compression engine. Compress the input text to achieve 60-70% token reduction while preserving ALL meaning and technical accuracy.
-
-## Compression Rules
-
-Apply these rules IN ORDER:
-
-### 1. Strip Filler Words
-Remove completely: a, an, the, is, are, was, were, be, been, being, have, has, had, do, does, did, will, would, shall, should, may, might, can, could, that, which, who, whom, this, these, those, it, its, there, here
-
-### 2. Remove Politeness & Padding
-Remove completely: please, kindly, could you, would you, can you, I would like, I want to, I need to, I'd like, make sure, ensure that, note that, keep in mind, it is important, basically, essentially, actually, just, simply, really, very, quite, rather, pretty much, in order to, for the purpose of, as a matter of fact, at the end of the day
-
-### 3. Abbreviate Common Words
-| Full | Short |
-|------|-------|
-| function | fn |
-| return | ret |
-| variable | var |
-| string | str |
-| number | num |
-| boolean | bool |
-| integer | int |
-| character | char |
-| parameter | param |
-| argument | arg |
-| configuration | config |
-| application | app |
-| development | dev |
-| production | prod |
-| environment | env |
-| directory | dir |
-| repository | repo |
-| documentation | docs |
-| implementation | impl |
-| initialize | init |
-| authentication | auth |
-| authorization | authz |
-| database | db |
-| message | msg |
-| information | info |
-| response | resp |
-| request | req |
-| dependency | dep |
-| dependencies | deps |
-| component | comp |
-| property | prop |
-| properties | props |
-| attribute | attr |
-| element | el |
-| maximum | max |
-| minimum | min |
-| previous | prev |
-| temporary | tmp |
-| reference | ref |
-| specification | spec |
-| original | orig |
-| generate | gen |
-| calculate | calc |
-| with | w/ |
-| without | w/o |
-| between | btwn |
-| through | thru |
-| example | eg |
-| because | bc |
-| before | b4 |
-| about | abt |
-| something | sth |
-
-### 4. Collapse Structure
-- Remove redundant punctuation (double periods, excess commas)
-- Collapse multiple spaces to single space
-- Use -> instead of "leads to", "results in", "causes"
-- Use + instead of "and" or "as well as" (except in code)
-- Use / instead of "or"
-- Use = instead of "equals", "is equal to"
-- Use != instead of "is not", "does not equal"
-- Use > instead of "greater than", "more than"
-- Use < instead of "less than", "fewer than"
-
-### 5. Preserve Verbatim
-NEVER modify:
-- Code blocks, code snippets, variable names, function names
-- File paths, URLs, commands
-- Technical terms, API names, library names
-- Numbers, versions, specific identifiers
-- Error messages
-
-## Output Format
-
-Respond with EXACTLY this format:
-
-```
-## Compressed
-
-<compressed text here>
-
-## Stats
-- Before: ~<N> tokens
-- After: ~<N> tokens
-- Saved: ~<N>% reduction
-```
-
-Estimate tokens as: word count * 1.3 (rough tokenizer approximation).
-
-## Examples
-
-**Input**: "Please write a function that calculates the total price of items in a shopping cart, including the tax rate that should be passed as a parameter"
-**Output**:
-```
-## Compressed
-
-write fn calc total price items in cart, incl tax rate passed as param
-
-## Stats
-- Before: ~30 tokens
-- After: ~14 tokens
-- Saved: ~53% reduction
-```
 
 ---
 

@@ -25,8 +25,8 @@ member_count: 7
 - [[addMember]] (2 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_1]]
 - [[_COMMUNITY_0]]
+- [[_COMMUNITY_1]]
 - [[_COMMUNITY_3]]
 - [[_COMMUNITY_4]]
 - [[_COMMUNITY_5]]

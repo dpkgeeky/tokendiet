@@ -1,11 +1,11 @@
 ---
 source_file: "src/models/task.ts"
 type: function
-community: 9
+community: 4
 location: 54
 ---
 
-#tokendiet/function #tokendiet/community-9
+#tokendiet/function #tokendiet/community-4
 
 - contains [[src_models_task.ts]]
 - calls [[validateTaskPriority]]

@@ -34,9 +34,9 @@ member_count: 16
 - [[AppError]] (5 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_1]]
-- [[_COMMUNITY_4]]
 - [[_COMMUNITY_0]]
+- [[_COMMUNITY_4]]
+- [[_COMMUNITY_1]]
 - [[_COMMUNITY_5]]
 - [[_COMMUNITY_2]]
 - [[_COMMUNITY_8]]

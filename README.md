@@ -1,8 +1,8 @@
 # TokenDiet
 
-Claude Code skill for **70%+ token consumption reduction**. Three tools that compress prompts, optimize prompt structure, and build knowledge graphs to replace expensive full-file context loading.
+Claude Code skill for **70%+ token consumption reduction**. Two tools that optimize prompt structure and build knowledge graphs to replace expensive full-file context loading.
 
-> Benchmarked: **KnowledgeGraph 80%**, **PromptCompressor 72%**, **PromptOptimizer 80%** token reduction. Run `zsh test/benchmark.sh` to verify.
+> Benchmarked: **KnowledgeGraph 80%**, **PromptOptimizer 80%** token reduction. Run `zsh test/benchmark.sh` to verify.
 
 ---
 
@@ -15,8 +15,7 @@ Claude Code skill for **70%+ token consumption reduction**. Three tools that com
 - [Setup](#setup)
 - [Commands](#commands)
   - [KnowledgeGraph](#1-knowledgegraph)
-  - [PromptCompressor](#2-promptcompressor)
-  - [PromptOptimizer](#3-promptoptimizer)
+    - [PromptOptimizer](#2-promptoptimizer)
 - [Obsidian Integration](#obsidian-integration)
 - [Token Optimization Workflow](#token-optimization-workflow)
 - [Outputs](#outputs)
@@ -151,41 +150,7 @@ Returns only the clusters and nodes relevant to your task description -- instead
 
 ---
 
-### 2. PromptCompressor
-
-Caveman-speak compression that strips filler, abbreviates common words, and removes politeness -- achieving **70%+ token reduction** on any text.
-
-**Invoke:**
-
-```
-/tokendiet promptcompressor Please write a function that calculates the total price of items in a shopping cart, including the tax rate that should be passed as a parameter
-```
-
-**Output:**
-
-```
-## Compressed
-
-write fn calc total price items in cart, incl tax rate passed as param
-
-## Stats
-- Before: ~30 tokens
-- After: ~14 tokens
-- Saved: ~53% reduction
-```
-
-**What it does:**
-- Strips articles (a, an, the), pronouns, filler words
-- Removes politeness ("please", "could you", "I would like")
-- Abbreviates common terms (function->fn, return->ret, database->db, etc.)
-- Collapses structure ("and"->+, "or"->/,  "leads to"->->)
-- Preserves code, file paths, technical terms, and numbers verbatim
-
-**Alias:** `/tokendiet compress` works the same.
-
----
-
-### 3. PromptOptimizer
+### 2. PromptOptimizer
 
 Analyzes prompt structure and delivers optimization advice as **5-7-5 haikus** -- each suggestion is poetic and concise. Produces a full optimized rewrite targeting **70%+ reduction**.
 
@@ -266,17 +231,13 @@ Step 1: Build the graph once
 Step 2: Before each coding task, load minimal context
   /tokendiet knowledgegraph context <describe your task>
 
-Step 3: Compress any long prompts before sending
-  /tokendiet compress <your long prompt>
-
-Step 4: For prompt engineering, get structural advice
+Step 3: For prompt engineering, get structural advice
   /tokendiet optimize <your prompt>
 ```
 
 **Why this works:**
 - **KnowledgeGraph** replaces reading N files with 1 compressed graph (~74-85% savings)
 - **Context subcommand** loads only relevant clusters instead of full codebase
-- **PromptCompressor** reduces the remaining prompt text by ~72%
 - **PromptOptimizer** helps you write better prompts that need fewer tokens (~80% reduction)
 
 ---
@@ -333,21 +294,19 @@ Run the full benchmark suite to validate all three tools:
 zsh test/benchmark.sh
 ```
 
-Tests against two built-in repos (`test/repo-a` Task Manager API, `test/repo-b` UI Component Library) across 6 phases:
+Tests against two built-in repos (`test/repo-a` Task Manager API, `test/repo-b` UI Component Library) across 5 phases:
 
 1. **Analyze** — count source files, bytes, estimated tokens
 2. **Build KnowledgeGraph** — run full pipeline, measure reduction
 3. **Query Accuracy** — test query, path, and context subcommands
 4. **Accuracy Validation** — compare graph entities against real code counts, verify edge coverage
-5. **PromptCompressor** — measure compression on 3 sample prompts
-6. **PromptOptimizer** — measure optimization on 2 over-specified prompts
+5. **PromptOptimizer** — measure optimization on 2 over-specified prompts
 
 Latest results (2026-04-19):
 
 | Tool | Reduction |
 |------|-----------|
 | KnowledgeGraph | 80% (repo-a: 74%, repo-b: 85%) |
-| PromptCompressor | 72% |
 | PromptOptimizer | 80% |
 
 ---

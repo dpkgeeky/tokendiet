@@ -1,31 +1,31 @@
 ---
 type: community
 community_id: 9
-member_count: 7
+member_count: 6
 ---
 
 # Community 9
 
 #tokendiet/community-9
 
-## Members (7)
-- [[src_models_task.ts]]
-- [[Task]]
-- [[CreateTaskDTO]]
-- [[UpdateTaskDTO]]
-- [[isValidStatus]]
-- [[isValidPriority]]
-- [[getDefaultTask]]
+## Members (6)
+- [[TaskService]]
+- [[createTask]]
+- [[updateTask]]
+- [[findByProject]]
+- [[findByAssignee]]
+- [[findByStatus]]
 
 ## Bridge Nodes
-- [[src_models_task.ts]] (6 connections)
-- [[isValidStatus]] (2 connections)
-- [[isValidPriority]] (2 connections)
-- [[Task]] (1 connections)
-- [[CreateTaskDTO]] (1 connections)
+- [[TaskService]] (9 connections)
+- [[createTask]] (1 connections)
+- [[updateTask]] (1 connections)
+- [[findByProject]] (1 connections)
+- [[findByAssignee]] (1 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_4]]
+- [[_COMMUNITY_0]]
+- [[_COMMUNITY_5]]
 
 ## Dataview Query
 ```dataview

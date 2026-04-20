@@ -1,5 +1,5 @@
 # Knowledge Graph Report
-_Generated 2026-04-19_
+_Generated 2026-04-20_
 
 ## Token Savings
 | Metric | Value |

@@ -1,11 +1,11 @@
 ---
 source_file: "src/config/database.ts"
 type: class
-community: 0
+community: 1
 location: 13
 ---
 
-#tokendiet/class #tokendiet/community-0
+#tokendiet/class #tokendiet/community-1
 
 - contains [[src_config_database.ts]]
 - method [[getInstance]]

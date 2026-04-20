@@ -1,11 +1,11 @@
 # Knowledge Graph Report
-_Generated 2026-04-19_
+_Generated 2026-04-20_
 
 ## Token Savings
 | Metric | Value |
 |--------|-------|
 | Raw codebase tokens | ~10,705 |
-| Compressed graph tokens | ~2,735 |
+| Compressed graph tokens | ~2,731 |
 | **Reduction** | **74%** |
 
 ## Graph Summary
@@ -14,7 +14,7 @@ _Generated 2026-04-19_
 | Files | 20 |
 | Nodes | 165 |
 | Edges | 301 |
-| Communities | 12 |
+| Communities | 11 |
 | Isolated nodes | 1 |
 
 ## Edge Confidence
@@ -39,7 +39,25 @@ _Generated 2026-04-19_
 | src/controllers/projectController.ts | 10 |
 
 ## Communities
-### Community 0 (31 nodes)
+### Community 0 (38 nodes)
+- ../utils/logger
+- src/config/database.ts
+- DatabaseConfig
+- src/controllers/projectController.ts
+- express
+- ../services/projectService
+- ./taskController
+- ../middleware/errorHandler
+- ../middleware/auth
+- ../middleware/validation
+- ../utils/helpers
+- ProjectController
+- src/controllers/taskController.ts
+- ../services/taskService
+- logger
+- _...and 23 more_
+
+### Community 1 (29 nodes)
 - logger
 - createApp
 - src/config/app.ts
@@ -49,31 +67,13 @@ _Generated 2026-04-19_
 - configureLogger
 - DEFAULT_PAGE_SIZE
 - MAX_PAGE_SIZE
-- src/config/database.ts
-- DatabaseConfig
 - DatabaseConnection
 - getInstance
 - connect
 - disconnect
-- _...and 16 more_
-
-### Community 1 (30 nodes)
-- ../utils/logger
-- src/controllers/projectController.ts
-- express
-- ../services/projectService
-- ./taskController
-- ../middleware/errorHandler
-- ../middleware/auth
-- ../middleware/validation
-- ../utils/helpers
-- src/controllers/taskController.ts
-- ../services/taskService
-- logger
-- BaseController
-- TaskController
-- src/controllers/userController.ts
-- _...and 15 more_
+- isConnected
+- getConfig
+- _...and 14 more_
 
 ### Community 2 (18 nodes)
 - src/models/project.ts
@@ -111,21 +111,22 @@ _Generated 2026-04-19_
 - ForbiddenError
 - _...and 1 more_
 
-### Community 4 (14 nodes)
-- ProjectController
+### Community 4 (15 nodes)
 - ValidationError
 - src/middleware/validation.ts
 - ValidatorFn
-- required
-- minLength
 - maxLength
-- emailValidator
 - validateBody
 - validateTaskStatus
 - validateTaskPriority
 - parsePagination
-- logger
-- createRouter
+- src/models/task.ts
+- Task
+- CreateTaskDTO
+- UpdateTaskDTO
+- isValidStatus
+- isValidPriority
+- getDefaultTask
 
 ### Community 5 (13 nodes)
 - logger
@@ -177,16 +178,7 @@ _Generated 2026-04-19_
 - getProjectSummary
 - findByMember
 
-### Community 9 (7 nodes)
-- src/models/task.ts
-- Task
-- CreateTaskDTO
-- UpdateTaskDTO
-- isValidStatus
-- isValidPriority
-- getDefaultTask
-
-### Community 10 (6 nodes)
+### Community 9 (6 nodes)
 - TaskService
 - createTask
 - updateTask
@@ -194,7 +186,7 @@ _Generated 2026-04-19_
 - findByAssignee
 - findByStatus
 
-### Community 11 (1 nodes)
+### Community 10 (1 nodes)
 - package.json
 
 ## Isolated Nodes

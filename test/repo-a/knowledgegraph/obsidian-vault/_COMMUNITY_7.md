@@ -28,7 +28,7 @@ member_count: 10
 - [[cors]] (1 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_0]]
+- [[_COMMUNITY_1]]
 
 ## Dataview Query
 ```dataview

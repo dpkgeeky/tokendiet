@@ -1,11 +1,11 @@
 ---
 source_file: "src/utils/logger.ts"
 type: method
-community: 0
+community: 1
 location: 25
 ---
 
-#tokendiet/method #tokendiet/community-0
+#tokendiet/method #tokendiet/community-1
 
 - method [[Logger]]
 - calls [[logger]]

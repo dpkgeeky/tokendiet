@@ -37,7 +37,7 @@ member_count: 18
 
 ## Connected Communities
 - [[_COMMUNITY_3]]
-- [[_COMMUNITY_4]]
+- [[_COMMUNITY_0]]
 
 ## Dataview Query
 ```dataview

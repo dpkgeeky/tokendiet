@@ -31,13 +31,13 @@ member_count: 13
 - [[createUser]] (2 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_1]]
 - [[_COMMUNITY_0]]
+- [[_COMMUNITY_1]]
 - [[_COMMUNITY_3]]
 - [[_COMMUNITY_4]]
 - [[_COMMUNITY_6]]
 - [[_COMMUNITY_8]]
-- [[_COMMUNITY_10]]
+- [[_COMMUNITY_9]]
 
 ## Dataview Query
 ```dataview

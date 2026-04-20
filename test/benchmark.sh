@@ -178,75 +178,9 @@ for i in 1 2; do
 done
 
 # ══════════════════════════════════════════════════════════════════════
-# Phase 5: PromptCompressor Validation
+# Phase 5: PromptOptimizer Validation
 # ══════════════════════════════════════════════════════════════════════
-header "Phase 5: PromptCompressor Validation"
-
-typeset -A COMPRESS_BEFORE COMPRESS_AFTER COMPRESS_PCT
-
-compress_samples=(
-  "Could you please help me write a function that takes a list of integers as input and returns the sum of all even numbers in the list? I would really appreciate it if the function could also handle edge cases like empty lists and negative numbers gracefully. Thank you so much for your help!"
-  "I was wondering if you could take a look at this bug I found. Basically, what happens is that when a user tries to log in with their email address and password, the authentication middleware throws an unhandled promise rejection error. I think the issue might be related to the fact that we are not properly awaiting the database query in the verify function. Would you be able to investigate this and provide a fix?"
-  "Hi there! I would like to request a new feature for our application. Specifically, I am looking for the ability to export data from our dashboard in CSV format. The exported file should include all of the columns that are currently visible in the data table, and it should respect any active filters or sorting that the user has applied. It would also be nice if we could add a progress indicator while the export is being generated."
-)
-compress_names=("Coding Task" "Bug Report" "Feature Request")
-
-# Pre-computed compressed versions (caveman speak: strip filler, abbreviate, remove politeness)
-compress_rewrites=(
-  "Write fn taking list of ints, ret sum of evens. Handle empty lists + negatives."
-  "Auth middleware throws unhandled promise rejection on login. Likely missing await on db query in verify fn. Investigate + fix."
-  "Need CSV export from dashboard. Include all visible columns, respect active filters/sorting. Add progress indicator during export."
-)
-
-total_compress_before=0
-total_compress_after=0
-
-for j in 1 2 3; do
-  sample="${compress_samples[$j]}"
-  rewrite="${compress_rewrites[$j]}"
-  sname="${compress_names[$j]}"
-
-  before_chars=${#sample}
-  before_tokens=$((before_chars / 4))
-  after_chars=${#rewrite}
-  after_tokens=$((after_chars / 4))
-
-  filler_words="please|really|basically|specifically|just|actually|simply|certainly|definitely|perhaps|honestly|literally|obviously|clearly|essentially|generally|usually|probably|possibly|apparently|unfortunately|interestingly|importantly|significantly|naturally|fortunately"
-  politeness_words="Could you|Would you|I was wondering|I would like|I think|Thank you|Hi there|I would really appreciate|Would you be able to|It would also be nice"
-  filler_count=$(echo "$sample" | { grep -oiE "\b($filler_words)\b" || true; } | wc -l | tr -d ' ')
-  polite_count=$(echo "$sample" | { grep -oiE "($politeness_words)" || true; } | wc -l | tr -d ' ')
-
-  if [ "$before_tokens" -gt 0 ]; then
-    reduction_pct=$(echo "scale=0; 100 - $after_tokens * 100 / $before_tokens" | bc)
-  else
-    reduction_pct=0
-  fi
-
-  total_compress_before=$((total_compress_before + before_tokens))
-  total_compress_after=$((total_compress_after + after_tokens))
-
-  echo ""
-  metric "Sample $j: $sname" ""
-  metric "  Before tokens" "~$before_tokens"
-  metric "  After tokens" "~$after_tokens"
-  metric "  Fillers found" "$filler_count"
-  metric "  Politeness found" "$polite_count"
-  printf "  ${BOLD}%-35s${RESET} ${GREEN}%s%%${RESET}\n" "  Reduction" "$reduction_pct"
-  echo "  Compressed: $rewrite"
-done
-
-if [ "$total_compress_before" -gt 0 ]; then
-  avg_compress_pct=$(echo "scale=0; 100 - $total_compress_after * 100 / $total_compress_before" | bc)
-else
-  avg_compress_pct=0
-fi
-echo ""
-printf "  ${BOLD}${GREEN}PromptCompressor avg reduction: ${avg_compress_pct}%%${RESET}\n"
-
-# ══════════════════════════════════════════════════════════════════════
-# Phase 6: PromptOptimizer Validation
-# ══════════════════════════════════════════════════════════════════════
-header "Phase 6: PromptOptimizer Validation"
+header "Phase 5: PromptOptimizer Validation"
 
 typeset -A OPT_BEFORE OPT_AFTER OPT_PCT
 
@@ -348,7 +282,6 @@ echo ""
 printf "\n  ${BOLD}%-30s %15s${RESET}\n" "TokenDiet Suite" "Reduction"
 printf '  %s\n' "$(printf '%*s' 48 '' | tr ' ' '-')"
 printf "  ${GREEN}%-30s %15s${RESET}\n" "KnowledgeGraph" "${overall_pct}%"
-printf "  ${GREEN}%-30s %15s${RESET}\n" "PromptCompressor" "${avg_compress_pct}%"
 printf "  ${GREEN}%-30s %15s${RESET}\n" "PromptOptimizer" "${avg_opt_pct}%"
 echo ""
 divider

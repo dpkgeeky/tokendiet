@@ -1,10 +1,10 @@
 ---
 source_file: "src/routes/index.ts"
 type: file
-community: 1
+community: 0
 ---
 
-#tokendiet/file #tokendiet/community-1
+#tokendiet/file #tokendiet/community-0
 
 - imports [[express]]
 - imports [[.._controllers_taskController]]

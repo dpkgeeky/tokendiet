@@ -1,11 +1,11 @@
 ---
 source_file: "src/controllers/taskController.ts"
 type: class
-community: 1
+community: 0
 location: 27
 ---
 
-#tokendiet/class #tokendiet/community-1
+#tokendiet/class #tokendiet/community-0
 
 - contains [[src_controllers_taskController.ts]]
 - calls [[logger_8]]
