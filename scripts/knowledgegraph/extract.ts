@@ -7,10 +7,17 @@ import {
   SUPPORTED_EXTENSIONS,
 } from "./types.js";
 
+const METHOD_BLACKLIST = new Set([
+  "if", "for", "while", "switch", "catch", "return", "throw", "new",
+  "super", "else", "typeof", "delete", "case", "try", "do",
+]);
+
 export function extract(files: string[], rootDir: string): ExtractionResult {
   const nodes: GraphNode[] = [];
   const edges: GraphEdge[] = [];
   let totalTokens = 0;
+  const importMap = new Map<string, string>();
+  const seenCallPairs = new Set<string>();
 
   for (const file of files) {
     const fullPath = join(rootDir, file);
@@ -34,15 +41,15 @@ export function extract(files: string[], rootDir: string): ExtractionResult {
     });
 
     if (lang === "typescript" || lang === "javascript") {
-      extractTS(content, file, fileId, nodes, edges);
+      extractTS(content, file, fileId, nodes, edges, importMap, seenCallPairs);
     } else if (lang === "python") {
-      extractPython(content, file, fileId, nodes, edges);
+      extractPython(content, file, fileId, nodes, edges, importMap);
     } else if (lang === "go") {
-      extractGo(content, file, fileId, nodes, edges);
+      extractGo(content, file, fileId, nodes, edges, importMap);
     } else if (lang === "rust") {
-      extractRust(content, file, fileId, nodes, edges);
+      extractRust(content, file, fileId, nodes, edges, importMap);
     } else if (lang === "java" || lang === "kotlin" || lang === "c_sharp") {
-      extractJavaLike(content, file, fileId, nodes, edges);
+      extractJavaLike(content, file, fileId, nodes, edges, importMap);
     } else {
       extractGeneric(content, file, fileId, nodes, edges);
     }
@@ -58,7 +65,25 @@ function sanitizeId(s: string): string {
 }
 
 function estimateTokens(content: string): number {
-  return Math.ceil(content.split(/\s+/).length * 1.3);
+  return Math.ceil(content.length / 4);
+}
+
+function addImport(
+  importPath: string,
+  file: string,
+  fileId: string,
+  lineNum: number,
+  nodes: GraphNode[],
+  edges: GraphEdge[],
+  importMap: Map<string, string>
+): void {
+  let importId = importMap.get(importPath);
+  if (!importId) {
+    importId = sanitizeId(`import:${importPath}`);
+    importMap.set(importPath, importId);
+    nodes.push({ id: importId, label: importPath, type: "import", sourceFile: file, location: lineNum });
+  }
+  edges.push({ source: fileId, target: importId, relationship: "imports", confidence: "EXTRACTED" });
 }
 
 function extractTS(
@@ -66,7 +91,9 @@ function extractTS(
   file: string,
   fileId: string,
   nodes: GraphNode[],
-  edges: GraphEdge[]
+  edges: GraphEdge[],
+  importMap: Map<string, string>,
+  seenCallPairs: Set<string>
 ): void {
   const lines = content.split("\n");
 
@@ -84,10 +111,7 @@ function extractTS(
     let m: RegExpMatchArray | null;
 
     if ((m = line.match(importRe))) {
-      const importPath = m[1];
-      const importId = sanitizeId(`${file}:import:${importPath}`);
-      nodes.push({ id: importId, label: importPath, type: "import", sourceFile: file, location: i + 1 });
-      edges.push({ source: fileId, target: importId, relationship: "imports", confidence: "EXTRACTED" });
+      addImport(m[1], file, fileId, i + 1, nodes, edges, importMap);
     }
 
     if ((m = line.match(classRe))) {
@@ -98,11 +122,11 @@ function extractTS(
       nodes.push({ id: classId, label: className, type: "class", sourceFile: file, location: i + 1 });
       edges.push({ source: fileId, target: classId, relationship: "contains", confidence: "EXTRACTED" });
       if (extendsName) {
-        edges.push({ source: classId, target: sanitizeId(`*:class:${extendsName}`), relationship: "extends", confidence: "INFERRED" });
+        edges.push({ source: classId, target: `*:class:${extendsName}`, relationship: "extends", confidence: "INFERRED" });
       }
       if (m[3]) {
         for (const impl of m[3].split(",").map((s) => s.trim())) {
-          edges.push({ source: classId, target: sanitizeId(`*:interface:${impl}`), relationship: "implements", confidence: "INFERRED" });
+          edges.push({ source: classId, target: `*:interface:${impl}`, relationship: "implements", confidence: "INFERRED" });
         }
       }
       continue;
@@ -121,7 +145,7 @@ function extractTS(
       const fnId = sanitizeId(`${file}:fn:${fnName}`);
       nodes.push({ id: fnId, label: fnName, type: "function", sourceFile: file, location: i + 1 });
       edges.push({ source: fileId, target: fnId, relationship: "contains", confidence: "EXTRACTED" });
-      extractCalls(lines, i, file, fnId, edges);
+      extractCalls(lines, i, file, fnId, edges, seenCallPairs);
       continue;
     }
 
@@ -131,14 +155,14 @@ function extractTS(
         const fnId = sanitizeId(`${file}:fn:${fnName}`);
         nodes.push({ id: fnId, label: fnName, type: "function", sourceFile: file, location: i + 1 });
         edges.push({ source: fileId, target: fnId, relationship: "contains", confidence: "EXTRACTED" });
-        extractCalls(lines, i, file, fnId, edges);
+        extractCalls(lines, i, file, fnId, edges, seenCallPairs);
       }
       continue;
     }
 
     if (currentClass && (m = line.match(methodRe))) {
       const methodName = m[1];
-      if (methodName !== "constructor" && !methodName.startsWith("_")) {
+      if (methodName !== "constructor" && !methodName.startsWith("_") && !METHOD_BLACKLIST.has(methodName)) {
         const methodId = sanitizeId(`${file}:method:${methodName}`);
         nodes.push({ id: methodId, label: methodName, type: "method", sourceFile: file, location: i + 1 });
         edges.push({ source: currentClass, target: methodId, relationship: "method", confidence: "EXTRACTED" });
@@ -156,7 +180,8 @@ function extractPython(
   file: string,
   fileId: string,
   nodes: GraphNode[],
-  edges: GraphEdge[]
+  edges: GraphEdge[],
+  importMap: Map<string, string>
 ): void {
   const lines = content.split("\n");
 
@@ -172,9 +197,7 @@ function extractPython(
 
     if ((m = line.match(importRe1))) {
       const module = m[1] || m[2].split(",")[0].trim();
-      const importId = sanitizeId(`${file}:import:${module}`);
-      nodes.push({ id: importId, label: module, type: "import", sourceFile: file, location: i + 1 });
-      edges.push({ source: fileId, target: importId, relationship: "imports", confidence: "EXTRACTED" });
+      addImport(module, file, fileId, i + 1, nodes, edges, importMap);
     }
 
     if ((m = line.match(classRe))) {
@@ -185,7 +208,7 @@ function extractPython(
       edges.push({ source: fileId, target: classId, relationship: "contains", confidence: "EXTRACTED" });
       if (m[2]) {
         for (const base of m[2].split(",").map((s) => s.trim()).filter(Boolean)) {
-          edges.push({ source: classId, target: sanitizeId(`*:class:${base}`), relationship: "extends", confidence: "INFERRED" });
+          edges.push({ source: classId, target: `*:class:${base}`, relationship: "extends", confidence: "INFERRED" });
         }
       }
       continue;
@@ -223,7 +246,8 @@ function extractGo(
   file: string,
   fileId: string,
   nodes: GraphNode[],
-  edges: GraphEdge[]
+  edges: GraphEdge[],
+  importMap: Map<string, string>
 ): void {
   const lines = content.split("\n");
   const fnRe = /^func\s+(?:\((\w+)\s+\*?(\w+)\)\s+)?(\w+)\s*\(/;
@@ -236,9 +260,7 @@ function extractGo(
     let m: RegExpMatchArray | null;
 
     if ((m = line.match(importRe))) {
-      const id = sanitizeId(`${file}:import:${m[1]}`);
-      nodes.push({ id, label: m[1], type: "import", sourceFile: file, location: i + 1 });
-      edges.push({ source: fileId, target: id, relationship: "imports", confidence: "EXTRACTED" });
+      addImport(m[1], file, fileId, i + 1, nodes, edges, importMap);
     }
 
     if ((m = line.match(structRe))) {
@@ -274,7 +296,8 @@ function extractRust(
   file: string,
   fileId: string,
   nodes: GraphNode[],
-  edges: GraphEdge[]
+  edges: GraphEdge[],
+  importMap: Map<string, string>
 ): void {
   const lines = content.split("\n");
   const fnRe = /^(?:pub\s+)?(?:async\s+)?fn\s+(\w+)/;
@@ -290,9 +313,7 @@ function extractRust(
     let m: RegExpMatchArray | null;
 
     if ((m = line.match(useRe))) {
-      const id = sanitizeId(`${file}:import:${m[1]}`);
-      nodes.push({ id, label: m[1], type: "import", sourceFile: file, location: i + 1 });
-      edges.push({ source: fileId, target: id, relationship: "imports", confidence: "EXTRACTED" });
+      addImport(m[1], file, fileId, i + 1, nodes, edges, importMap);
     }
 
     if ((m = line.match(structRe))) {
@@ -331,7 +352,8 @@ function extractJavaLike(
   file: string,
   fileId: string,
   nodes: GraphNode[],
-  edges: GraphEdge[]
+  edges: GraphEdge[],
+  importMap: Map<string, string>
 ): void {
   const lines = content.split("\n");
   const classRe = /^(?:public\s+|private\s+|protected\s+)?(?:abstract\s+)?(?:class|interface)\s+(\w+)(?:\s+extends\s+(\w+))?(?:\s+implements\s+([\w,\s]+))?/;
@@ -345,9 +367,7 @@ function extractJavaLike(
     let m: RegExpMatchArray | null;
 
     if ((m = line.match(importRe))) {
-      const id = sanitizeId(`${file}:import:${m[1]}`);
-      nodes.push({ id, label: m[1], type: "import", sourceFile: file, location: i + 1 });
-      edges.push({ source: fileId, target: id, relationship: "imports", confidence: "EXTRACTED" });
+      addImport(m[1], file, fileId, i + 1, nodes, edges, importMap);
     }
 
     if ((m = line.match(classRe))) {
@@ -357,13 +377,13 @@ function extractJavaLike(
       nodes.push({ id: classId, label: className, type: "class", sourceFile: file, location: i + 1 });
       edges.push({ source: fileId, target: classId, relationship: "contains", confidence: "EXTRACTED" });
       if (m[2]) {
-        edges.push({ source: classId, target: sanitizeId(`*:class:${m[2]}`), relationship: "extends", confidence: "INFERRED" });
+        edges.push({ source: classId, target: `*:class:${m[2]}`, relationship: "extends", confidence: "INFERRED" });
       }
     }
 
     if (currentClass && (m = line.match(methodRe))) {
       const name = m[1];
-      if (name !== "if" && name !== "for" && name !== "while" && name !== "switch") {
+      if (!METHOD_BLACKLIST.has(name)) {
         const methodId = sanitizeId(`${file}:method:${name}`);
         nodes.push({ id: methodId, label: name, type: "method", sourceFile: file, location: i + 1 });
         edges.push({ source: currentClass, target: methodId, relationship: "method", confidence: "EXTRACTED" });
@@ -406,7 +426,8 @@ function extractCalls(
   startLine: number,
   file: string,
   fnId: string,
-  edges: GraphEdge[]
+  edges: GraphEdge[],
+  seenCallPairs: Set<string>
 ): void {
   const callRe = /\b([a-zA-Z_]\w+)\s*\(/g;
   const builtins = new Set([
@@ -434,9 +455,12 @@ function extractCalls(
     while ((m = callRe.exec(line)) !== null) {
       const callee = m[1];
       if (!builtins.has(callee) && callee.length > 1) {
+        const pairKey = `${fnId}:${callee}`;
+        if (seenCallPairs.has(pairKey)) continue;
+        seenCallPairs.add(pairKey);
         edges.push({
           source: fnId,
-          target: sanitizeId(`*:fn:${callee}`),
+          target: `*:fn:${callee}`,
           relationship: "calls",
           confidence: "INFERRED",
         });
@@ -459,8 +483,7 @@ function inferCrossFileEdges(nodes: GraphNode[], edges: GraphEdge[]): void {
 
   const resolved: GraphEdge[] = [];
   for (const edge of edges) {
-    if (edge.target.startsWith("_")) continue;
-    if (edge.target.includes("*_")) {
+    if (edge.target.startsWith("*:")) {
       const parts = edge.target.split(":");
       const name = parts[parts.length - 1];
       const candidates = fnByLabel.get(name) || [];
@@ -470,7 +493,7 @@ function inferCrossFileEdges(nodes: GraphNode[], edges: GraphEdge[]): void {
       });
 
       const targets = sameFileCandidates.length > 0 ? sameFileCandidates : candidates;
-      for (const target of targets.slice(0, 3)) {
+      for (const target of targets.slice(0, 1)) {
         if (target !== edge.source) {
           resolved.push({ ...edge, target, confidence: candidates.length === 1 ? "INFERRED" : "AMBIGUOUS" });
         }

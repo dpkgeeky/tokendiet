@@ -1,0 +1,97 @@
+{
+  "collapse": {
+    "color-groups": false,
+    "query": false
+  },
+  "search": "",
+  "showTags": false,
+  "showAttachments": false,
+  "showOrphans": true,
+  "colorGroups": [
+    {
+      "query": "tag:#tokendiet/community-0",
+      "color": {
+        "a": 1,
+        "rgb": 4359668
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-1",
+      "color": {
+        "a": 1,
+        "rgb": 15352629
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-2",
+      "color": {
+        "a": 1,
+        "rgb": 16497668
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-3",
+      "color": {
+        "a": 1,
+        "rgb": 3450963
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-4",
+      "color": {
+        "a": 1,
+        "rgb": 16739585
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-5",
+      "color": {
+        "a": 1,
+        "rgb": 4636102
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-6",
+      "color": {
+        "a": 1,
+        "rgb": 8104695
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-7",
+      "color": {
+        "a": 1,
+        "rgb": 15760242
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-8",
+      "color": {
+        "a": 1,
+        "rgb": 16568399
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-9",
+      "color": {
+        "a": 1,
+        "rgb": 7455367
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-10",
+      "color": {
+        "a": 1,
+        "rgb": 4359668
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-11",
+      "color": {
+        "a": 1,
+        "rgb": 15352629
+      }
+    }
+  ],
+  "close": false
+}

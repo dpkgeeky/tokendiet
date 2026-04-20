@@ -103,5 +103,9 @@ export const IGNORE_DIRS = new Set([
   "target",
   ".cache",
   ".turbo",
+]);
+
+export const IGNORE_ROOT_DIRS = new Set([
   "knowledgegraph",
+  "tokendiet-out",
 ]);
