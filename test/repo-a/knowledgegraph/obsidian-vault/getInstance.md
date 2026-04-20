@@ -1,11 +1,11 @@
 ---
 source_file: "src/config/database.ts"
 type: method
-community: 1
+community: 0
 location: 24
 ---
 
-#tokendiet/method #tokendiet/community-1
+#tokendiet/method #tokendiet/community-0
 
 - method [[DatabaseConnection]]
 - calls [[logger_5]]

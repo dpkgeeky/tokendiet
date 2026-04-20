@@ -1,11 +1,11 @@
 ---
 source_file: "src/models/task.ts"
 type: interface
-community: 4
+community: 12
 location: 16
 ---
 
-#tokendiet/interface #tokendiet/community-4
+#tokendiet/interface #tokendiet/community-12
 
 - contains [[src_models_task.ts]]
 

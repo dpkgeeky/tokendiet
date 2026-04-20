@@ -8,5 +8,6 @@ location: 7
 #tokendiet/interface #tokendiet/community-0
 
 - contains [[src_components_Button_Button.tsx]]
+- tests [[src___tests___Button.test.tsx]]
 
 > Source: `src/components/Button/Button.tsx:7`

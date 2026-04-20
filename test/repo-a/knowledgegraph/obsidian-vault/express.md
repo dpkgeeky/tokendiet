@@ -1,11 +1,11 @@
 ---
 source_file: "src/controllers/projectController.ts"
 type: import
-community: 0
+community: 1
 location: 1
 ---
 
-#tokendiet/import #tokendiet/community-0
+#tokendiet/import #tokendiet/community-1
 
 - imports [[src_controllers_projectController.ts]]
 - imports [[src_controllers_taskController.ts]]

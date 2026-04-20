@@ -1,11 +1,11 @@
 ---
 source_file: "src/hooks/useMediaQuery.ts"
 type: function
-community: 1
+community: 3
 location: 5
 ---
 
-#tokendiet/function #tokendiet/community-1
+#tokendiet/function #tokendiet/community-3
 
 - contains [[src_hooks_useMediaQuery.ts]]
 - calls [[useBreakpoint]]

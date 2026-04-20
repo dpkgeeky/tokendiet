@@ -1,11 +1,11 @@
 ---
 source_file: "src/models/user.ts"
 type: interface
-community: 2
+community: 4
 location: 30
 ---
 
-#tokendiet/interface #tokendiet/community-2
+#tokendiet/interface #tokendiet/community-4
 
 - contains [[src_models_user.ts]]
 

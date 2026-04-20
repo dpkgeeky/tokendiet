@@ -4,24 +4,24 @@ _Generated 2026-04-20_
 ## Token Savings
 | Metric | Value |
 |--------|-------|
-| Raw codebase tokens | ~10,705 |
-| Compressed graph tokens | ~2,731 |
-| **Reduction** | **74%** |
+| Raw codebase tokens | ~17,144 |
+| Compressed graph tokens | ~3,500 |
+| **Reduction** | **80%** |
 
 ## Graph Summary
 | Metric | Count |
 |--------|-------|
-| Files | 20 |
-| Nodes | 165 |
-| Edges | 301 |
-| Communities | 11 |
+| Files | 24 |
+| Nodes | 207 |
+| Edges | 347 |
+| Communities | 14 |
 | Isolated nodes | 1 |
 
 ## Edge Confidence
 | Level | Count | % |
 |-------|-------|---|
-| EXTRACTED | 189 | 63% |
-| INFERRED | 111 | 37% |
+| EXTRACTED | 231 | 67% |
+| INFERRED | 115 | 33% |
 | AMBIGUOUS | 1 | 0% |
 
 ## God Nodes (most connected)
@@ -30,34 +30,23 @@ _Generated 2026-04-20_
 | createRouter | 16 |
 | logger | 15 |
 | src/middleware/validation.ts | 14 |
+| src/__tests__/taskService.test.ts | 13 |
 | logger | 13 |
 | src/routes/index.ts | 13 |
+| src/__tests__/userService.test.ts | 12 |
 | logger | 12 |
 | bootstrap | 12 |
-| src/middleware/auth.ts | 11 |
-| src/utils/helpers.ts | 11 |
-| src/controllers/projectController.ts | 10 |
+| src/__tests__/projectService.test.ts | 11 |
 
 ## Communities
-### Community 0 (38 nodes)
-- ../utils/logger
-- src/config/database.ts
-- DatabaseConfig
-- src/controllers/projectController.ts
-- express
-- ../services/projectService
-- ./taskController
-- ../middleware/errorHandler
-- ../middleware/auth
-- ../middleware/validation
-- ../utils/helpers
-- ProjectController
-- src/controllers/taskController.ts
-- ../services/taskService
-- logger
-- _...and 23 more_
-
-### Community 1 (29 nodes)
+### Community 0: src (37 nodes)
+- src/app.ts
+- cors
+- helmet
+- ./routes
+- ./middleware/errorHandler
+- ./config/app
+- ./utils/logger
 - logger
 - createApp
 - src/config/app.ts
@@ -66,16 +55,63 @@ _Generated 2026-04-20_
 - validateAppConfig
 - configureLogger
 - DEFAULT_PAGE_SIZE
-- MAX_PAGE_SIZE
-- DatabaseConnection
-- getInstance
-- connect
-- disconnect
-- isConnected
-- getConfig
+- _...and 22 more_
+
+### Community 1: controllers (29 nodes)
+- ../services/taskService
+- ../services/userService
+- ../utils/logger
+- src/config/database.ts
+- DatabaseConfig
+- src/controllers/projectController.ts
+- express
+- ./taskController
+- ../middleware/errorHandler
+- ../middleware/validation
+- ../utils/helpers
+- src/controllers/taskController.ts
+- logger
+- BaseController
+- TaskController
 - _...and 14 more_
 
-### Community 2 (18 nodes)
+### Community 2: __tests__ (18 nodes)
+- src/__tests__/taskService.test.ts
+- TaskService
+- createTask
+- should create a task with valid input
+- should reject task with empty title
+- should set default status to pending
+- updateTask
+- should update task status
+- should throw on non-existent task
+- findByStatus
+- should filter tasks by status
+- should return empty array for no matches
+- TaskService
+- createTask
+- updateTask
+- _...and 3 more_
+
+### Community 3: middleware (18 nodes)
+- src/middleware/auth.ts
+- ./errorHandler
+- logger
+- AuthenticatedRequest
+- extractToken
+- authenticate
+- requireRole
+- decodeToken
+- generateToken
+- src/middleware/errorHandler.ts
+- logger
+- AppError
+- NotFoundError
+- UnauthorizedError
+- ForbiddenError
+- _...and 3 more_
+
+### Community 4: models (18 nodes)
 - src/models/project.ts
 - ./task
 - ./user
@@ -93,42 +129,24 @@ _Generated 2026-04-20_
 - UserPublicProfile
 - _...and 3 more_
 
-### Community 3 (16 nodes)
-- src/middleware/auth.ts
-- ./errorHandler
-- logger
-- AuthenticatedRequest
-- extractToken
-- authenticate
-- requireRole
-- decodeToken
-- generateToken
-- src/middleware/errorHandler.ts
-- logger
-- AppError
-- NotFoundError
-- UnauthorizedError
-- ForbiddenError
-- _...and 1 more_
-
-### Community 4 (15 nodes)
+### Community 5: middleware (15 nodes)
+- ProjectController
+- UserController
 - ValidationError
 - src/middleware/validation.ts
 - ValidatorFn
+- required
+- minLength
 - maxLength
+- emailValidator
 - validateBody
 - validateTaskStatus
 - validateTaskPriority
 - parsePagination
-- src/models/task.ts
-- Task
-- CreateTaskDTO
-- UpdateTaskDTO
-- isValidStatus
-- isValidPriority
-- getDefaultTask
+- logger
+- createRouter
 
-### Community 5 (13 nodes)
+### Community 6: services (13 nodes)
 - logger
 - BaseService
 - findById
@@ -143,7 +161,7 @@ _Generated 2026-04-20_
 - findByEmail
 - getPublicProfile
 
-### Community 6 (12 nodes)
+### Community 7: utils (12 nodes)
 - src/utils/helpers.ts
 - crypto
 - generateId
@@ -157,19 +175,45 @@ _Generated 2026-04-20_
 - pickKeys
 - delay
 
-### Community 7 (10 nodes)
-- src/app.ts
-- cors
-- helmet
-- ./routes
-- ./middleware/errorHandler
-- ./config/app
-- ./utils/logger
-- src/index.ts
-- ./app
-- ./config/database
+### Community 8: __tests__ (11 nodes)
+- src/__tests__/projectService.test.ts
+- ../services/projectService
+- ProjectService
+- createProject
+- should create a project with owner
+- should auto-add owner as member
+- addMember
+- should add member to project
+- should not duplicate members
+- getProjectStats
+- should return task counts by status
 
-### Community 8 (7 nodes)
+### Community 9: __tests__ (11 nodes)
+- src/__tests__/userService.test.ts
+- UserService
+- authenticate
+- should authenticate valid credentials
+- should reject invalid password
+- should reject non-existent user
+- createUser
+- should create user with hashed password
+- should reject duplicate email
+- deactivateUser
+- should mark user as inactive
+
+### Community 10: __tests__ (10 nodes)
+- src/__tests__/auth.test.ts
+- ../middleware/auth
+- Auth Middleware
+- authenticate
+- should pass with valid token
+- should reject missing token
+- should reject expired token
+- requireRole
+- should allow admin access
+- should deny insufficient role
+
+### Community 11: services (7 nodes)
 - logger
 - ProjectService
 - createProject
@@ -178,16 +222,47 @@ _Generated 2026-04-20_
 - getProjectSummary
 - findByMember
 
-### Community 9 (6 nodes)
-- TaskService
-- createTask
-- updateTask
-- findByProject
-- findByAssignee
-- findByStatus
+### Community 12: models (7 nodes)
+- src/models/task.ts
+- Task
+- CreateTaskDTO
+- UpdateTaskDTO
+- isValidStatus
+- isValidPriority
+- getDefaultTask
 
-### Community 10 (1 nodes)
-- package.json
+### Community 13: codeburn-2026-04-20.json (1 nodes)
+- codeburn-2026-04-20.json
+
+## Potentially Unused Code
+_Entities with no inbound references (may be entry points or dead code)_
+
+- logger (function) in src/app.ts
+- AppConfig (interface) in src/config/app.ts
+- DEFAULT_PAGE_SIZE (function) in src/config/app.ts
+- MAX_PAGE_SIZE (function) in src/config/app.ts
+- DatabaseConfig (interface) in src/config/database.ts
+- DatabaseConnection (class) in src/config/database.ts
+- logger (function) in src/controllers/projectController.ts
+- logger (function) in src/controllers/taskController.ts
+- logger (function) in src/controllers/userController.ts
+- logger (function) in src/index.ts
+- logger (function) in src/middleware/auth.ts
+- generateToken (function) in src/middleware/auth.ts
+- logger (function) in src/middleware/errorHandler.ts
+- NotFoundError (class) in src/middleware/errorHandler.ts
+- errorHandler (function) in src/middleware/errorHandler.ts
+- ValidatorFn (interface) in src/middleware/validation.ts
+- maxLength (function) in src/middleware/validation.ts
+- validateTaskStatus (function) in src/middleware/validation.ts
+- validateTaskPriority (function) in src/middleware/validation.ts
+- Project (interface) in src/models/project.ts
+- _...and 24 more_
+
+## Cross-Community Coupling
+_Community pairs with high inter-dependency_
+
+- controllers ↔ middleware: 12 edges
 
 ## Isolated Nodes
-- package.json
+- codeburn-2026-04-20.json

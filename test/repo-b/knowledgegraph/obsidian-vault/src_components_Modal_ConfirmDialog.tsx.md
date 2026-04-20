@@ -1,10 +1,10 @@
 ---
 source_file: "src/components/Modal/ConfirmDialog.tsx"
 type: file
-community: 8
+community: 11
 ---
 
-#tokendiet/file #tokendiet/community-8
+#tokendiet/file #tokendiet/community-11
 
 - imports [[.._.._types_common]]
 - imports [[.._.._hooks_useTheme]]

@@ -1,11 +1,11 @@
 ---
 source_file: "src/utils/portal.ts"
 type: import
-community: 5
+community: 9
 location: 2
 ---
 
-#tokendiet/import #tokendiet/community-5
+#tokendiet/import #tokendiet/community-9
 
 - imports [[src_utils_portal.ts]]
 

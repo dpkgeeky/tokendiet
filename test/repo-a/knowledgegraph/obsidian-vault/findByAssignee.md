@@ -1,12 +1,12 @@
 ---
 source_file: "src/services/taskService.ts"
 type: method
-community: 9
+community: 2
 location: 80
 ---
 
-#tokendiet/method #tokendiet/community-9
+#tokendiet/method #tokendiet/community-2
 
-- method [[TaskService]]
+- method [[TaskService_2]]
 
 > Source: `src/services/taskService.ts:80`

@@ -1,20 +1,20 @@
 ---
 type: community
 community_id: 0
-member_count: 24
+member_count: 29
 ---
 
 # Community 0
 
 #tokendiet/community-0
 
-## Members (24)
+## Members (29)
 - [[src_components_Button_Button.tsx]]
 - [[.._.._types_common]]
 - [[.._.._hooks_useTheme]]
 - [[.._.._utils_cn]]
 - [[ButtonProps]]
-- [[Button]]
+- [[Button_2]]
 - [[src_components_Button_ButtonGroup.tsx]]
 - [[ButtonGroupProps]]
 - [[ButtonGroup]]
@@ -33,6 +33,11 @@ member_count: 24
 - [[src_components_Layout_Stack.tsx]]
 - [[StackProps]]
 - [[Stack]]
+- [[src_components_Modal_Modal.tsx]]
+- [[.._.._hooks_useClickOutside]]
+- [[.._.._utils_portal]]
+- [[ModalProps]]
+- [[Modal_2]]
 
 ## Bridge Nodes
 - [[.._.._hooks_useTheme]] (9 connections)
@@ -42,12 +47,13 @@ member_count: 24
 - [[src_components_Input_SearchInput.tsx]] (7 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_8]]
 - [[_COMMUNITY_11]]
-- [[_COMMUNITY_7]]
-- [[_COMMUNITY_1]]
-- [[_COMMUNITY_4]]
 - [[_COMMUNITY_2]]
+- [[_COMMUNITY_5]]
+- [[_COMMUNITY_3]]
+- [[_COMMUNITY_8]]
+- [[_COMMUNITY_6]]
+- [[_COMMUNITY_9]]
 
 ## Dataview Query
 ```dataview

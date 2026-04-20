@@ -1,10 +1,10 @@
 ---
 source_file: "src/context/ThemeProvider.tsx"
 type: file
-community: 9
+community: 12
 ---
 
-#tokendiet/file #tokendiet/community-9
+#tokendiet/file #tokendiet/community-12
 
 - imports [[.._types_theme]]
 - contains [[ThemeContextValue]]

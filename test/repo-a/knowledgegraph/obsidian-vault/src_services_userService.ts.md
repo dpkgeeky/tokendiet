@@ -1,10 +1,10 @@
 ---
 source_file: "src/services/userService.ts"
 type: file
-community: 0
+community: 1
 ---
 
-#tokendiet/file #tokendiet/community-0
+#tokendiet/file #tokendiet/community-1
 
 - imports [[.._models_user]]
 - imports [[._taskService]]
@@ -12,6 +12,6 @@ community: 0
 - imports [[.._middleware_errorHandler]]
 - imports [[.._middleware_auth]]
 - imports [[.._config_app]]
-- contains [[UserService]]
+- contains [[UserService_2]]
 
 > Source: `src/services/userService.ts`

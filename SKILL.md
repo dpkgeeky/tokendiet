@@ -68,9 +68,11 @@ Route when $ARGUMENTS starts with `knowledgegraph` or `kg`.
 
 Parse the remaining arguments as the subcommand:
 - No subcommand or `build`: Run the full pipeline
-- `query <term>`: Search the existing graph
+- `update`: Incremental rebuild (only re-extracts changed files)
+- `query <term> [--detail=minimal|standard|full]`: Search the existing graph
 - `path <A> <B>`: Find shortest path between two entities
-- `context <task description>`: Get minimal relevant context for a task
+- `context <task description> [--detail=minimal|standard|full]`: Get minimal relevant context for a task
+- `impact <entity> [--depth=N]`: BFS blast-radius from an entity
 
 ## Full Pipeline (build)
 
@@ -95,6 +97,16 @@ Then tell the user:
    - `knowledgegraph/graph.json` -- Claude-consumable compressed context
    - `knowledgegraph/report.md` -- Full analysis report
 
+## Incremental Update
+
+Prefer `update` over `build` when the graph already exists -- it only re-extracts changed files:
+
+```bash
+cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts update
+```
+
+Uses SHA256 hash caching. Reports "No changes detected" if graph is current. Use `build --force` for a full rebuild.
+
 ## Query Subcommand
 
 ```bash
@@ -102,6 +114,8 @@ cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts q
 ```
 
 Show the matching nodes and their connections. This replaces needing to grep/read files -- surgical context retrieval.
+
+Use `--detail=minimal` for exploratory queries (fewer tokens). Use `--detail=full` when working on specific files.
 
 ## Path Subcommand
 
@@ -119,12 +133,24 @@ cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts c
 
 Given a task description, returns only the relevant clusters and nodes. Use this BEFORE starting any coding task to load minimal context instead of reading the full codebase.
 
+Use `--detail=minimal` for a quick overview (~100 tokens).
+
+## Impact Subcommand
+
+```bash
+cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts impact <entity> --depth=2
+```
+
+BFS blast-radius analysis. Shows all entities affected by changes to the given entity, sorted by hop distance. Use before modifying high-connectivity code.
+
 ## Token Optimization Workflow
 
 When the user starts a new coding task:
-1. Run `/tokendiet knowledgegraph context <task description>`
-2. Only read the files identified as relevant
-3. This replaces reading all files, saving 70%+ tokens
+1. Run `/tokendiet knowledgegraph update` (ensures graph is current)
+2. Run `/tokendiet knowledgegraph context <task description> --detail=minimal`
+3. Only read the files identified as relevant
+4. Use `impact` to understand change blast-radius before modifying shared code
+5. This replaces reading all files, saving 80%+ tokens
 
 ## Obsidian Vault Output
 

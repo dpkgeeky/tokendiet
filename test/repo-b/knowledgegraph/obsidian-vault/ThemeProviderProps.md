@@ -1,11 +1,11 @@
 ---
 source_file: "src/context/ThemeProvider.tsx"
 type: interface
-community: 9
+community: 12
 location: 42
 ---
 
-#tokendiet/interface #tokendiet/community-9
+#tokendiet/interface #tokendiet/community-12
 
 - contains [[src_context_ThemeProvider.tsx]]
 

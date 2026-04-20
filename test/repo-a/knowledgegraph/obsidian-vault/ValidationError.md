@@ -1,11 +1,11 @@
 ---
 source_file: "src/middleware/errorHandler.ts"
 type: class
-community: 4
+community: 5
 location: 27
 ---
 
-#tokendiet/class #tokendiet/community-4
+#tokendiet/class #tokendiet/community-5
 
 - contains [[src_middleware_errorHandler.ts]]
 - calls [[validateBody]]

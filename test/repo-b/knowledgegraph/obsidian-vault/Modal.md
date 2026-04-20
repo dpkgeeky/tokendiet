@@ -1,14 +1,12 @@
 ---
-source_file: "src/components/Modal/Modal.tsx"
-type: function
-community: 11
-location: 20
+source_file: "src/__tests__/Modal.test.tsx"
+type: test
+community: 6
+location: 3
 ---
 
-#tokendiet/function #tokendiet/community-11
+#tokendiet/test #tokendiet/community-6
 
-- contains [[src_components_Modal_Modal.tsx]]
-- calls [[useTheme]]
-- calls [[usePortal]]
+- contains [[src___tests___Modal.test.tsx]]
 
-> Source: `src/components/Modal/Modal.tsx:20`
+> Source: `src/__tests__/Modal.test.tsx:3`

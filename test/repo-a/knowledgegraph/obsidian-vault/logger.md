@@ -1,11 +1,11 @@
 ---
 source_file: "src/utils/logger.ts"
 type: class
-community: 1
+community: 0
 location: 9
 ---
 
-#tokendiet/class #tokendiet/community-1
+#tokendiet/class #tokendiet/community-0
 
 - contains [[src_utils_logger.ts]]
 - calls [[createLogger]]

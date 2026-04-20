@@ -1,21 +1,12 @@
 ---
-source_file: "src/services/userService.ts"
-type: class
-community: 5
-location: 8
+source_file: "src/__tests__/userService.test.ts"
+type: test
+community: 9
+location: 3
 ---
 
-#tokendiet/class #tokendiet/community-5
+#tokendiet/test #tokendiet/community-9
 
-- contains [[src_services_userService.ts]]
-- calls [[logger_8]]
-- calls [[createRouter]]
-- method [[createUser]]
-- method [[authenticate_2]]
-- method [[updateUser]]
-- method [[deactivateUser]]
-- method [[findByEmail]]
-- method [[getPublicProfile]]
-- extends [[BaseService]]
+- contains [[src___tests___userService.test.ts]]
 
-> Source: `src/services/userService.ts:8`
+> Source: `src/__tests__/userService.test.ts:3`

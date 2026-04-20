@@ -1,0 +1,2 @@
+# Ignore package.json for graph (not relevant code)
+package.json

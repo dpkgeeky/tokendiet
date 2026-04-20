@@ -1,11 +1,11 @@
 ---
 source_file: "src/controllers/projectController.ts"
 type: function
-community: 8
+community: 11
 location: 10
 ---
 
-#tokendiet/function #tokendiet/community-8
+#tokendiet/function #tokendiet/community-11
 
 - contains [[src_controllers_projectController.ts]]
 - calls [[createLogger]]
@@ -15,9 +15,9 @@ location: 10
 - calls [[paginate]]
 - calls [[getProjectSummary]]
 - calls [[info]]
-- calls [[createProject]]
+- calls [[createProject_2]]
 - calls [[updateProject]]
-- calls [[addMember]]
+- calls [[addMember_2]]
 - calls [[findByMember]]
 
 > Source: `src/controllers/projectController.ts:10`

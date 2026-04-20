@@ -1,10 +1,10 @@
 ---
 source_file: "src/components/Layout/Grid.tsx"
 type: file
-community: 7
+community: 2
 ---
 
-#tokendiet/file #tokendiet/community-7
+#tokendiet/file #tokendiet/community-2
 
 - imports [[react]]
 - imports [[.._.._hooks_useTheme]]

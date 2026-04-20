@@ -1,10 +1,10 @@
 ---
 source_file: "src/utils/portal.ts"
 type: file
-community: 5
+community: 9
 ---
 
-#tokendiet/file #tokendiet/community-5
+#tokendiet/file #tokendiet/community-9
 
 - imports [[react]]
 - imports [[react-dom]]

@@ -10,6 +10,6 @@ community: 0
 - imports [[.._.._hooks_useTheme]]
 - imports [[.._.._utils_cn]]
 - contains [[ButtonProps]]
-- contains [[Button]]
+- contains [[Button_2]]
 
 > Source: `src/components/Button/Button.tsx`

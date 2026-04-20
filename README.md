@@ -136,6 +136,16 @@ Understand how two pieces of code connect without reading intermediate files:
 
 Returns the shortest path between entities with hop count.
 
+#### Incremental Update
+
+After the initial build, use `update` to only re-extract changed files (uses SHA256 hash caching):
+
+```
+/tokendiet knowledgegraph update
+```
+
+Much faster than a full rebuild on large repos. Reports "No changes detected" if everything is current.
+
 #### Get Task Context
 
 Before starting any coding task, get only the relevant context:
@@ -144,7 +154,35 @@ Before starting any coding task, get only the relevant context:
 /tokendiet knowledgegraph context add authentication to the API routes
 ```
 
+Use `--detail=minimal` for a quick overview (~100 tokens), `--detail=full` for deep work:
+
+```
+/tokendiet knowledgegraph context add auth --detail=minimal
+```
+
 Returns only the clusters and nodes relevant to your task description -- instead of Claude reading the entire codebase.
+
+#### Impact Analysis
+
+Check the blast radius before modifying shared code:
+
+```
+/tokendiet knowledgegraph impact UserService --depth=2
+```
+
+BFS traversal showing all entities affected by changes, sorted by hop distance.
+
+#### Detail Levels
+
+All query commands support `--detail=minimal|standard|full`:
+
+- `minimal` — entity name, type, and file only (~100 tokens)
+- `standard` — adds 1-hop edges (default)
+- `full` — all edges, locations, and community info
+
+```
+/tokendiet knowledgegraph query auth --detail=minimal
+```
 
 **Alias:** `/tokendiet kg` works the same as `/tokendiet knowledgegraph`.
 
@@ -228,16 +266,24 @@ The recommended workflow for maximum token savings:
 Step 1: Build the graph once
   /tokendiet knowledgegraph
 
-Step 2: Before each coding task, load minimal context
-  /tokendiet knowledgegraph context <describe your task>
+Step 2: Keep graph current with incremental updates
+  /tokendiet knowledgegraph update
 
-Step 3: For prompt engineering, get structural advice
+Step 3: Before each coding task, load minimal context
+  /tokendiet knowledgegraph context <describe your task> --detail=minimal
+
+Step 4: Check blast radius before modifying shared code
+  /tokendiet knowledgegraph impact <entity>
+
+Step 5: For prompt engineering, get structural advice
   /tokendiet optimize <your prompt>
 ```
 
 **Why this works:**
 - **KnowledgeGraph** replaces reading N files with 1 compressed graph (~74-85% savings)
-- **Context subcommand** loads only relevant clusters instead of full codebase
+- **Incremental update** avoids full rebuild cost on repeat use
+- **Context + minimal detail** loads only relevant clusters in ~100 tokens
+- **Impact analysis** prevents Claude from reading unrelated files
 - **PromptOptimizer** helps you write better prompts that need fewer tokens (~80% reduction)
 
 ---
@@ -265,6 +311,30 @@ Add `knowledgegraph/` to your `.gitignore` -- it's generated output:
 ```bash
 echo "knowledgegraph/" >> .gitignore
 ```
+
+---
+
+## Configuration
+
+### `.tokendietignore`
+
+Create a `.tokendietignore` file in your project root to exclude files from the graph (same syntax as `.gitignore`):
+
+```
+# Exclude generated code
+generated/
+*.pb.ts
+dist/
+
+# Exclude vendor
+vendor/
+node_modules/
+
+# Exclude specific files
+package-lock.json
+```
+
+This reduces graph noise and improves token reduction by excluding irrelevant files.
 
 ---
 

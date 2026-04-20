@@ -1,27 +1,33 @@
 ---
 type: community
 community_id: 10
-member_count: 6
+member_count: 9
 ---
 
 # Community 10
 
 #tokendiet/community-10
 
-## Members (6)
-- [[src_types_theme.ts]]
-- [[ColorPalette]]
-- [[Spacing]]
-- [[Typography]]
-- [[Breakpoints]]
-- [[Theme]]
+## Members (9)
+- [[src_utils_validators.ts]]
+- [[validateRequired]]
+- [[validateMinLength]]
+- [[validateMaxLength]]
+- [[validatePattern]]
+- [[validateEmail]]
+- [[validateUrl]]
+- [[runValidation]]
+- [[composeValidators]]
 
 ## Bridge Nodes
-- [[src_types_theme.ts]] (5 connections)
-- [[ColorPalette]] (1 connections)
-- [[Spacing]] (1 connections)
-- [[Typography]] (1 connections)
-- [[Breakpoints]] (1 connections)
+- [[src_utils_validators.ts]] (8 connections)
+- [[runValidation]] (5 connections)
+- [[validatePattern]] (3 connections)
+- [[validateRequired]] (2 connections)
+- [[validateMinLength]] (2 connections)
+
+## Connected Communities
+- [[_COMMUNITY_1]]
 
 ## Dataview Query
 ```dataview

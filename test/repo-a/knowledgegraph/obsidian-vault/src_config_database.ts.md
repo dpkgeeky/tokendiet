@@ -1,10 +1,10 @@
 ---
 source_file: "src/config/database.ts"
 type: file
-community: 0
+community: 1
 ---
 
-#tokendiet/file #tokendiet/community-0
+#tokendiet/file #tokendiet/community-1
 
 - imports [[.._utils_logger]]
 - contains [[DatabaseConfig]]

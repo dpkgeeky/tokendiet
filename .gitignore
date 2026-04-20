@@ -3,3 +3,4 @@ dist/
 /knowledgegraph/
 /tokendiet-out/
 *.tsbuildinfo
+codeburn-*.json

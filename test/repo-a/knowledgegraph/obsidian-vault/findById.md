@@ -1,11 +1,11 @@
 ---
 source_file: "src/services/taskService.ts"
 type: method
-community: 5
+community: 6
 location: 14
 ---
 
-#tokendiet/method #tokendiet/community-5
+#tokendiet/method #tokendiet/community-6
 
 - method [[BaseService]]
 

@@ -1,11 +1,11 @@
 ---
 source_file: "src/config/database.ts"
 type: method
-community: 1
+community: 0
 location: 57
 ---
 
-#tokendiet/method #tokendiet/community-1
+#tokendiet/method #tokendiet/community-0
 
 - method [[DatabaseConnection]]
 

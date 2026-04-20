@@ -1,20 +1,27 @@
 ---
 type: community
 community_id: 12
-member_count: 2
+member_count: 6
 ---
 
 # Community 12
 
 #tokendiet/community-12
 
-## Members (2)
-- [[package.json]]
-- [[src_index.ts]]
+## Members (6)
+- [[src_context_ThemeProvider.tsx]]
+- [[.._types_theme]]
+- [[ThemeContextValue]]
+- [[ThemeContext]]
+- [[ThemeProviderProps]]
+- [[ThemeProvider]]
 
 ## Bridge Nodes
-- [[package.json]] (0 connections)
-- [[src_index.ts]] (0 connections)
+- [[src_context_ThemeProvider.tsx]] (5 connections)
+- [[.._types_theme]] (1 connections)
+- [[ThemeContextValue]] (1 connections)
+- [[ThemeContext]] (1 connections)
+- [[ThemeProviderProps]] (1 connections)
 
 ## Dataview Query
 ```dataview

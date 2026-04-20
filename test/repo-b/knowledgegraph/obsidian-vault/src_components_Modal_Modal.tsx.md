@@ -1,10 +1,10 @@
 ---
 source_file: "src/components/Modal/Modal.tsx"
 type: file
-community: 11
+community: 0
 ---
 
-#tokendiet/file #tokendiet/community-11
+#tokendiet/file #tokendiet/community-0
 
 - imports [[.._.._types_common]]
 - imports [[.._.._hooks_useClickOutside]]
@@ -12,6 +12,6 @@ community: 11
 - imports [[.._.._utils_portal]]
 - imports [[.._.._utils_cn]]
 - contains [[ModalProps]]
-- contains [[Modal]]
+- contains [[Modal_2]]
 
 > Source: `src/components/Modal/Modal.tsx`

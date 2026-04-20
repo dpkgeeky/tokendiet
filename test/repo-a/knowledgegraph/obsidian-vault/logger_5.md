@@ -1,11 +1,11 @@
 ---
 source_file: "src/index.ts"
 type: function
-community: 1
+community: 0
 location: 6
 ---
 
-#tokendiet/function #tokendiet/community-1
+#tokendiet/function #tokendiet/community-0
 
 - contains [[src_index.ts]]
 - calls [[createLogger]]

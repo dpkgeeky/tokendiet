@@ -1,41 +1,42 @@
 ---
 type: community
 community_id: 4
-member_count: 15
+member_count: 18
 ---
 
 # Community 4
 
 #tokendiet/community-4
 
-## Members (15)
-- [[ValidationError]]
-- [[src_middleware_validation.ts]]
-- [[ValidatorFn]]
-- [[maxLength]]
-- [[validateBody]]
-- [[validateTaskStatus]]
-- [[validateTaskPriority]]
-- [[parsePagination]]
-- [[src_models_task.ts]]
-- [[Task]]
-- [[CreateTaskDTO]]
-- [[UpdateTaskDTO]]
-- [[isValidStatus]]
-- [[isValidPriority]]
-- [[getDefaultTask]]
+## Members (18)
+- [[src_models_project.ts]]
+- [[._task]]
+- [[._user]]
+- [[Project]]
+- [[CreateProjectDTO]]
+- [[UpdateProjectDTO]]
+- [[ProjectSummary]]
+- [[computeProjectSummary]]
+- [[isProjectMember]]
+- [[getActiveProjects]]
+- [[src_models_user.ts]]
+- [[User]]
+- [[CreateUserDTO]]
+- [[UpdateUserDTO]]
+- [[UserPublicProfile]]
+- [[toPublicProfile]]
+- [[hasPermission]]
+- [[isValidEmail]]
 
 ## Bridge Nodes
-- [[src_middleware_validation.ts]] (14 connections)
-- [[src_models_task.ts]] (6 connections)
-- [[ValidationError]] (5 connections)
-- [[validateBody]] (4 connections)
-- [[validateTaskStatus]] (3 connections)
+- [[src_models_project.ts]] (9 connections)
+- [[src_models_user.ts]] (7 connections)
+- [[computeProjectSummary]] (2 connections)
+- [[toPublicProfile]] (2 connections)
+- [[hasPermission]] (2 connections)
 
 ## Connected Communities
 - [[_COMMUNITY_3]]
-- [[_COMMUNITY_0]]
-- [[_COMMUNITY_8]]
 - [[_COMMUNITY_5]]
 
 ## Dataview Query

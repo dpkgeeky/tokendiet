@@ -1,24 +1,12 @@
 ---
-source_file: "src/hooks/useTheme.ts"
-type: function
-community: 1
-location: 17
+source_file: "src/__tests__/useTheme.test.ts"
+type: test
+community: 7
+location: 3
 ---
 
-#tokendiet/function #tokendiet/community-1
+#tokendiet/test #tokendiet/community-7
 
-- contains [[src_hooks_useTheme.ts]]
-- calls [[ButtonGroup]]
-- calls [[SearchInput]]
-- calls [[Container]]
-- calls [[Grid]]
-- calls [[Stack]]
-- calls [[ConfirmDialog]]
-- calls [[Modal]]
-- calls [[useBreakpoint]]
-- calls [[useMinWidth]]
-- calls [[useMaxWidth]]
-- calls [[useThemeColor]]
-- calls [[useSpacing]]
+- contains [[src___tests___useTheme.test.ts]]
 
-> Source: `src/hooks/useTheme.ts:17`
+> Source: `src/__tests__/useTheme.test.ts:3`

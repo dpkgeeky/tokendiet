@@ -1,10 +1,10 @@
 ---
 source_file: "src/utils/helpers.ts"
 type: file
-community: 6
+community: 7
 ---
 
-#tokendiet/file #tokendiet/community-6
+#tokendiet/file #tokendiet/community-7
 
 - imports [[crypto]]
 - contains [[generateId]]

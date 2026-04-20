@@ -1,10 +1,10 @@
 ---
 source_file: "src/utils/cn.ts"
 type: file
-community: 4
+community: 8
 ---
 
-#tokendiet/file #tokendiet/community-4
+#tokendiet/file #tokendiet/community-8
 
 - contains [[ClassValue]]
 - contains [[toClassString]]

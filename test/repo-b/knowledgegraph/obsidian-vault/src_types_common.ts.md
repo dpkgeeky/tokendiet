@@ -1,10 +1,10 @@
 ---
 source_file: "src/types/common.ts"
 type: file
-community: 3
+community: 4
 ---
 
-#tokendiet/file #tokendiet/community-3
+#tokendiet/file #tokendiet/community-4
 
 - contains [[BaseProps]]
 - contains [[FormFieldProps]]

@@ -98,6 +98,20 @@
         "a": 1,
         "rgb": 16497668
       }
+    },
+    {
+      "query": "tag:#tokendiet/community-13",
+      "color": {
+        "a": 1,
+        "rgb": 3450963
+      }
+    },
+    {
+      "query": "tag:#tokendiet/community-14",
+      "color": {
+        "a": 1,
+        "rgb": 16739585
+      }
     }
   ],
   "close": false

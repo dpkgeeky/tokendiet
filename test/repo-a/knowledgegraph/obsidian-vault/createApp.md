@@ -1,11 +1,11 @@
 ---
 source_file: "src/app.ts"
 type: function
-community: 1
+community: 0
 location: 11
 ---
 
-#tokendiet/function #tokendiet/community-1
+#tokendiet/function #tokendiet/community-0
 
 - contains [[src_app.ts]]
 - calls [[logger]]

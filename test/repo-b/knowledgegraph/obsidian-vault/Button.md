@@ -1,12 +1,12 @@
 ---
-source_file: "src/components/Button/Button.tsx"
-type: function
-community: 0
-location: 17
+source_file: "src/__tests__/Button.test.tsx"
+type: test
+community: 5
+location: 3
 ---
 
-#tokendiet/function #tokendiet/community-0
+#tokendiet/test #tokendiet/community-5
 
-- contains [[src_components_Button_Button.tsx]]
+- contains [[src___tests___Button.test.tsx]]
 
-> Source: `src/components/Button/Button.tsx:17`
+> Source: `src/__tests__/Button.test.tsx:3`

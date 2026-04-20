@@ -9,26 +9,25 @@ member_count: 9
 #tokendiet/community-5
 
 ## Members (9)
-- [[src_utils_portal.ts]]
-- [[react-dom]]
-- [[PORTAL_ROOT_ID]]
-- [[getPortalRoot]]
-- [[createPortalContainer]]
-- [[removePortalContainer]]
-- [[usePortal]]
-- [[renderPortal]]
-- [[usePortalRenderer]]
+- [[src___tests___Button.test.tsx]]
+- [[.._components_Button_Button]]
+- [[Button]]
+- [[should_render_with_default_props]]
+- [[should_apply_variant_classes]]
+- [[should_handle_disabled_state]]
+- [[should_call_onClick_handler]]
+- [[should_support_size_variants]]
+- [[should_render_loading_state]]
 
 ## Bridge Nodes
-- [[src_utils_portal.ts]] (9 connections)
-- [[usePortal]] (5 connections)
-- [[getPortalRoot]] (3 connections)
-- [[createPortalContainer]] (3 connections)
-- [[usePortalRenderer]] (3 connections)
+- [[src___tests___Button.test.tsx]] (9 connections)
+- [[.._components_Button_Button]] (1 connections)
+- [[Button]] (1 connections)
+- [[should_render_with_default_props]] (1 connections)
+- [[should_apply_variant_classes]] (1 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_2]]
-- [[_COMMUNITY_11]]
+- [[_COMMUNITY_0]]
 
 ## Dataview Query
 ```dataview
