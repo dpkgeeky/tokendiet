@@ -1,6 +1,6 @@
 ---
 name: tokendiet
-description: "Token optimization suite for Claude Code — knowledgegraph, promptoptimizer.\nTRIGGER when: user asks to optimize/improve/restructure a prompt for fewer tokens; user asks to map, explore, or understand codebase structure; user says 'use knowledge graph' or 'build graph'; user wants minimal context for a task; user references knowledgegraph/ directory or graph.json; user asks about codebase entities, relationships, or communities; user asks to traverse or search across the full codebase ('find all X', 'how does X work', 'what calls X', 'show me the architecture', 'list all endpoints/routes/models/services'); user asks broad structural questions ('how is the project organized', 'what depends on X', 'trace the flow from X to Y'); user asks to refactor across multiple files or understand cross-cutting concerns; user asks about impact or blast radius of a change ('what will this break', 'what depends on this', 'what does changing X affect'); user asks to update or refresh the graph ('update graph', 'rebuild graph', 'refresh knowledge graph'); user asks about dead code or unused functions ('find dead code', 'what is unused', 'find unreferenced code'); user asks about test coverage or which tests cover a file ('what tests cover X', 'find tests for X', 'is X tested'); user asks about coupling or architecture quality ('what is tightly coupled', 'find coupling issues', 'architecture health'); user wants to exclude files from analysis or mentions .tokendietignore; user starts a new coding task and needs context (auto-use 'update' then 'context --detail=minimal' for token-efficient onboarding); user asks how two things are connected ('how are X and Y related', 'connection between A and B', 'path from X to Y'); user announces intent to modify shared/core code ('I'm going to change X', 'refactoring X', 'modifying the base class' — auto-run impact); user asks about imports or callers ('what imports X', 'what uses this', 'who calls this function', 'what depends on this module'); user asks about module boundaries or API surface ('what does X export', 'public interface of X', 'API surface'); user is new to the codebase or onboarding ('I'm new here', 'give me an overview', 'help me understand this project', 'where do I start'); user is planning a change ('what files do I need to touch', 'scope this change', 'estimate effort for X', 'plan the implementation'); user asks where something is defined ('where is X defined', 'find definition of X', 'locate X' — query is faster than grep); user asks about circular dependencies or cycles ('find circular deps', 'are there cycles', 'dependency loops'); user asks about modules or domains ('what modules exist', 'show me the domains', 'list clusters', 'what are the components'); user is doing PR review or scoping changes ('review scope', 'what did this change affect', 'scope of these changes').\nSKIP: simple single-file edits, bug fixes, or feature work in known files; test writing or debugging in a specific file; questions where the user already provided the relevant file path."
+description: "Token optimization suite for Claude Code — knowledgegraph, promptoptimizer.\nTRIGGER when: user asks to optimize prompts for fewer tokens; user asks about codebase structure, architecture, dependencies, imports, callers, or module boundaries; user wants to explore, map, query, or understand the codebase graph; user asks about impact/blast-radius of changes; user needs context for a coding task; user asks about dead code, test coverage, coupling, or circular dependencies; user is onboarding to a new codebase; user is planning/scoping changes or reviewing PRs; user mentions knowledge graph, graph.json, or .tokendietignore.\nSKIP: single-file edits with known paths; debugging in a specific file; user already provided the relevant context."
 argument-hint: "[knowledgegraph|promptoptimizer] [args...]"
 allowed-tools:
   - Bash
@@ -25,6 +25,19 @@ Commands:
 
 Aliases: kg, optimize
 ```
+
+---
+
+# Auto-Activation Behaviors
+
+When this skill is triggered without explicit subcommand arguments, infer the appropriate action:
+
+- **New coding task** → run `update` then `context <task> --detail=minimal`
+- **User announces intent to modify shared code** → run `impact` on that entity
+- **User asks about test coverage** → run `query` filtering for test entities
+- **User asks what depends on / imports X** → run `query <X>` or `impact <X>`
+- **User is onboarding** → run `context "project overview" --detail=standard`
+- **User asks about architecture / modules** → run `build` (if no graph exists) then show report summary
 
 ---
 
