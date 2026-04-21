@@ -1,10 +1,10 @@
 ---
 source_file: "src/__tests__/auth.test.ts"
 type: file
-community: 10
+community: 11
 ---
 
-#tokendiet/file #tokendiet/community-10
+#tokendiet/file #tokendiet/community-11
 
 - imports [[.._middleware_auth]]
 - contains [[Auth_Middleware]]

@@ -1,11 +1,11 @@
 ---
 source_file: "src/services/projectService.ts"
 type: class
-community: 11
+community: 12
 location: 8
 ---
 
-#tokendiet/class #tokendiet/community-11
+#tokendiet/class #tokendiet/community-12
 
 - contains [[src_services_projectService.ts]]
 - calls [[logger_8]]

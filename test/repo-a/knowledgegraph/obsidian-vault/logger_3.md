@@ -1,11 +1,11 @@
 ---
 source_file: "src/controllers/taskController.ts"
 type: function
-community: 1
+community: 2
 location: 9
 ---
 
-#tokendiet/function #tokendiet/community-1
+#tokendiet/function #tokendiet/community-2
 
 - contains [[src_controllers_taskController.ts]]
 - calls [[createLogger]]

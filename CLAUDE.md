@@ -32,6 +32,17 @@ Single SKILL.md routes based on the first argument:
 - `/tokendiet knowledgegraph` (or `kg`) -> TypeScript pipeline via `${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts`
 - `/tokendiet promptoptimizer` (or `optimize`) -> pure markdown optimization analysis
 
+## Model Routing (Cost Optimization)
+
+ALL knowledgegraph operations (build, update, query, path, context, impact) are delegated to a Haiku subagent (`kg-builder`) by default. This ensures graph ops cost ~$0.001-0.01 on Haiku instead of ~$0.05-0.50 on Opus. Users can override with `--model=opus` if needed. The `kg-builder` agent definition is in `.claude/agents/kg-builder.md`.
+
+After graph operations, Claude uses the graph output to answer the user's question directly. No follow-up file reading unless the user explicitly asks for line-level detail.
+
+## Lazy Exports
+
+By default, `build` and `update` only export `graph.json` and `report.md`.
+Use `--exports=all` to also generate Obsidian vault and HTML visualization.
+
 ## Tool 1: PromptOptimizer (auto-triggered)
 
 - **Goal**: Structural optimization for 70%+ reduction via smarter prompting

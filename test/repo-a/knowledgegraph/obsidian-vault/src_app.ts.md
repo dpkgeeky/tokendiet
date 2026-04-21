@@ -1,10 +1,10 @@
 ---
 source_file: "src/app.ts"
 type: file
-community: 0
+community: 10
 ---
 
-#tokendiet/file #tokendiet/community-0
+#tokendiet/file #tokendiet/community-10
 
 - imports [[cors]]
 - imports [[helmet]]

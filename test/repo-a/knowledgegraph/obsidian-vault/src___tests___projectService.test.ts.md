@@ -1,10 +1,10 @@
 ---
 source_file: "src/__tests__/projectService.test.ts"
 type: file
-community: 8
+community: 9
 ---
 
-#tokendiet/file #tokendiet/community-8
+#tokendiet/file #tokendiet/community-9
 
 - imports [[.._services_projectService]]
 - contains [[ProjectService]]

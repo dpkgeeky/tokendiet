@@ -1,10 +1,10 @@
 ---
 source_file: "src/__tests__/userService.test.ts"
 type: file
-community: 9
+community: 7
 ---
 
-#tokendiet/file #tokendiet/community-9
+#tokendiet/file #tokendiet/community-7
 
 - imports [[.._services_userService]]
 - contains [[UserService]]

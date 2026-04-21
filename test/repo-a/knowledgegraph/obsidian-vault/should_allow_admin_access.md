@@ -1,11 +1,11 @@
 ---
 source_file: "src/__tests__/auth.test.ts"
 type: test
-community: 10
+community: 11
 location: 31
 ---
 
-#tokendiet/test #tokendiet/community-10
+#tokendiet/test #tokendiet/community-11
 
 - contains [[src___tests___auth.test.ts]]
 

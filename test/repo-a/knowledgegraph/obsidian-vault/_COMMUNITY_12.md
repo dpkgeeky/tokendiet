@@ -9,23 +9,29 @@ member_count: 7
 #tokendiet/community-12
 
 ## Members (7)
-- [[src_models_task.ts]]
-- [[Task]]
-- [[CreateTaskDTO]]
-- [[UpdateTaskDTO]]
-- [[isValidStatus]]
-- [[isValidPriority]]
-- [[getDefaultTask]]
+- [[logger_2]]
+- [[ProjectService_2]]
+- [[createProject_2]]
+- [[updateProject]]
+- [[addMember_2]]
+- [[getProjectSummary]]
+- [[findByMember]]
 
 ## Bridge Nodes
-- [[src_models_task.ts]] (6 connections)
-- [[isValidStatus]] (2 connections)
-- [[isValidPriority]] (2 connections)
-- [[Task]] (1 connections)
-- [[CreateTaskDTO]] (1 connections)
+- [[logger_2]] (12 connections)
+- [[ProjectService_2]] (10 connections)
+- [[createProject_2]] (2 connections)
+- [[updateProject]] (2 connections)
+- [[addMember_2]] (2 connections)
 
 ## Connected Communities
+- [[_COMMUNITY_2]]
+- [[_COMMUNITY_0]]
 - [[_COMMUNITY_5]]
+- [[_COMMUNITY_1]]
+- [[_COMMUNITY_6]]
+- [[_COMMUNITY_8]]
+- [[_COMMUNITY_9]]
 
 ## Dataview Query
 ```dataview

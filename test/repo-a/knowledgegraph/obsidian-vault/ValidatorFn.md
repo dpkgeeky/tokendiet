@@ -1,11 +1,11 @@
 ---
 source_file: "src/middleware/validation.ts"
 type: interface
-community: 5
+community: 1
 location: 7
 ---
 
-#tokendiet/interface #tokendiet/community-5
+#tokendiet/interface #tokendiet/community-1
 
 - contains [[src_middleware_validation.ts]]
 

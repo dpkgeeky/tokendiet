@@ -9,29 +9,30 @@ member_count: 12
 #tokendiet/community-7
 
 ## Members (12)
-- [[src_utils_helpers.ts]]
-- [[crypto]]
-- [[generateId]]
-- [[slugify]]
-- [[PaginationOptions]]
-- [[PaginatedResult]]
-- [[paginate]]
-- [[formatDate]]
-- [[formatDateTime]]
-- [[omitKeys]]
-- [[pickKeys]]
-- [[delay]]
+- [[src___tests___userService.test.ts]]
+- [[.._services_userService]]
+- [[UserService]]
+- [[authenticate_2]]
+- [[should_authenticate_valid_credentials]]
+- [[should_reject_invalid_password]]
+- [[should_reject_non-existent_user]]
+- [[createUser]]
+- [[should_create_user_with_hashed_password]]
+- [[should_reject_duplicate_email]]
+- [[deactivateUser]]
+- [[should_mark_user_as_inactive]]
 
 ## Bridge Nodes
-- [[src_utils_helpers.ts]] (11 connections)
-- [[paginate]] (3 connections)
-- [[crypto]] (1 connections)
-- [[generateId]] (1 connections)
-- [[slugify]] (1 connections)
+- [[src___tests___userService.test.ts]] (12 connections)
+- [[.._services_userService]] (3 connections)
+- [[UserService]] (1 connections)
+- [[authenticate_2]] (1 connections)
+- [[should_authenticate_valid_credentials]] (1 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_11]]
 - [[_COMMUNITY_6]]
+- [[_COMMUNITY_2]]
+- [[_COMMUNITY_1]]
 
 ## Dataview Query
 ```dataview

@@ -1,11 +1,11 @@
 ---
 source_file: "src/controllers/projectController.ts"
 type: function
-community: 11
+community: 12
 location: 10
 ---
 
-#tokendiet/function #tokendiet/community-11
+#tokendiet/function #tokendiet/community-12
 
 - contains [[src_controllers_projectController.ts]]
 - calls [[createLogger]]

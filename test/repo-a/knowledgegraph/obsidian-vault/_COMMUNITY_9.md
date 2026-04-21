@@ -9,28 +9,29 @@ member_count: 11
 #tokendiet/community-9
 
 ## Members (11)
-- [[src___tests___userService.test.ts]]
-- [[UserService]]
-- [[authenticate_2]]
-- [[should_authenticate_valid_credentials]]
-- [[should_reject_invalid_password]]
-- [[should_reject_non-existent_user]]
-- [[createUser]]
-- [[should_create_user_with_hashed_password]]
-- [[should_reject_duplicate_email]]
-- [[deactivateUser]]
-- [[should_mark_user_as_inactive]]
+- [[src___tests___projectService.test.ts]]
+- [[.._services_projectService]]
+- [[ProjectService]]
+- [[createProject]]
+- [[should_create_a_project_with_owner]]
+- [[should_auto-add_owner_as_member]]
+- [[addMember]]
+- [[should_add_member_to_project]]
+- [[should_not_duplicate_members]]
+- [[getProjectStats]]
+- [[should_return_task_counts_by_status]]
 
 ## Bridge Nodes
-- [[src___tests___userService.test.ts]] (12 connections)
-- [[UserService]] (1 connections)
-- [[authenticate_2]] (1 connections)
-- [[should_authenticate_valid_credentials]] (1 connections)
-- [[should_reject_invalid_password]] (1 connections)
+- [[src___tests___projectService.test.ts]] (11 connections)
+- [[.._services_projectService]] (3 connections)
+- [[ProjectService]] (1 connections)
+- [[createProject]] (1 connections)
+- [[should_create_a_project_with_owner]] (1 connections)
 
 ## Connected Communities
+- [[_COMMUNITY_12]]
+- [[_COMMUNITY_2]]
 - [[_COMMUNITY_1]]
-- [[_COMMUNITY_6]]
 
 ## Dataview Query
 ```dataview

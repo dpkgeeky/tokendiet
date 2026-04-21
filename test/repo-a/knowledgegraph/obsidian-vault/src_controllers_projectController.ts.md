@@ -1,10 +1,10 @@
 ---
 source_file: "src/controllers/projectController.ts"
 type: file
-community: 1
+community: 2
 ---
 
-#tokendiet/file #tokendiet/community-1
+#tokendiet/file #tokendiet/community-2
 
 - imports [[express]]
 - imports [[.._services_projectService]]

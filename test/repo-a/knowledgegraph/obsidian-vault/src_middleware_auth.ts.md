@@ -1,10 +1,10 @@
 ---
 source_file: "src/middleware/auth.ts"
 type: file
-community: 3
+community: 5
 ---
 
-#tokendiet/file #tokendiet/community-3
+#tokendiet/file #tokendiet/community-5
 
 - imports [[express]]
 - imports [[.._models_user]]

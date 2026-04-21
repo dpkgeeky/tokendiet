@@ -28,6 +28,23 @@ Aliases: kg, optimize
 
 ---
 
+# Model Routing (Cost Optimization)
+
+**ALL knowledgegraph operations run on Haiku by default** — build, update, query, path, context, and impact.
+
+For every knowledgegraph subcommand, delegate to a Haiku agent using the Agent tool:
+
+```
+Agent(model: "haiku", prompt: "Run this command and return the full stdout output:
+cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts <subcommand> [args]")
+```
+
+Do NOT run any knowledgegraph commands directly in this (Opus) context unless the user explicitly requests `--model=opus`.
+
+This ensures all graph operations cost ~$0.001-0.01 on Haiku instead of ~$0.05-0.50 on Opus.
+
+---
+
 # Auto-Activation Behaviors
 
 When this skill is triggered without explicit subcommand arguments, infer the appropriate action:
@@ -38,6 +55,11 @@ When this skill is triggered without explicit subcommand arguments, infer the ap
 - **User asks what depends on / imports X** → run `query <X>` or `impact <X>`
 - **User is onboarding** → run `context "project overview" --detail=standard`
 - **User asks about architecture / modules** → run `build` (if no graph exists) then show report summary
+
+**CRITICAL — Graph Is the Answer:**
+After graph operations complete, use the graph output to answer the user's question directly.
+Do NOT follow up with additional file reading, Grep, or Agent subagents — the graph already contains the structural context needed.
+Only read individual files if the user explicitly asks for line-level detail or code snippets.
 
 ---
 
@@ -58,23 +80,6 @@ Rules:
 
 ---
 
-# Graph Staleness Detection
-
-Before using an existing graph for `query`, `path`, or `context` subcommands, check whether the graph is stale:
-
-```bash
-cd $PROJECT_DIR && stat -f "%m" knowledgegraph/graph.json 2>/dev/null && git log --oneline --since="$(date -r $(stat -f '%m' knowledgegraph/graph.json) '+%Y-%m-%dT%H:%M:%S')" --diff-filter=ADMR -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py' '*.go' '*.rs' '*.java' '*.kt' '*.cs' '*.rb' '*.php' '*.c' '*.cpp' '*.h' '*.hpp' '*.swift' '*.scala' | head -20
-```
-
-If the git log shows meaningful changes since the graph was built, auto-rebuild before answering:
-- **Rebuild when**: new/deleted/renamed source files, >5 source files changed, new classes/functions/routes/models added
-- **Skip rebuild when**: only docs/README/config/comments/whitespace changed, single-line fixes in 1-2 files, no source file changes at all
-- If `knowledgegraph/graph.json` does not exist, always build first
-
-This keeps the graph current without wasting tokens on unnecessary rebuilds.
-
----
-
 # knowledgegraph
 
 Route when $ARGUMENTS starts with `knowledgegraph` or `kg`.
@@ -87,74 +92,22 @@ Parse the remaining arguments as the subcommand:
 - `context <task description> [--detail=minimal|standard|full]`: Get minimal relevant context for a task
 - `impact <entity> [--depth=N]`: BFS blast-radius from an entity
 
-## Full Pipeline (build)
+## Subcommands
 
-Run from the project root:
-
-```bash
-cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts build
+All subcommands MUST be delegated to Haiku via Model Routing (see above). The base command is:
+```
+cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts <subcommand> [args]
 ```
 
-After the build completes, read the generated report:
+- **build [--force] [--exports=all]**: Full pipeline. Use `--exports=all` for Obsidian vault + HTML.
+- **update**: Incremental rebuild (SHA256 cached). Prefer over `build` when graph exists. Use `build --force` for full rebuild.
+- **query \<term\> [--detail=minimal|standard|full]**: Search graph nodes. Use `--detail=minimal` for fewer tokens.
+- **path \<A\> \<B\>**: Shortest path between two entities.
+- **context \<task\> [--detail=minimal|standard|full]**: Relevant context for a task. Use BEFORE coding to narrow scope.
+- **impact \<entity\> [--depth=N]**: BFS blast-radius analysis.
 
-```bash
-cat knowledgegraph/report.md
-```
-
-Then tell the user:
-1. The token savings achieved (from the report)
-2. How many nodes, edges, and communities were found
-3. Where the outputs are:
-   - `knowledgegraph/obsidian-vault/` -- Open in Obsidian for interactive graph view with community-colored nodes
-   - `knowledgegraph/graph.html` -- Open in browser for vis.js visualization
-   - `knowledgegraph/graph.json` -- Claude-consumable compressed context
-   - `knowledgegraph/report.md` -- Full analysis report
-
-## Incremental Update
-
-Prefer `update` over `build` when the graph already exists -- it only re-extracts changed files:
-
-```bash
-cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts update
-```
-
-Uses SHA256 hash caching. Reports "No changes detected" if graph is current. Use `build --force` for a full rebuild.
-
-## Query Subcommand
-
-```bash
-cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts query <term>
-```
-
-Show the matching nodes and their connections. This replaces needing to grep/read files -- surgical context retrieval.
-
-Use `--detail=minimal` for exploratory queries (fewer tokens). Use `--detail=full` when working on specific files.
-
-## Path Subcommand
-
-```bash
-cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts path <A> <B>
-```
-
-Show the shortest path between two entities. Useful for understanding how two pieces of code are connected without reading intermediate files.
-
-## Context Subcommand
-
-```bash
-cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts context <task description>
-```
-
-Given a task description, returns only the relevant clusters and nodes. Use this BEFORE starting any coding task to load minimal context instead of reading the full codebase.
-
-Use `--detail=minimal` for a quick overview (~100 tokens).
-
-## Impact Subcommand
-
-```bash
-cd $PROJECT_DIR && npx tsx ${CLAUDE_SKILL_DIR}/scripts/knowledgegraph/index.ts impact <entity> --depth=2
-```
-
-BFS blast-radius analysis. Shows all entities affected by changes to the given entity, sorted by hop distance. Use before modifying high-connectivity code.
+After build/update, tell the user outputs are in `knowledgegraph/`.
+Do NOT read report.md or graph.json into this (Opus) context.
 
 ## Token Optimization Workflow
 
@@ -236,63 +189,3 @@ For the given prompt, identify these token waste patterns:
 ```
 
 Estimate tokens as: word count * 1.3.
-
-## Example
-
-**Input**: "You are a helpful coding assistant. I would like you to please help me write a Python function. The function should take a list of numbers as input. It should then calculate the average of those numbers. Please make sure to handle the case where the list is empty. If the list is empty, the function should return 0."
-
-**Output**:
-```
-## Token Waste Analysis
-
-1. **Redundancy**: "I would like you to please help me write" + "Please make sure" -- double politeness
-2. **Over-specification**: "take a list of numbers as input" + "calculate the average of those numbers" -- can be said in 4 words
-3. **Verbose framing**: "You are a helpful coding assistant" -- unnecessary role-setting for a coding task
-4. **Unnecessary detail**: "Also, please add type hints" + "Make sure the code is clean and well-documented with docstrings" -- standard Python best practices Claude follows by default
-
-## Haiku Suggestions
-
-### 1. Redundant Asks
-> strip the double please
-> one clear ask beats two polite
-> tokens fall like leaves
-
-**Explanation**: Remove all politeness wrappers -- "write" alone is sufficient.
-
-### 2. Over-specification
-> average of list --
-> four words hold the full intent
-> let the rest dissolve
-
-**Explanation**: Collapse the full description to "avg of number list, handle empty->0".
-
-### 3. Role Preamble
-> no need to declare
-> what the model already
-> knows it ought to be
-
-**Explanation**: Remove "You are a helpful coding assistant" -- adds zero value.
-
-### 4. Default Behavior
-> type hints and docstrings --
-> good code needs no reminder
-> trust the baseline skill
-
-**Explanation**: Claude adds type hints and docstrings by default for Python -- omit.
-
-## Optimized Rewrite
-
-Python fn: avg of number list, ret 0 if empty
-
-## Stats
-- Before: ~85 tokens
-- After: ~12 tokens
-- Saved: ~86% reduction
-
-## Optimization Principles Applied
-- Removed role preamble (Claude knows it's a coding assistant)
-- Collapsed verbose specification to keyword form
-- Removed default-behavior instructions (type hints, docstrings)
-- Stripped all politeness padding
-- Used abbreviations (fn, avg, ret)
-```

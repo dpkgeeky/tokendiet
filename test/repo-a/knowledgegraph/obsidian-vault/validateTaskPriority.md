@@ -1,11 +1,11 @@
 ---
 source_file: "src/middleware/validation.ts"
 type: function
-community: 5
+community: 1
 location: 75
 ---
 
-#tokendiet/function #tokendiet/community-5
+#tokendiet/function #tokendiet/community-1
 
 - contains [[src_middleware_validation.ts]]
 - calls [[isValidPriority]]

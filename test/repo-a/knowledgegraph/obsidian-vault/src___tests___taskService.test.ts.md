@@ -1,10 +1,10 @@
 ---
 source_file: "src/__tests__/taskService.test.ts"
 type: file
-community: 2
+community: 3
 ---
 
-#tokendiet/file #tokendiet/community-2
+#tokendiet/file #tokendiet/community-3
 
 - imports [[.._services_taskService]]
 - contains [[TaskService]]

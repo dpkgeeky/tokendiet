@@ -1,11 +1,11 @@
 ---
 source_file: "src/__tests__/taskService.test.ts"
 type: test
-community: 2
+community: 3
 location: 40
 ---
 
-#tokendiet/test #tokendiet/community-2
+#tokendiet/test #tokendiet/community-3
 
 - contains [[src___tests___taskService.test.ts]]
 

@@ -18,7 +18,7 @@ export function exportAll(
   writeFileSync(join(options.outputDir, "report.md"), reportData.markdown);
 }
 
-function toJSON(graph: Graph, communities: CommunityMap, options: ExportOptions): void {
+export function toJSON(graph: Graph, communities: CommunityMap, options: ExportOptions): void {
   const strings: string[] = [];
   const stringIndex = new Map<string, number>();
   function intern(s: string): number {

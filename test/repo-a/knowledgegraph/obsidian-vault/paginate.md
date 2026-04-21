@@ -1,11 +1,11 @@
 ---
 source_file: "src/utils/helpers.ts"
 type: function
-community: 7
+community: 8
 location: 31
 ---
 
-#tokendiet/function #tokendiet/community-7
+#tokendiet/function #tokendiet/community-8
 
 - contains [[src_utils_helpers.ts]]
 - calls [[logger_2]]

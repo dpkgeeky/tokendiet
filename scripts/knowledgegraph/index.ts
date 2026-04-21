@@ -1,13 +1,14 @@
 import { resolve, basename } from "path";
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync, statSync } from "fs";
+import { execSync } from "child_process";
 import { detect } from "./detect.js";
 import { extract } from "./extract.js";
 import { build } from "./build.js";
 import { cluster, nameCommunities } from "./cluster.js";
 import { report } from "./report.js";
-import { exportAll } from "./export.js";
+import { exportAll, toJSON } from "./export.js";
 import { loadCache, saveCache, buildCache, diffFiles, hashFile } from "./cache.js";
-import type { CLIArgs, Subcommand, DetailLevel } from "./types.js";
+import type { CLIArgs, Subcommand, DetailLevel, ExportMode } from "./types.js";
 import Graph from "graphology";
 import { bidirectional } from "graphology-shortest-path";
 import { join } from "path";
@@ -19,6 +20,7 @@ function parseArgs(): CLIArgs {
   let detail: DetailLevel = "standard";
   let force = false;
   let depth = 2;
+  let exports: ExportMode = "json";
   const filtered: string[] = [];
 
   for (const arg of args.slice(1)) {
@@ -28,6 +30,8 @@ function parseArgs(): CLIArgs {
       force = true;
     } else if (arg.startsWith("--depth=")) {
       depth = parseInt(arg.split("=")[1]) || 2;
+    } else if (arg.startsWith("--exports=")) {
+      exports = arg.split("=")[1] as ExportMode;
     } else {
       filtered.push(arg);
     }
@@ -43,11 +47,28 @@ function parseArgs(): CLIArgs {
     case "impact":
       return { subcommand, target: filtered.join(" "), depth, detail };
     case "update":
-      return { subcommand, force };
+      return { subcommand, force, exports };
     case "build":
-      return { subcommand, force };
+      return { subcommand, force, exports };
     default:
       return { subcommand: "build" };
+  }
+}
+
+function isGraphStale(outputDir: string, rootDir: string): boolean {
+  const graphPath = join(outputDir, "graph.json");
+  if (!existsSync(graphPath)) return true;
+  try {
+    const mtime = statSync(graphPath).mtimeMs;
+    const since = new Date(mtime).toISOString();
+    const result = execSync(
+      `git log --oneline --since="${since}" --diff-filter=ADMR -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.py' '*.go' '*.rs' '*.java'`,
+      { cwd: rootDir, encoding: "utf-8", timeout: 5000 }
+    ).trim();
+    const changed = result ? result.split("\n").length : 0;
+    return changed > 5;
+  } catch {
+    return false;
   }
 }
 
@@ -168,18 +189,29 @@ async function main(): Promise<void> {
     const reportData = report(graph, communities, namedCommunities);
 
     console.log(`Exporting...`);
-    exportAll(graph, communities, reportData, { outputDir, projectName });
+    if (cliArgs.exports === "all") {
+      exportAll(graph, communities, reportData, { outputDir, projectName });
+    } else {
+      toJSON(graph, communities, { outputDir, projectName });
+      writeFileSync(join(outputDir, "report.md"), reportData.markdown);
+    }
 
     const newCache = buildCache(files, fileContents, extraction.nodes, extraction.edges);
     saveCache(outputDir, newCache);
 
     console.log(`\nDone! Output in ${outputDir}/`);
     console.log(`- graph.json (Claude-consumable compressed context)`);
-    console.log(`- graph.html (interactive visualization)`);
-    console.log(`- obsidian-vault/ (open in Obsidian for native graph view)`);
     console.log(`- report.md (analysis report)`);
+    if (cliArgs.exports === "all") {
+      console.log(`- graph.html (interactive visualization)`);
+      console.log(`- obsidian-vault/ (open in Obsidian for native graph view)`);
+    }
     console.log(`\n${reportData.markdown.split("\n").slice(0, 15).join("\n")}`);
     return;
+  }
+
+  if (isGraphStale(outputDir, rootDir)) {
+    console.log("Warning: graph may be stale (>5 files changed since last build). Run `/tokendiet kg update` to refresh.");
   }
 
   const graph = loadGraph(outputDir);
