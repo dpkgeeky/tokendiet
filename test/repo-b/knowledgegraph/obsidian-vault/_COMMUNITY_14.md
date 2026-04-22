@@ -1,18 +1,20 @@
 ---
 type: community
 community_id: 14
-member_count: 2
+member_count: 3
 ---
 
 # Community 14
 
 #tokendiet/community-14
 
-## Members (2)
+## Members (3)
+- [[codeburn-2026-04-21.json]]
 - [[package.json]]
 - [[src_index.ts]]
 
 ## Bridge Nodes
+- [[codeburn-2026-04-21.json]] (0 connections)
 - [[package.json]] (0 connections)
 - [[src_index.ts]] (0 connections)
 

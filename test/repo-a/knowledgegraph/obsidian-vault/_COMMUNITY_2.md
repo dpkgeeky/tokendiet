@@ -1,43 +1,50 @@
 ---
 type: community
 community_id: 2
-member_count: 18
+member_count: 19
 ---
 
 # Community 2
 
 #tokendiet/community-2
 
-## Members (18)
-- [[src___tests___taskService.test.ts]]
-- [[TaskService]]
-- [[createTask]]
-- [[should_create_a_task_with_valid_input]]
-- [[should_reject_task_with_empty_title]]
-- [[should_set_default_status_to_pending]]
-- [[updateTask]]
-- [[should_update_task_status]]
-- [[should_throw_on_non-existent_task]]
-- [[findByStatus]]
-- [[should_filter_tasks_by_status]]
-- [[should_return_empty_array_for_no_matches]]
-- [[TaskService_2]]
-- [[createTask_2]]
-- [[updateTask_2]]
-- [[findByProject]]
-- [[findByAssignee]]
-- [[findByStatus_2]]
+## Members (19)
+- [[.._middleware_auth]]
+- [[.._utils_logger]]
+- [[src_controllers_projectController.ts]]
+- [[express]]
+- [[._taskController]]
+- [[.._middleware_errorHandler]]
+- [[.._middleware_validation]]
+- [[.._utils_helpers]]
+- [[src_controllers_taskController.ts]]
+- [[logger_3]]
+- [[src_controllers_userController.ts]]
+- [[.._models_user]]
+- [[.._config_app]]
+- [[src_services_projectService.ts]]
+- [[.._models_project]]
+- [[._taskService]]
+- [[._userService]]
+- [[src_services_taskService.ts]]
+- [[src_services_userService.ts]]
 
 ## Bridge Nodes
-- [[src___tests___taskService.test.ts]] (13 connections)
-- [[TaskService_2]] (10 connections)
-- [[TaskService]] (1 connections)
-- [[createTask]] (1 connections)
-- [[should_create_a_task_with_valid_input]] (1 connections)
+- [[src_controllers_projectController.ts]] (10 connections)
+- [[src_controllers_taskController.ts]] (10 connections)
+- [[src_controllers_userController.ts]] (10 connections)
+- [[.._utils_logger]] (9 connections)
+- [[express]] (7 connections)
 
 ## Connected Communities
+- [[_COMMUNITY_11]]
 - [[_COMMUNITY_1]]
+- [[_COMMUNITY_0]]
 - [[_COMMUNITY_5]]
+- [[_COMMUNITY_9]]
+- [[_COMMUNITY_12]]
+- [[_COMMUNITY_3]]
+- [[_COMMUNITY_7]]
 - [[_COMMUNITY_6]]
 
 ## Dataview Query

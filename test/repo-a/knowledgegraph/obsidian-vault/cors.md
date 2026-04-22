@@ -1,11 +1,11 @@
 ---
 source_file: "src/app.ts"
 type: import
-community: 0
+community: 10
 location: 2
 ---
 
-#tokendiet/import #tokendiet/community-0
+#tokendiet/import #tokendiet/community-10
 
 - imports [[src_app.ts]]
 

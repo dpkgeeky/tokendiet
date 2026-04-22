@@ -1,21 +1,21 @@
 # Knowledge Graph Report
-_Generated 2026-04-20_
+_Generated 2026-04-21_
 
 ## Token Savings
 | Metric | Value |
 |--------|-------|
-| Raw codebase tokens | ~13,436 |
-| Compressed graph tokens | ~2,608 |
-| **Reduction** | **81%** |
+| Raw codebase tokens | ~18,519 |
+| Compressed graph tokens | ~2,635 |
+| **Reduction** | **86%** |
 
 ## Graph Summary
 | Metric | Count |
 |--------|-------|
-| Files | 25 |
-| Nodes | 162 |
+| Files | 26 |
+| Nodes | 163 |
 | Edges | 205 |
 | Communities | 15 |
-| Isolated nodes | 2 |
+| Isolated nodes | 3 |
 
 ## Edge Confidence
 | Level | Count | % |
@@ -211,7 +211,8 @@ _Generated 2026-04-20_
 - Breakpoints
 - Theme
 
-### Community 14: package.json (2 nodes)
+### Community 14: codeburn-2026-04-21.json (3 nodes)
+- codeburn-2026-04-21.json
 - package.json
 - src/index.ts
 
@@ -241,5 +242,6 @@ _Entities with no inbound references (may be entry points or dead code)_
 - _...and 40 more_
 
 ## Isolated Nodes
+- codeburn-2026-04-21.json
 - package.json
 - src/index.ts

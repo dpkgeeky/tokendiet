@@ -1,10 +1,10 @@
 ---
 source_file: "src/index.ts"
 type: file
-community: 0
+community: 10
 ---
 
-#tokendiet/file #tokendiet/community-0
+#tokendiet/file #tokendiet/community-10
 
 - imports [[._app]]
 - imports [[._config_database]]

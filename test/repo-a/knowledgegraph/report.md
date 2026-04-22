@@ -1,11 +1,11 @@
 # Knowledge Graph Report
-_Generated 2026-04-20_
+_Generated 2026-04-21_
 
 ## Token Savings
 | Metric | Value |
 |--------|-------|
 | Raw codebase tokens | ~17,144 |
-| Compressed graph tokens | ~3,500 |
+| Compressed graph tokens | ~3,504 |
 | **Reduction** | **80%** |
 
 ## Graph Summary
@@ -14,7 +14,7 @@ _Generated 2026-04-20_
 | Files | 24 |
 | Nodes | 207 |
 | Edges | 347 |
-| Communities | 14 |
+| Communities | 15 |
 | Isolated nodes | 1 |
 
 ## Edge Confidence
@@ -39,14 +39,7 @@ _Generated 2026-04-20_
 | src/__tests__/projectService.test.ts | 11 |
 
 ## Communities
-### Community 0: src (37 nodes)
-- src/app.ts
-- cors
-- helmet
-- ./routes
-- ./middleware/errorHandler
-- ./config/app
-- ./utils/logger
+### Community 0: config (31 nodes)
 - logger
 - createApp
 - src/config/app.ts
@@ -55,14 +48,36 @@ _Generated 2026-04-20_
 - validateAppConfig
 - configureLogger
 - DEFAULT_PAGE_SIZE
-- _...and 22 more_
-
-### Community 1: controllers (29 nodes)
-- ../services/taskService
-- ../services/userService
-- ../utils/logger
+- MAX_PAGE_SIZE
 - src/config/database.ts
 - DatabaseConfig
+- DatabaseConnection
+- getInstance
+- connect
+- disconnect
+- _...and 16 more_
+
+### Community 1: middleware (21 nodes)
+- ProjectController
+- BaseController
+- TaskController
+- UserController
+- src/middleware/validation.ts
+- ../models/task
+- ValidatorFn
+- required
+- minLength
+- maxLength
+- emailValidator
+- validateBody
+- validateTaskStatus
+- validateTaskPriority
+- parsePagination
+- _...and 6 more_
+
+### Community 2: controllers (19 nodes)
+- ../middleware/auth
+- ../utils/logger
 - src/controllers/projectController.ts
 - express
 - ./taskController
@@ -71,12 +86,16 @@ _Generated 2026-04-20_
 - ../utils/helpers
 - src/controllers/taskController.ts
 - logger
-- BaseController
-- TaskController
-- _...and 14 more_
+- src/controllers/userController.ts
+- ../models/user
+- ../config/app
+- src/services/projectService.ts
+- ../models/project
+- _...and 4 more_
 
-### Community 2: __tests__ (18 nodes)
+### Community 3: __tests__ (19 nodes)
 - src/__tests__/taskService.test.ts
+- ../services/taskService
 - TaskService
 - createTask
 - should create a task with valid input
@@ -90,26 +109,7 @@ _Generated 2026-04-20_
 - should return empty array for no matches
 - TaskService
 - createTask
-- updateTask
-- _...and 3 more_
-
-### Community 3: middleware (18 nodes)
-- src/middleware/auth.ts
-- ./errorHandler
-- logger
-- AuthenticatedRequest
-- extractToken
-- authenticate
-- requireRole
-- decodeToken
-- generateToken
-- src/middleware/errorHandler.ts
-- logger
-- AppError
-- NotFoundError
-- UnauthorizedError
-- ForbiddenError
-- _...and 3 more_
+- _...and 4 more_
 
 ### Community 4: models (18 nodes)
 - src/models/project.ts
@@ -129,22 +129,23 @@ _Generated 2026-04-20_
 - UserPublicProfile
 - _...and 3 more_
 
-### Community 5: middleware (15 nodes)
-- ProjectController
-- UserController
-- ValidationError
-- src/middleware/validation.ts
-- ValidatorFn
-- required
-- minLength
-- maxLength
-- emailValidator
-- validateBody
-- validateTaskStatus
-- validateTaskPriority
-- parsePagination
+### Community 5: middleware (17 nodes)
+- src/middleware/auth.ts
+- ./errorHandler
 - logger
-- createRouter
+- AuthenticatedRequest
+- extractToken
+- authenticate
+- requireRole
+- decodeToken
+- generateToken
+- src/middleware/errorHandler.ts
+- logger
+- AppError
+- NotFoundError
+- ValidationError
+- UnauthorizedError
+- _...and 2 more_
 
 ### Community 6: services (13 nodes)
 - logger
@@ -161,7 +162,21 @@ _Generated 2026-04-20_
 - findByEmail
 - getPublicProfile
 
-### Community 7: utils (12 nodes)
+### Community 7: __tests__ (12 nodes)
+- src/__tests__/userService.test.ts
+- ../services/userService
+- UserService
+- authenticate
+- should authenticate valid credentials
+- should reject invalid password
+- should reject non-existent user
+- createUser
+- should create user with hashed password
+- should reject duplicate email
+- deactivateUser
+- should mark user as inactive
+
+### Community 8: utils (12 nodes)
 - src/utils/helpers.ts
 - crypto
 - generateId
@@ -175,7 +190,7 @@ _Generated 2026-04-20_
 - pickKeys
 - delay
 
-### Community 8: __tests__ (11 nodes)
+### Community 9: __tests__ (11 nodes)
 - src/__tests__/projectService.test.ts
 - ../services/projectService
 - ProjectService
@@ -188,22 +203,20 @@ _Generated 2026-04-20_
 - getProjectStats
 - should return task counts by status
 
-### Community 9: __tests__ (11 nodes)
-- src/__tests__/userService.test.ts
-- UserService
-- authenticate
-- should authenticate valid credentials
-- should reject invalid password
-- should reject non-existent user
-- createUser
-- should create user with hashed password
-- should reject duplicate email
-- deactivateUser
-- should mark user as inactive
+### Community 10: src (10 nodes)
+- src/app.ts
+- cors
+- helmet
+- ./routes
+- ./middleware/errorHandler
+- ./config/app
+- ./utils/logger
+- src/index.ts
+- ./app
+- ./config/database
 
-### Community 10: __tests__ (10 nodes)
+### Community 11: __tests__ (9 nodes)
 - src/__tests__/auth.test.ts
-- ../middleware/auth
 - Auth Middleware
 - authenticate
 - should pass with valid token
@@ -213,7 +226,7 @@ _Generated 2026-04-20_
 - should allow admin access
 - should deny insufficient role
 
-### Community 11: services (7 nodes)
+### Community 12: services (7 nodes)
 - logger
 - ProjectService
 - createProject
@@ -222,7 +235,7 @@ _Generated 2026-04-20_
 - getProjectSummary
 - findByMember
 
-### Community 12: models (7 nodes)
+### Community 13: models (7 nodes)
 - src/models/task.ts
 - Task
 - CreateTaskDTO
@@ -231,7 +244,7 @@ _Generated 2026-04-20_
 - isValidPriority
 - getDefaultTask
 
-### Community 13: codeburn-2026-04-20.json (1 nodes)
+### Community 14: codeburn-2026-04-20.json (1 nodes)
 - codeburn-2026-04-20.json
 
 ## Potentially Unused Code
@@ -262,7 +275,8 @@ _Entities with no inbound references (may be entry points or dead code)_
 ## Cross-Community Coupling
 _Community pairs with high inter-dependency_
 
-- controllers ↔ middleware: 12 edges
+- middleware ↔ controllers: 13 edges
+- middleware ↔ middleware: 6 edges
 
 ## Isolated Nodes
 - codeburn-2026-04-20.json

@@ -1,11 +1,11 @@
 ---
 source_file: "src/services/taskService.ts"
 type: class
-community: 2
+community: 3
 location: 31
 ---
 
-#tokendiet/class #tokendiet/community-2
+#tokendiet/class #tokendiet/community-3
 
 - contains [[src_services_taskService.ts]]
 - calls [[logger_8]]

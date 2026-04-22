@@ -1,37 +1,34 @@
 ---
 type: community
 community_id: 11
-member_count: 7
+member_count: 9
 ---
 
 # Community 11
 
 #tokendiet/community-11
 
-## Members (7)
-- [[logger_2]]
-- [[ProjectService_2]]
-- [[createProject_2]]
-- [[updateProject]]
-- [[addMember_2]]
-- [[getProjectSummary]]
-- [[findByMember]]
+## Members (9)
+- [[src___tests___auth.test.ts]]
+- [[Auth_Middleware]]
+- [[authenticate]]
+- [[should_pass_with_valid_token]]
+- [[should_reject_missing_token]]
+- [[should_reject_expired_token]]
+- [[requireRole]]
+- [[should_allow_admin_access]]
+- [[should_deny_insufficient_role]]
 
 ## Bridge Nodes
-- [[logger_2]] (12 connections)
-- [[ProjectService_2]] (10 connections)
-- [[createProject_2]] (2 connections)
-- [[updateProject]] (2 connections)
-- [[addMember_2]] (2 connections)
+- [[src___tests___auth.test.ts]] (10 connections)
+- [[Auth_Middleware]] (1 connections)
+- [[authenticate]] (1 connections)
+- [[should_pass_with_valid_token]] (1 connections)
+- [[should_reject_missing_token]] (1 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_1]]
-- [[_COMMUNITY_0]]
-- [[_COMMUNITY_3]]
+- [[_COMMUNITY_2]]
 - [[_COMMUNITY_5]]
-- [[_COMMUNITY_6]]
-- [[_COMMUNITY_7]]
-- [[_COMMUNITY_8]]
 
 ## Dataview Query
 ```dataview

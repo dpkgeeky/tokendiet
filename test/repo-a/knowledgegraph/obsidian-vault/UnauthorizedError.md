@@ -1,11 +1,11 @@
 ---
 source_file: "src/middleware/errorHandler.ts"
 type: class
-community: 3
+community: 5
 location: 36
 ---
 
-#tokendiet/class #tokendiet/community-3
+#tokendiet/class #tokendiet/community-5
 
 - contains [[src_middleware_errorHandler.ts]]
 - calls [[authenticate_3]]

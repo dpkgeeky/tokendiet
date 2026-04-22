@@ -1,11 +1,11 @@
 ---
 source_file: "src/__tests__/projectService.test.ts"
 type: test
-community: 8
+community: 9
 location: 45
 ---
 
-#tokendiet/test #tokendiet/community-8
+#tokendiet/test #tokendiet/community-9
 
 - contains [[src___tests___projectService.test.ts]]
 

@@ -36,8 +36,8 @@ member_count: 18
 - [[hasPermission]] (2 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_3]]
 - [[_COMMUNITY_5]]
+- [[_COMMUNITY_1]]
 
 ## Dataview Query
 ```dataview

@@ -1,10 +1,10 @@
 ---
 source_file: "src/middleware/validation.ts"
 type: file
-community: 5
+community: 1
 ---
 
-#tokendiet/file #tokendiet/community-5
+#tokendiet/file #tokendiet/community-1
 
 - imports [[express]]
 - imports [[._errorHandler]]

@@ -9,27 +9,26 @@ member_count: 10
 #tokendiet/community-10
 
 ## Members (10)
-- [[src___tests___auth.test.ts]]
-- [[.._middleware_auth]]
-- [[Auth_Middleware]]
-- [[authenticate]]
-- [[should_pass_with_valid_token]]
-- [[should_reject_missing_token]]
-- [[should_reject_expired_token]]
-- [[requireRole]]
-- [[should_allow_admin_access]]
-- [[should_deny_insufficient_role]]
+- [[src_app.ts]]
+- [[cors]]
+- [[helmet]]
+- [[._routes]]
+- [[._middleware_errorHandler]]
+- [[._config_app]]
+- [[._utils_logger]]
+- [[src_index.ts]]
+- [[._app]]
+- [[._config_database]]
 
 ## Bridge Nodes
-- [[src___tests___auth.test.ts]] (10 connections)
-- [[.._middleware_auth]] (6 connections)
-- [[Auth_Middleware]] (1 connections)
-- [[authenticate]] (1 connections)
-- [[should_pass_with_valid_token]] (1 connections)
+- [[src_app.ts]] (8 connections)
+- [[src_index.ts]] (6 connections)
+- [[._config_app]] (2 connections)
+- [[._utils_logger]] (2 connections)
+- [[cors]] (1 connections)
 
 ## Connected Communities
-- [[_COMMUNITY_3]]
-- [[_COMMUNITY_1]]
+- [[_COMMUNITY_0]]
 
 ## Dataview Query
 ```dataview

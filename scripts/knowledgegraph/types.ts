@@ -49,6 +49,8 @@ export interface ExportOptions {
 export type DetailLevel = "minimal" | "standard" | "full";
 export type Subcommand = "build" | "update" | "query" | "path" | "context" | "impact";
 
+export type ExportMode = "json" | "all";
+
 export interface CLIArgs {
   subcommand: Subcommand;
   target?: string;
@@ -58,6 +60,7 @@ export interface CLIArgs {
   detail?: DetailLevel;
   depth?: number;
   force?: boolean;
+  exports?: ExportMode;
 }
 
 export interface NamedCommunity {
